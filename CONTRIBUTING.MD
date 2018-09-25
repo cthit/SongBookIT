@@ -1,7 +1,7 @@
 # Contributing
 
 We love pull-requests from everyone. By participating in this project, you
-agree to be a propor human and not do anything unreasonable in order to offend everyone.
+agree to be a proper human and not do anything unreasonable in order to offend everyone.
 
 [code of conduct]: https://thoughtbot.com/open-source-code-of-conduct
 
