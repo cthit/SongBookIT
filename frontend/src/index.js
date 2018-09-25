@@ -1,8 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import Router from "./Router";
 import registerServiceWorker from "./registerServiceWorker";
 
-ReactDOM.render(<Router />, document.getElementById("root"));
+import { DigitDialog, DigitProviders } from "@cthit/react-digit-components";
+import App from "./app";
+
+ReactDOM.render(
+    <DigitProviders defaultLangauge="sv">
+        <>
+            <DigitDialog />
+            <App />
+        </>
+    </DigitProviders>,
+    document.getElementById("root")
+);
+
 registerServiceWorker();
