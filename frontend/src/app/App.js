@@ -9,7 +9,6 @@ class App extends Component {
           <Route path="/" exact>
             <p> Hej </p>
           </Route>
-          <Route path="/users/:id" exact render={<p> skjdmksld </p>} />
         </Switch>
       </div>
     );
