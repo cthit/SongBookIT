@@ -1,8 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import Router from "./app/Router";
 import registerServiceWorker from "./registerServiceWorker";
 
-ReactDOM.render(<Router />, document.getElementById("root"));
+import { DigitProviders } from "@cthit/react-digit-components";
+import App from "./app";
+
+const Root = ({}) => (
+    <DigitProviders>
+        <App />
+    </DigitProviders>
+);
+
+ReactDOM.render(<Root />, document.getElementById("root"));
 registerServiceWorker();
