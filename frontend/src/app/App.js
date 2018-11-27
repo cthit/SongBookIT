@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import { DigitHeader } from "@cthit/react-digit-components";
-import ListSongs from "../use-cases/songs/";
+import Songs from "../use-cases/songs";
 
 class App extends Component {
     render() {
@@ -11,7 +11,7 @@ class App extends Component {
                     title="SongBook"
                     renderMain={() => (
                         <Switch>
-                            <Route path="/" component={ListSongs} />
+                            <Route path="/" component={Songs} />
                         </Switch>
                     )}
                     // renderDrawer={() => <div/>}

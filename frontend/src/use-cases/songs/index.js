@@ -1,3 +1,3 @@
-import ListSongs from "./ListSongs";
+import ListSongs from "./Songs";
 
 export default ListSongs;
