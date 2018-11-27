@@ -1,5 +1,6 @@
 import React from "react";
 import { DigitLayout } from "@cthit/react-digit-components";
+import ShowSong from "../views/show-song";
 
 const songs = [
     {
@@ -20,11 +21,8 @@ const songs = [
 
 const ShowSongs = () => (
     <DigitLayout.Column centerHorizontal alignTop padding="10px">
-        <div>skdflsdmfk</div>
-        <div>skdflsdmfk</div>
-        <div>skdflsdmfk</div>
-        <div>skdflsdmfk</div>
-        <div>skdflsdmfk</div>
+        <ShowSong song={songs[0]} />
+        <ShowSong song={songs[1]} />
     </DigitLayout.Column>
 );
 
