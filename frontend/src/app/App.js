@@ -14,7 +14,7 @@ class App extends Component {
                             <Route path="/" component={Songs} />
                         </Switch>
                     )}
-                    // renderDrawer={() => <div/>}
+                    renderDrawer={null}
                 />
             </div>
         );
