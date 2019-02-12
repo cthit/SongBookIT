@@ -5,7 +5,7 @@ import {
     DigitDisplayData
 } from "@cthit/react-digit-components";
 
-const song = {
+const mockSong = {
     name: "teckenvisan",
     lyrics: ".,.,/*_\"#-^'{}",
     melody: "pepparkakas låten",
@@ -13,7 +13,7 @@ const song = {
     category: "IT"
 };
 
-const ShowSong = () => (
+const ShowSong = song => (
     <DigitLayout.Fill>
         <DigitDesign.Card minWidth="300px" maxWidth="800px">
             <DigitDesign.CardBody>

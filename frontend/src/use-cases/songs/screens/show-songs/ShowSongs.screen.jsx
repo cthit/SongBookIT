@@ -4,7 +4,7 @@ import ShowSong from "../views/show-song";
 
 const songs = [
     {
-        name: "namn på låten",
+        name: "----------",
         lyrics: "text som sjungs",
         melody: "melodi för låten",
         author: "vem som skrev låten",
@@ -12,7 +12,7 @@ const songs = [
     },
     {
         name: "namn på låten",
-        lyrics: "text som sjungs",
+        lyrics: "öösdä.öfäsdöf.",
         melody: "melodi för låten",
         author: "vem som skrev låten",
         category: "med vilka låter denna klumpas"
