@@ -423,7 +423,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         elif o is False:
             yield 'false'
         elif isinstance(o, UUID):
-            yield o.hex
+            yield _encoder(o.hex)
         elif isinstance(o, int):
             # see comment for int/float in _make_iterencode
             yield _intstr(o)
