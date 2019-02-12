@@ -43,7 +43,7 @@ def get_songs(data):
 def add_category(cat, data):
     t = Tag(name=cat, pretty_name_sv=cat, pretty_name_en=cat)
     for song in get_songs(data):
-        s = Song(author=song['author'], text=song['text'], tags={t})
+        s = Song(title=song['title'], author=song['author'], text=song['text'], tags={t})
         if song['melody'] is not None:
             s.melody = song['melody']
 

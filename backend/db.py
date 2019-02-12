@@ -9,6 +9,7 @@ db = Database()
 
 class Song(db.Entity):
     song_id = PrimaryKey(UUID, auto=True)
+    title = Required(str)
     melody = Optional(str)
     text = Required(str)
     author = Required(str)
