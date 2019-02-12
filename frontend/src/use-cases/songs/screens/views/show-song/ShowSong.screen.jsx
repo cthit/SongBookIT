@@ -1,9 +1,5 @@
 import React from "react";
-import {
-    DigitLayout,
-    DigitDesign,
-    DigitDisplayData
-} from "@cthit/react-digit-components";
+import { DigitLayout, DigitDesign } from "@cthit/react-digit-components";
 
 const mockSong = {
     name: "teckenvisan",
@@ -13,27 +9,15 @@ const mockSong = {
     category: "IT"
 };
 
-const ShowSong = song => (
+export const ShowSong = ({ name, lyrics, melody, author, category }) => (
     <DigitLayout.Fill>
         <DigitDesign.Card minWidth="300px" maxWidth="800px">
             <DigitDesign.CardBody>
-                <DigitDisplayData
-                    data={song}
-                    keysOrder={[
-                        "name",
-                        "lyrics",
-                        "melody",
-                        "author",
-                        "category"
-                    ]}
-                    keysText={{
-                        name: "Namn på låten",
-                        lyrics: "text som sjungs",
-                        melody: "melodi för låten",
-                        author: "vem som skrev låten",
-                        category: "med vilka låter denna klumpas"
-                    }}
-                />
+                <p> {name}</p>
+                <p> {lyrics}</p>
+                <p> {melody}</p>
+                <p> {author}</p>
+                <p> {category}</p>
             </DigitDesign.CardBody>
         </DigitDesign.Card>
     </DigitLayout.Fill>
