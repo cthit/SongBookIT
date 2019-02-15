@@ -1,14 +1,6 @@
 import React from "react";
 import { DigitLayout, DigitDesign } from "@cthit/react-digit-components";
 
-const mockSong = {
-    name: "teckenvisan",
-    lyrics: ".,.,/*_\"#-^'{}",
-    melody: "pepparkakas låten",
-    author: "????",
-    category: "IT"
-};
-
 export const ShowSong = ({ name, lyrics, melody, author, category }) => (
     <DigitLayout.Fill>
         <DigitDesign.Card minWidth="300px" maxWidth="800px">
