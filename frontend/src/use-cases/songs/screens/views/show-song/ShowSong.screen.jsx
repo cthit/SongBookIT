@@ -1,15 +1,14 @@
 import React from "react";
 import { DigitLayout, DigitDesign } from "@cthit/react-digit-components";
 
-export const ShowSong = ({ name, lyrics, melody, author, category }) => (
+export const ShowSong = ({ author, melody, song_id, tags, text, title }) => (
     <DigitLayout.Fill>
         <DigitDesign.Card minWidth="300px" maxWidth="800px">
             <DigitDesign.CardBody>
-                <p> {name}</p>
-                <p> {lyrics}</p>
+                <p> {title}</p>
+                <p> {text}</p>
                 <p> {melody}</p>
                 <p> {author}</p>
-                <p> {category}</p>
             </DigitDesign.CardBody>
         </DigitDesign.Card>
     </DigitLayout.Fill>
