@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_restful import Resource, Api, abort
+from flask_cors import CORS
 from pony.orm import db_session, ObjectNotFound, select
 from pony.orm.serialization import to_dict
 
@@ -13,6 +14,8 @@ app.config['RESTFUL_JSON'] = {
     'cls': UUIDEncoder,
     'ensure_ascii': False
 }
+
+cors = CORS(app, resources={r"/*": {"origins":"*"}})
 
 class SongRes(Resource):
     @db_session
