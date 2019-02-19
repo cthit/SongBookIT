@@ -1,9 +1,9 @@
 import React from "react";
 import { DigitLayout } from "@cthit/react-digit-components";
-import ShowSong from "../views/show-song";
+import ShowSong from "../common-views/show-song";
 import { getSongs } from "../../../../api/songs/get.songs.api";
 
-class ShowSongs extends React.Component {
+class ShowAllSongs extends React.Component {
     constructor(props) {
         super(props);
         this.state = { songs: [] };
@@ -17,7 +17,7 @@ class ShowSongs extends React.Component {
                 this.setState({ songs: songData });
             })
             .catch(err => {
-                console.log("Error when loading songs", err);
+                console.log("Error when loading all songs", err);
             });
     };
 
@@ -25,11 +25,11 @@ class ShowSongs extends React.Component {
         return (
             <DigitLayout.Column centerHorizontal alignTop padding="10px">
                 {this.state.songs.map(s => (
-                    <ShowSong {...s} />
+                    <ShowSong {...s} key={s.song_id} />
                 ))}
             </DigitLayout.Column>
         );
     }
 }
 
-export default ShowSongs;
+export default ShowAllSongs;
