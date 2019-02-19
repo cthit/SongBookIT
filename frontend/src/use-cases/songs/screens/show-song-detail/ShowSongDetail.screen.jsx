@@ -17,9 +17,8 @@ class ShowSongDetail extends React.Component {
     getAndSetSong = id => {
         getSong(id)
             .then(res => {
-                const song = Object.values(res.data.Song)[0];
-                console.log(song);
-                this.setState({ song: song });
+                const s = res.data.Song[id];
+                this.setState({ song: s });
             })
             .catch(err => {
                 console.log("Error when loading song", err);
