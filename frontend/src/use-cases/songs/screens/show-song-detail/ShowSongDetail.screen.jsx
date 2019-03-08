@@ -1,7 +1,10 @@
 import React from "react";
 import {
     DigitLayout,
-    DigitIfElseRendering
+    DigitIfElseRendering,
+    DigitLoading,
+    DigitFAB,
+    DigitDesign
 } from "@cthit/react-digit-components";
 import ShowSong from "../common-views/show-song";
 import { getSong } from "../../../../api/songs/get.songs.api";
@@ -9,7 +12,7 @@ import { getSong } from "../../../../api/songs/get.songs.api";
 class ShowSongDetail extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { song: null };
+        this.state = { song: null, open: false };
         const songId = this.props.match.params.id;
         this.getAndSetSong(songId);
     }
@@ -27,18 +30,13 @@ class ShowSongDetail extends React.Component {
 
     render() {
         return (
-            <DigitIfElseRendering
-                test={this.state.song != null}
-                ifRender={() => (
-                    <DigitLayout.Column
-                        centerHorizontal
-                        alignTop
-                        padding="10px"
-                    >
-                        <ShowSong {...this.state.song} />
-                    </DigitLayout.Column>
-                )}
-            />
+            <DigitLayout.Column centerHorizontal alignTop padding="10px">
+                <DigitIfElseRendering
+                    test={this.state.song != null}
+                    ifRender={() => <ShowSong {...this.state.song} />}
+                    elseRender={() => <DigitLoading loading />}
+                />
+            </DigitLayout.Column>
         );
     }
 }
