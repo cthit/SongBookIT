@@ -4,12 +4,20 @@ import registerServiceWorker from "./registerServiceWorker";
 
 import { DigitProviders } from "@cthit/react-digit-components";
 import App from "./app";
+import rootReducer from "./app/App.reducer";
 
-const Root = ({}) => (
-    <DigitProviders>
+ReactDOM.render(
+    <DigitProviders
+        preloadedState={{
+            app: {
+                tags: {},
+                songs: []
+            }
+        }}
+        rootReducer={rootReducer}
+    >
         <App />
-    </DigitProviders>
+    </DigitProviders>,
+    document.getElementById("root")
 );
-
-ReactDOM.render(<Root />, document.getElementById("root"));
 registerServiceWorker();
