@@ -1,2 +1,2 @@
-import ShowSongs from "./ShowAllSongs.screen";
+import ShowSongs from "./ShowAllSongs.container";
 export default ShowSongs;

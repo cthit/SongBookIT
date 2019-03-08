@@ -4,6 +4,15 @@ import { DigitHeader } from "@cthit/react-digit-components";
 import Songs from "../use-cases/songs";
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        props.loadSongs();
+    }
+
+    onSelectedChange = selected => {
+        this.props.redirectTo(selected);
+    };
+
     render() {
         return (
             <div className="App">
