@@ -16,6 +16,7 @@ app.config['RESTFUL_JSON'] = {
 }
 
 cors = CORS(app, resources={r"/*": {"origins":"*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 class SongRes(Resource):
     @db_session
