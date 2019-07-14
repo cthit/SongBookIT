@@ -13,7 +13,7 @@ export const ShowSong = ({
     tags,
     text,
     title,
-    onClick
+    openSong
 }) => (
     <DigitLayout.Fill padding="20px">
         <DigitDesign.Card
@@ -21,7 +21,7 @@ export const ShowSong = ({
             maxWidth="800px"
             minHeight="300px"
             maxHeight="500px"
-            onClick={onClick}
+            onClick={openSong}
         >
             <DigitDesign.CardBody>
                 <DigitText.Title text={title} />
