@@ -1,13 +1,18 @@
 import { connect } from "react-redux";
 import ShowAllSongs from "./ShowAllSongs";
-import { appLoadCurrentSong } from "./ShowAllSongs.action-creator";
+import {
+    appLoadCurrentSong,
+    appLoadSongs
+} from "./ShowAllSongs.action-creator";
 
 const mapStateToProps = (state, ownProps) => ({
-    songs: state.app.songs,
-    currentSong: state.app.currentSong
+    songs: state.songsReducer.songs,
+    currentSong: state.songsReducer.currentSong,
+    tags: state.songsReducer.tags
 });
 
 const mapDispatchToProps = dispatch => ({
+    loadSongs: () => dispatch(appLoadSongs()),
     loadCurrentSong: id => dispatch(appLoadCurrentSong(id))
 });
 

@@ -5,18 +5,19 @@ import Add from "@material-ui/icons/Add";
 import DialogViewSong from "../common-views/dialogs/dialog-view-song";
 import DialogAddSong from "../common-views/dialogs/dialog-add-song";
 
-const ShowAllSongs = ({ songs, loadCurrentSong, currentSong }) => {
+const ShowAllSongs = ({ loadSongs, songs, loadCurrentSong, currentSong }) => {
+    if (!songs) loadSongs();
+
     const [openView, setOpenView] = useState(false);
     const [openCreate, setOpenCreate] = useState(false);
 
-    const text = songs.every(s => "text" in s);
-
-    console.log(text);
+    console.log("currentSong: ------------------------------------");
+    console.log(currentSong);
 
     const openSong = s => {
-        setOpenView(true);
-        loadCurrentSong(s.id);
         console.log(s);
+        loadCurrentSong(s.song_id);
+        setOpenView(true);
     };
     return (
         <DigitLayout.Fill>
@@ -27,7 +28,7 @@ const ShowAllSongs = ({ songs, loadCurrentSong, currentSong }) => {
                     onClick={() => setOpenCreate(true)}
                 />
                 <DialogViewSong
-                    open={openView}
+                    open={currentSong && openView}
                     handleClose={() => setOpenView(false)}
                     song={currentSong}
                 />
@@ -37,7 +38,7 @@ const ShowAllSongs = ({ songs, loadCurrentSong, currentSong }) => {
                 />
             </DigitLayout.DownRightPosition>
             <DigitLayout.UniformGrid minItemWidth="350px">
-                {songs.map(s => (
+                {(songs || []).map(s => (
                     <ShowSong
                         {...s}
                         key={s.song_id}

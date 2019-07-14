@@ -1,18 +1,10 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import App from "./App";
-import { DigitRedirectActions } from "@cthit/react-digit-components";
-import { appLoadSongs } from "./App.action-creator";
 
-const mapStateToProps = (state, ownProps) => ({
-    tags: state.app.tags,
-    songs: state.app.songs
-});
+const mapStateToProps = (state, ownProps) => ({});
 
-const mapDispatchToProps = dispatch => ({
-    redirectTo: to => dispatch(DigitRedirectActions.digitRedirectTo(to)),
-    loadSongs: () => dispatch(appLoadSongs())
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default withRouter(
     connect(
@@ -20,3 +12,4 @@ export default withRouter(
         mapDispatchToProps
     )(App)
 );
+// finns ifall ni vill göra något med historik, ta bort mo ni glömt bort den

@@ -1,9 +1,10 @@
 import {
     APP_LOAD_CURRENT_SONG_FAILED,
+    APP_LOAD_SONGS_SUCCEEDED,
+    APP_LOAD_SONGS_FAILED,
     APP_LOAD_CURRENT_SONG_SUCCEEDED
 } from "./ShowAllSongs.actions";
-import _ from "lodash";
-import { getSong } from "../../../../api/songs/get.songs.api";
+import { getSong, getSongs } from "../../../../api/songs/get.songs.api";
 
 export function appLoadCurrentSong(id) {
     return dispatch => {
@@ -18,6 +19,30 @@ export function appLoadCurrentSong(id) {
     };
 }
 
+export function appLoadSongs() {
+    return dispatch => {
+        getSongs()
+            .then(response => {
+                const songs = Object.values(response.data.Song);
+                const tags = Object.values(response.data.Tag);
+                dispatch(appLoadSongsSucceeded(tags, songs));
+            })
+            .catch(function(error) {
+                dispatch(appLoadSongsFailed(error));
+            });
+    };
+}
+
+function appLoadCurrentSongFailed(error) {
+    return {
+        type: APP_LOAD_CURRENT_SONG_FAILED,
+        payload: {
+            error: error
+        },
+        error: true
+    };
+}
+
 function appLoadCurrentSongSucceeded(song) {
     return {
         type: APP_LOAD_CURRENT_SONG_SUCCEEDED,
@@ -28,9 +53,20 @@ function appLoadCurrentSongSucceeded(song) {
     };
 }
 
-function appLoadCurrentSongFailed(error) {
+function appLoadSongsSucceeded(tags, songs) {
     return {
-        type: APP_LOAD_CURRENT_SONG_FAILED,
+        type: APP_LOAD_SONGS_SUCCEEDED,
+        payload: {
+            tags: tags,
+            songs: songs
+        },
+        error: false
+    };
+}
+
+function appLoadSongsFailed(error) {
+    return {
+        type: APP_LOAD_SONGS_FAILED,
         payload: {
             error: error
         },
