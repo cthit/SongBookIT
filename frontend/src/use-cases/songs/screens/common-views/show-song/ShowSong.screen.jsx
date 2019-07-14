@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import {
     DigitLayout,
     DigitDesign,
@@ -25,9 +24,7 @@ export const ShowSong = ({
             onClick={onClick}
         >
             <DigitDesign.CardBody>
-                <Link to={"/" + song_id}>
-                    <DigitText.Title text={title} />
-                </Link>
+                <DigitText.Title text={title} />
                 <DigitMarkdown markdownSource={text.slice(0, 150) + "..."} />
                 <p> {melody}</p>
                 <p> {author}</p>

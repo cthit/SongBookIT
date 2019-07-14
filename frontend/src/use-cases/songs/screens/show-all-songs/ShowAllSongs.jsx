@@ -26,25 +26,11 @@ const ShowAllSongs = ({ songs, loadCurrentSong, currentSong }) => {
             </DigitLayout.DownRightPosition>
             <DigitLayout.UniformGrid minItemWidth="350px">
                 {songs.map(s => (
-                    <div>
-                        <ShowSong
-                            {...s}
-                            key={s.song_id}
-                            onClick={
-                                e => console.log(e)
-                                /*loadCurrentSong(e.currentTarget.dataset.id)*/
-                                /*loadCurrentSong(s.song_id)*/
-                            }
-                        />
-                        <button
-                            value={s.song_id}
-                            id={s.song_id}
-                            key={s.song_id + "hej"}
-                            onClick={e =>
-                                loadCurrentSong(e.currentTarget.dataset.id)
-                            }
-                        />
-                    </div>
+                    <ShowSong
+                        {...s}
+                        key={s.song_id}
+                        onClick={e => loadCurrentSong(s.song_id)}
+                    />
                 ))}
             </DigitLayout.UniformGrid>
         </DigitLayout.Fill>
