@@ -31,17 +31,18 @@ const ShowAllSongs = ({ songs, loadCurrentSong, currentSong }) => {
                             {...s}
                             key={s.song_id}
                             onClick={
-                                e =>
-                                    console.log(
-                                        e
-                                    ) /*loadCurrentSong(e.currentTarget.dataset.id)*/
+                                e => console.log(e)
+                                /*loadCurrentSong(e.currentTarget.dataset.id)*/
+                                /*loadCurrentSong(s.song_id)*/
                             }
                         />
                         <button
                             value={s.song_id}
                             id={s.song_id}
                             key={s.song_id + "hej"}
-                            onClick={e => loadCurrentSong(e.currentTarget.id)}
+                            onClick={e =>
+                                loadCurrentSong(e.currentTarget.dataset.id)
+                            }
                         />
                     </div>
                 ))}

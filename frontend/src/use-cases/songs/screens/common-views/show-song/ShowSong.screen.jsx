@@ -7,13 +7,22 @@ import {
     DigitText
 } from "@cthit/react-digit-components";
 
-export const ShowSong = ({ author, melody, song_id, tags, text, title }) => (
+export const ShowSong = ({
+    author,
+    melody,
+    song_id,
+    tags,
+    text,
+    title,
+    onClick
+}) => (
     <DigitLayout.Fill padding="20px">
         <DigitDesign.Card
             minWidth="300px"
             maxWidth="800px"
             minHeight="300px"
             maxHeight="500px"
+            onClick={onClick}
         >
             <DigitDesign.CardBody>
                 <Link to={"/" + song_id}>

@@ -5,6 +5,6 @@ export function getTags() {
     return getRequest(TAGS_ENDPOINT + );
 }
 
-export function getTag(id) {
-    return getRequest(TAGS_ENDPOINT + id);
+export function getTag(tagId) {
+    return getRequest(TAGS_ENDPOINT + tagId);
 }
