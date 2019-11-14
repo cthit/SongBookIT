@@ -2,22 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 import registerServiceWorker from "./registerServiceWorker";
 
-import { DigitProviders } from "@cthit/react-digit-components";
+import { DigitDialog, DigitProviders } from "@cthit/react-digit-components";
 import App from "./app";
-import rootReducer from "./app/App.reducer";
 
 ReactDOM.render(
-    <DigitProviders
-        preloadedState={{
-            app: {
-                tags: {},
-                songs: []
-            }
-        }}
-        rootReducer={rootReducer}
-    >
-        <App />
+    <DigitProviders defaultLangauge="sv">
+        <>
+            <DigitDialog />
+            <App />
+        </>
     </DigitProviders>,
     document.getElementById("root")
 );
+
 registerServiceWorker();

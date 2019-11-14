@@ -1,3 +1,3 @@
-import ListSongs from "./Songs";
+import Songs from "./Songs.screen";
 
-export default ListSongs;
+export default Songs;

@@ -4,17 +4,15 @@ import { DigitHeader } from "@cthit/react-digit-components";
 import Songs from "../use-cases/songs";
 
 const App = () => (
-    <div className="App">
-        <DigitHeader
-            title="SongBook"
-            renderMain={() => (
-                <Switch>
-                    <Route path="/" component={Songs} />
-                </Switch>
-            )}
-            renderDrawer={null}
-        />
-    </div>
+    <DigitHeader
+        title="SongBook"
+        renderMain={() => (
+            <Switch>
+                <Route path="/" component={Songs} />
+            </Switch>
+        )}
+        renderHeader={() => {}}
+    />
 );
 
 export default App;
