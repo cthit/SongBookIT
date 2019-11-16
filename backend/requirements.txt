@@ -1,5 +1,5 @@
-psycopg2
 flask
 flask-restful
-pony
 flask-cors
+pony
+psycopg2

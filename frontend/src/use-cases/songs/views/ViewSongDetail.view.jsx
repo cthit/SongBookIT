@@ -20,13 +20,13 @@ const ViewSongDetails = (s, openDialog) => {
         renderButtons: (confirm, cancel) => (
             <>
                 <DigitButton text={"Close"} raised onClick={cancel} />
-                <DigitButton
+                {/* <DigitButton
                     text={"Edit song"}
                     primary
                     raised
                     submit
                     onClick={confirm}
-                />
+                /> */}
             </>
         ),
         onCancel: () => {},
