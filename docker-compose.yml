@@ -28,7 +28,6 @@ services:
       - ./backend/:/usr/src/songbookit/backend
 
   frontend:
-    links:
     build:
       context: ./frontend/
       dockerfile: dev.Dockerfile
