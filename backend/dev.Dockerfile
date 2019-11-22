@@ -13,12 +13,6 @@ RUN chown -R songbookit /usr/src/songbookit/backend
 
 USER songbookit
 
-ENV POSTGRES_USER songbookit
-ENV POSTGRES_PASSWORD password
-ENV POSTGRES_HOST db
-ENV POSTGRES_PORT 5432
-ENV PYTHONUNBUFFERED 0
-
 EXPOSE 5000
 
 CMD ["sh", "start.sh"]
