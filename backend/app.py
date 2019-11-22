@@ -25,7 +25,7 @@ class SongRes(Resource):
             song = Song[song_id]
             return to_dict(song)
         except ObjectNotFound:
-            return "Unrecognized Song ID"
+            return 404, "Unrecognized Song ID"
 
     @db_session
     def delete(self, song_id):
@@ -34,7 +34,7 @@ class SongRes(Resource):
             song.delete()
             return "Song deleted!"
         except ObjectNotFound:
-            return "Unrecognized Song ID"
+            return 404, "Unrecognized Song ID"
 
     @db_session
     def put(self, song_id):
@@ -76,7 +76,7 @@ class TagRes(Resource):
         try:
             return to_dict(Tag[tag_id])
         except ObjectNotFound:
-            return "Unknown tag id"
+            return 404, "Unknown tag id"
 
     @db_session
     def delete(self, tag_id):
@@ -84,7 +84,7 @@ class TagRes(Resource):
             Tag[tag_id].delete()
             return "Tag successfully deleted!"
         except ObjectNotFound:
-            return "Unknown tag id"
+            return 404, "Unknown tag id"
 
 
 class TagSongsRes(Resource):
