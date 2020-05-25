@@ -1,43 +1,26 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
-import { DigitHeader } from "@cthit/react-digit-components";
+import {Switch, Route} from "react-router-dom";
+import {DigitHeader, DigitProviders} from "@cthit/react-digit-components";
 import Songs from "../use-cases/songs";
-import { StateProvider } from "./App.context";
-
-import { getSongs } from "../api/songs/get.songs.api";
+import {StateProvider, InitialState, Reducer} from "./App.context";
 
 const App = () => {
-    const initialState = {
-        songs: [],
-        getSongs: getSongs,
-    };
-
-    const reducer = (state, action) => {
-        switch (action.type) {
-            case getSongs:
-                return {
-                    ...state,
-                    songs: action.songs,
-                };
-
-            default:
-                console.log("default");
-        }
-        return state;
-    };
-
     return (
-        <StateProvider initialState={initialState} reducer={reducer}>
-            <DigitHeader
-                title="SongBook"
-                renderMain={() => (
-                    <Switch>
-                        <Route path="/" component={Songs} />
-                    </Switch>
-                )}
-                // renderHeader={() => {}}
-            />
-        </StateProvider>
+        <DigitProviders>
+
+            <StateProvider initialState={InitialState} reducer={Reducer}>
+                <DigitHeader
+                    title="SongBook"
+                    renderMain={() => (
+                        <Switch>
+                            <Route path="/" component={Songs}/>
+                            <Route path="/edit/:id" component={Songs}/>
+                            <Route path="/create" component={Songs}/>
+                        </Switch>
+                    )}
+                />
+            </StateProvider>
+        </DigitProviders>
     );
 };
 
