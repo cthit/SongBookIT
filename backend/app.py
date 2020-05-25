@@ -1,11 +1,16 @@
-from flask import Flask, request
+from flask import Flask, request, session, Response
 from flask_restful import Resource, Api, abort
 from flask_cors import CORS
 from pony.orm import db_session, ObjectNotFound, select
 from pony.orm.serialization import to_dict
 
 from UUIDEncoder import UUIDEncoder
+from config import SECRET_KEY, GAMMA_CLIENT_ID, GAMMA_AUTHORIZATION_URI, GAMMA_REDIRECT_URI, GAMMA_TOKEN_URI, \
+    GAMMA_SECRET, GAMMA_ME_URI
 from db import Song, Tag
+import requests
+import base64
+import urllib
 
 app = Flask(__name__)
 api = Api(app)
@@ -17,6 +22,9 @@ app.config['RESTFUL_JSON'] = {
 
 cors = CORS(app, resources={r"/*": {"origins":"*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+app.secret_key = SECRET_KEY
+
 
 class SongRes(Resource):
     @db_session
@@ -93,12 +101,55 @@ class TagSongsRes(Resource):
         return to_dict(Tag[tag_id].songs)
 
 
-api.add_resource(SongsRes, '/songs')
-api.add_resource(SongRes, '/songs/<string:song_id>')
+@app.route('/api/me', methods=['GET'])
+def gammaMe():
+    if "token" in session:
+        headers = {
+            'Authorization': 'Bearer ' + session["token"]
+        }
+        res = requests.get(GAMMA_ME_URI, headers=headers)
+        if res.ok:
+            return Response(response=res, status=200)
 
-api.add_resource(TagsRes, '/tags')
-api.add_resource(TagRes, '/tags/<string:tag_id>')
+    response_type = "response_type=code"
+    client_id = "client_id=" + GAMMA_CLIENT_ID
+    redirect_uri = "redirect_uri=" + GAMMA_REDIRECT_URI
+    return Response(GAMMA_AUTHORIZATION_URI + "?" + response_type + "&" + client_id + "&" + redirect_uri, status=401)
 
-api.add_resource(TagSongsRes, '/songs/tag/<string:tag_id>')
+@app.route('/api/auth', methods=['POST'])
+def gammaPost():
+    data = {
+        'grant_type': 'authorization_code',
+        'client_id': GAMMA_CLIENT_ID,
+        'redirect_uri': GAMMA_REDIRECT_URI,
+        'code': request.get_json()["code"]
+    }
+
+    c = GAMMA_CLIENT_ID + ":" + GAMMA_SECRET
+
+    encodedBytes = base64.b64encode(c.encode("utf-8"))
+    encodedStr = str(encodedBytes, "utf-8")
+
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + encodedStr
+    }
+
+    res = requests.post(GAMMA_TOKEN_URI + "?" + urllib.parse.urlencode(data), headers=headers)
+    if res.ok:
+        access_token = res.json()["access_token"]
+        session["token"] = access_token
+        return Response(status=200)
+    else:
+        return Response(status=500)
+
+api.add_resource(SongsRes, '/api/songs')
+api.add_resource(SongRes, '/api/songs/<string:song_id>')
+
+api.add_resource(TagsRes, '/api/tags')
+api.add_resource(TagRes, '/api/tags/<string:tag_id>')
+
+api.add_resource(TagSongsRes, '/api/songs/tag/<string:tag_id>')
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

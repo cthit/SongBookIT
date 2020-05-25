@@ -1,10 +1,15 @@
 import React from "react";
 import {Switch, Route} from "react-router-dom";
-import {DigitHeader, DigitProviders} from "@cthit/react-digit-components";
+import { DigitHeader, DigitProviders, useGamma, useGammaMe } from "@cthit/react-digit-components";
 import Songs from "../use-cases/songs";
 import {StateProvider, InitialState, Reducer} from "./App.context";
 
 const App = () => {
+    useGamma();
+    const me = useGammaMe();
+
+    console.log(me);
+
     return (
         <DigitProviders>
 
