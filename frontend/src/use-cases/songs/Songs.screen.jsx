@@ -1,100 +1,223 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, {useState, useMemo, useEffect} from "react";
 import {
     DigitLayout,
     DigitFAB,
-    DigitDialogActions,
     DigitDesign,
     DigitText,
     DigitMarkdown,
     DigitLoading,
-    DigitIfElseRendering,
+    useDigitCustomDialog,
+    DigitButton,
+    DigitTextField,
+    DigitChip,
+    DigitAutocompleteSelectMultiple,
 } from "@cthit/react-digit-components";
 import Add from "@material-ui/icons/Add";
 
-import { useStateValue } from "../../app/App.context";
+import {useStateValue, StateActions} from "../../app/App.context";
+import styled from "styled-components";
 
-import CreateSong from "./views/CreateSong.view";
-import ViewSongDetail from "./views/ViewSongDetail.view";
+const TagFilter = () => {
+    const [{tags}, dispatch] = useStateValue();
+
+    const options = tags
+        .map(tag => {
+            return {text: tag.name, value: tag.tag_id};
+        })
+        .sort((a, b) => (a.text > b.text ? 1 : -1));
+    const [value, setValue] = useState([]);
+
+    return (
+        <DigitAutocompleteSelectMultiple
+            outlined
+            upperLabel="Filter the songs by tags"
+            options={options}
+            value={value}
+            onChange={e => {
+                setValue(e.target.value);
+                dispatch({
+                    type: StateActions.filterTags,
+                    tags: value,
+                });
+            }}
+        />
+    );
+};
+
+const SearchField = () => {
+    const [searchText, setSearchText] = useState("");
+    const [{}, dispatch] = useStateValue();
+
+    return (
+        <DigitTextField
+            value={searchText}
+            upperLabel="Search for a song"
+            onChange={e => {
+                setSearchText(e.target.value);
+                dispatch({
+                    type: StateActions.filterSearch,
+                    search: searchText,
+                });
+            }}
+            outlined
+        />
+    );
+};
+
+const SearchBar = () => (
+    <DigitDesign.Card>
+        <DigitDesign.CardBody>
+            <SearchField/>
+            <TagFilter/>
+        </DigitDesign.CardBody>
+    </DigitDesign.Card>
+);
+
+const SongDetails = s => {
+    return {
+        title: s.title,
+        renderMain: () => (
+            <>
+                <DigitText.Text bold text={"Text: " + s.author}/>
+                <DigitText.Text text={"Mel: " + s.melody}/>
+                <DigitMarkdown markdownSource={s.text}/>
+            </>
+        ),
+        renderButtons: (confirm, cancel) => (
+            <>
+                <DigitButton text={"Close song"} raised onClick={cancel}/>
+                <DigitButton
+                    text={"Edit song"}
+                    primary
+                    raised
+                    submit
+                    onClick={confirm}
+                />
+            </>
+        ),
+        onCancel: () => {
+        },
+        onConfirm: () => console.log("wawawawawawa"),
+    };
+};
+
+const GridOfSongs = ({songs, tags}) => {
+    const [openDialog] = useDigitCustomDialog();
+    const [{filterSearch}] = useStateValue();
+    const [filteredSongs, setFilteredSongs] = useState(songs);
+
+    useEffect(() => {
+        if (filterSearch === "") {
+            setFilteredSongs(songs);
+        } else {
+            setFilteredSongs(
+                songs.filter(song =>
+                    song.title
+                        .toLowerCase()
+                        .includes(filterSearch.toLowerCase())
+                )
+            );
+        }
+    }, [filterSearch]);
+
+    return useMemo(
+        () => (
+            <DigitLayout.UniformGrid
+                margin="20px"
+                minItemWidth="350px"
+                justifyItems="center"
+            >
+                {filteredSongs.map(s => (
+                    <DigitLayout.Margin key={s.song_id}>
+                        <DigitDesign.Card
+                            absWidth="350px"
+                            onClick={() => openDialog(SongDetails(s))}
+                        >
+                            <DigitDesign.CardBody style={{cursor: "pointer"}}>
+                                <>
+                                    <DigitText.Title text={s.title}/>
+                                    <DigitText.Text
+                                        bold
+                                        text={"Författare: " + s.author}
+                                    />
+                                    <DigitText.Text text={"Mel: " + s.melody}/>
+                                    <DigitMarkdown
+                                        markdownSource={
+                                            s.text.slice(0, 150) + "..."
+                                        }
+                                    />
+                                    <DigitLayout.Row>
+                                        {findTags(s.tags, tags).map(tag => (
+                                            <DigitChip
+                                                primary
+                                                label={tag.name}
+                                            />
+                                        ))}
+                                    </DigitLayout.Row>
+                                </>
+                            </DigitDesign.CardBody>
+                        </DigitDesign.Card>
+                    </DigitLayout.Margin>
+                ))}
+            </DigitLayout.UniformGrid>
+        ),
+        [JSON.stringify(filteredSongs)]
+    );
+};
+
+const findTags = (tagIds, tags) => {
+    return tagIds.map(id => tags.find(tag => tag.tag_id === id));
+};
+
+const Margin = styled.div`
+    padding: 15px;
+`;
+
+const NoSongs = () => (
+    <DigitLayout.Column centerHorizontal>
+        <DigitLoading loading size={80}/>
+    </DigitLayout.Column>
+);
+const NoMatchingSongs = () => (
+    <DigitLayout.Column centerHorizontal padding="50">
+        <DigitText.Text text={"There were no songs matching your search.."}/>
+    </DigitLayout.Column>
+);
 
 const Songs = () => {
-    const [{ songs, getSongs }, callContext] = useStateValue();
+    const [
+        {filteredSongs, songs, getSongs, tags},
+        dispatch,
+    ] = useStateValue();
 
-    // Det här känns fel, hur borde det här göras
-    if (songs.length === 0) {
-        getSongs().then(songs =>
-            callContext({
-                type: getSongs,
-                songs: Object.values(songs.data.Song),
-            })
-        );
-    }
-
-    const dispatch = useDispatch();
-    const openDialog = dialogData =>
-        dispatch(DigitDialogActions.digitDialogCustomOpen(dialogData));
+    useEffect(() => {
+        getSongs().then(res => {
+            console.log(res.data.Song);
+            dispatch({
+                type: StateActions.getSongs,
+                songs: Object.values(res.data.Song),
+                tags: Object.values(res.data.Tag),
+            });
+        });
+    }, []);
 
     return (
         <DigitLayout.Fill>
-            <DigitLayout.DownRightPosition style={{ position: "fixed" }}>
+            <DigitLayout.DownRightPosition>
                 <DigitFAB
                     icon={Add}
                     secondary
-                    onClick={() => openDialog(CreateSong)}
+                    onClick={() => console.log("wow cool")}
                 />
             </DigitLayout.DownRightPosition>
 
-            <DigitIfElseRendering
-                test={songs.length === 0}
-                ifRender={() => (
-                    <DigitLayout.Column centerHorizontal>
-                        <DigitLoading loading size={80} />
-                    </DigitLayout.Column>
+            <SearchBar/>
+            <Margin>
+                {songs.length === 0 && <NoSongs/>}
+                {songs.length !== 0 && (
+                    <GridOfSongs songs={songs} tags={tags}/>
                 )}
-                elseRender={() => (
-                    <DigitLayout.UniformGrid
-                        margin="30px"
-                        minItemWidth="300px"
-                        justifyItems="center"
-                    >
-                        {songs.map(s => (
-                            <DigitLayout.Margin key={s.song_id}>
-                                <DigitDesign.Card
-                                    minWidth="300px"
-                                    maxWidth="500px"
-                                    minHeight="250px"
-                                    maxHeight="500px"
-                                    onClick={() =>
-                                        openDialog(
-                                            ViewSongDetail(s, openDialog)
-                                        )
-                                    }
-                                >
-                                    <DigitDesign.CardBody
-                                        style={{ cursor: "pointer" }}
-                                    >
-                                        <>
-                                            <DigitText.Title text={s.title} />
-                                            <DigitText.Text
-                                                bold
-                                                text={"Författare: " + s.author}
-                                            />
-                                            <DigitText.Text
-                                                text={"Mel: " + s.melody}
-                                            />
-                                            <DigitMarkdown
-                                                markdownSource={
-                                                    s.text.slice(0, 150) + "..."
-                                                }
-                                            />
-                                        </>
-                                    </DigitDesign.CardBody>
-                                </DigitDesign.Card>
-                            </DigitLayout.Margin>
-                        ))}
-                    </DigitLayout.UniformGrid>
-                )}
-            />
+            </Margin>
         </DigitLayout.Fill>
     );
 };

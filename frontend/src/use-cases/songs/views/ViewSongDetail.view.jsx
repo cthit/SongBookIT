@@ -5,32 +5,30 @@ import {
     DigitMarkdown,
 } from "@cthit/react-digit-components";
 
-import EditSong from "./EditSong.view";
-
-const ViewSongDetails = (s, openDialog) => {
+const ViewSongDetails = s => {
     return {
         title: s.title,
         renderMain: () => (
             <>
-                <DigitText.Text bold text={"Författare: " + s.author} />
+                <DigitText.Text bold text={"Text: " + s.author} />
                 <DigitText.Text text={"Mel: " + s.melody} />
                 <DigitMarkdown markdownSource={s.text} />
             </>
         ),
         renderButtons: (confirm, cancel) => (
             <>
-                <DigitButton text={"Close"} raised onClick={cancel} />
-                {/* <DigitButton
+                <DigitButton text={"Close song"} raised onClick={cancel} />
+                <DigitButton
                     text={"Edit song"}
                     primary
                     raised
                     submit
                     onClick={confirm}
-                /> */}
+                />
             </>
         ),
         onCancel: () => {},
-        onConfirm: () => openDialog(EditSong(s)),
+        onConfirm: () => console.log("heh, good prank"),
     };
 };
 

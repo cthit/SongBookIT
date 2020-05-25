@@ -13,6 +13,9 @@ RUN chown -R songbookit /usr/src/songbookit/backend
 
 USER songbookit
 
+ENV PYTHONUNBUFFERED 0
+ENV PROD true
+
 EXPOSE 5000
 
-CMD ["sh", "dev.start.sh"]
+CMD ["sh", "start.sh"]

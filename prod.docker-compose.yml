@@ -1,0 +1,44 @@
+version: "2"
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: songbookit
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  backend:
+    depends_on:
+      - db
+    build:
+      context: ./backend/
+      dockerfile: dev.Dockerfile
+    environment:
+      SONGBOOKIT_POSTGRES_USER: songbookit
+      SONGBOOKIT_POSTGRES_PASSWORD: password
+      SONGBOOKIT_POSTGRES_HOST: db
+      SONGBOOKIT_POSTGRES_PORT: 5432
+      SONGBOOKIT_POSTGRES_DB: postgres
+      PYTHONUNBUFFERED: 0
+    ports:
+      - 5000:5000
+    volumes:
+      - ./backend/:/usr/src/songbookit/backend
+
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/usr/src/songbookit/frontend

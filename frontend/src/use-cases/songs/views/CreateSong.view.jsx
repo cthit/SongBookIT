@@ -12,10 +12,13 @@ import {
 
 import * as yup from "yup";
 
+const FORM_NAME = "CREATION_FORM";
+
 const CreateSong = {
     title: "Create song",
     renderMain: () => (
         <DigitForm
+            name={FORM_NAME}
             onSubmit={(values, actions) => {
                 console.log(values);
             }}
@@ -62,24 +65,6 @@ const CreateSong = {
                             upperLabel: "Lyrics",
                         }}
                     />
-
-                    {/* Hur borde jag göra här? Jag vill ha min form-submit 
-                    och kunna använda den men jag vill också använda dialogens 
-                    submit om den första går igenom. */}
-                    <DigitDesign.CardButtons>
-                        <DigitButton
-                            text={"Cancel"}
-                            raised
-                            onClick={() => {}}
-                        />
-                        <DigitButton
-                            text={"Save song"}
-                            submit
-                            primary
-                            raised
-                            onClick={() => {}}
-                        />
-                    </DigitDesign.CardButtons>
                 </DigitLayout.Column>
             )}
         />
@@ -88,6 +73,7 @@ const CreateSong = {
         <>
             <DigitButton text={"Cancel"} raised onClick={cancel} />
             <DigitButton
+                form={FORM_NAME}
                 text={"Save song"}
                 submit
                 primary

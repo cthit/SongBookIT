@@ -49,7 +49,7 @@ class SongRes(Resource):
 class SongsRes(Resource):
     @db_session
     def get(self):
-        return to_dict([*Song.select(lambda s: True)])
+        return to_dict([*Song.select()])
 
     @db_session
     def post(self):
