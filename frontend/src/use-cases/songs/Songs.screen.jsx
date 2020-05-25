@@ -128,8 +128,9 @@ const GridOfSongs = ({songs, tags}) => {
                 justifyItems="center"
             >
                 {filteredSongs.map(s => (
-                    <DigitLayout.Margin key={s.song_id}>
+                    <>
                         <DigitDesign.Card
+                            key={s.song_id}
                             absWidth="350px"
                             onClick={() => openDialog(SongDetails(s))}
                         >
@@ -157,7 +158,7 @@ const GridOfSongs = ({songs, tags}) => {
                                 </>
                             </DigitDesign.CardBody>
                         </DigitDesign.Card>
-                    </DigitLayout.Margin>
+                    </>
                 ))}
             </DigitLayout.UniformGrid>
         ),
@@ -202,7 +203,18 @@ const Songs = () => {
     }, []);
 
     return (
-        <DigitLayout.Fill>
+        <>
+            <DigitLayout.Column>
+                <SearchBar/>
+                <Margin>
+                    {songs.length === 0 && <NoSongs/>}
+                    {songs.length !== 0 && (
+                        <GridOfSongs songs={songs} tags={tags}/>
+                    )}
+                </Margin>
+            </DigitLayout.Column>
+
+
             <DigitLayout.DownRightPosition>
                 <DigitFAB
                     icon={Add}
@@ -211,14 +223,8 @@ const Songs = () => {
                 />
             </DigitLayout.DownRightPosition>
 
-            <SearchBar/>
-            <Margin>
-                {songs.length === 0 && <NoSongs/>}
-                {songs.length !== 0 && (
-                    <GridOfSongs songs={songs} tags={tags}/>
-                )}
-            </Margin>
-        </DigitLayout.Fill>
+
+        </>
     );
 };
 

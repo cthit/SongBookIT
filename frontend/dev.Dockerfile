@@ -1,13 +1,7 @@
-from node:latest
-
-RUN mkdir -p /usr/src/songbookit/frontend
-WORKDIR /usr/src/songbookit/frontend
-
-COPY package.json /package.json
-
-RUN yarn install 
-RUN yarn global add react-scripts
-
-EXPOSE 3000
-
+FROM node:14
+WORKDIR /usr/src/app
+COPY package.json yarn.lock ./
+RUN yarn install --network-timeout 10000000
+COPY src src
+COPY public public
 CMD yarn start
