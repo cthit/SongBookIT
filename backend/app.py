@@ -6,11 +6,13 @@ from pony.orm.serialization import to_dict
 
 from UUIDEncoder import UUIDEncoder
 from config import SECRET_KEY, GAMMA_CLIENT_ID, GAMMA_AUTHORIZATION_URI, GAMMA_REDIRECT_URI, GAMMA_TOKEN_URI, \
-    GAMMA_SECRET, GAMMA_ME_URI
+    GAMMA_SECRET, GAMMA_ME_URI, GAMMA_ADMIN_AUTHORITY
 from db import Song, Tag
 import requests
 import base64
 import urllib
+from functools import wraps
+import jwt
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,6 +27,20 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.secret_key = SECRET_KEY
 
+# TODO: Add @admin_required where it's needed 
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "token" in session:
+            authorities = jwt.decode(jwt=session['token'], options={'verify_signature': False})["authorities"]
+
+            if not GAMMA_ADMIN_AUTHORITY in authorities:
+                return Response(status=403)
+
+        return f(*args, **kwargs)
+
+    return decorated_function
 
 class SongRes(Resource):
     @db_session
