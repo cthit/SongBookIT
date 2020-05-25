@@ -78,13 +78,18 @@ class SongsRes(Resource):
     @db_session
     def post(self):
         data = request.get_json(force=True)
+        maybe_song = Song.select(lambda s: s.title == data["title"]).first()
+        if maybe_song:
+            return {'message': 'Song already exists'}, 400
+        tags = [Tag[tag] for tag in data["tags"]]
+        data["tags"] = tags
         song = Song(**data)
         return to_dict(song)
 
 
 class TagsRes(Resource):
     @db_session
-    def get(self):
+    def get(self): 
         return to_dict([*Tag.select(lambda t: True)])
 
     @db_session

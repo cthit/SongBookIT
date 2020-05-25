@@ -35,7 +35,6 @@ export const Reducer = (state, action) => {
         case StateActions.getSongs:
             return {
                 ...state,
-                filteredSongs: action.songs,
                 songs: action.songs,
                 tags: action.tags,
             };

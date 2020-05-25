@@ -3,9 +3,12 @@ import {
     DigitButton,
     DigitText,
     DigitMarkdown,
+    DigitChip,
+    DigitLayout,
 } from "@cthit/react-digit-components";
+import { useStateValue } from "../../../app/App.context";
 
-const ViewSongDetails = s => {
+const SongDetails = (s, tags) => {
     return {
         title: s.title,
         renderMain: () => (
@@ -13,6 +16,11 @@ const ViewSongDetails = s => {
                 <DigitText.Text bold text={"Text: " + s.author} />
                 <DigitText.Text text={"Mel: " + s.melody} />
                 <DigitMarkdown markdownSource={s.text} />
+                <DigitLayout.Row>
+                    {findTags(s.tags, tags).map(tag => (
+                        <DigitChip primary label={tag.name} />
+                    ))}
+                </DigitLayout.Row>
             </>
         ),
         renderButtons: (confirm, cancel) => (
@@ -28,8 +36,12 @@ const ViewSongDetails = s => {
             </>
         ),
         onCancel: () => {},
-        onConfirm: () => console.log("heh, good prank"),
+        onConfirm: () => console.log("wawawawawawa"),
     };
 };
 
-export default ViewSongDetails;
+const findTags = (tagIds, tags) => {
+    return tagIds.map(id => tags.find(tag => tag.tag_id === id));
+};
+
+export default SongDetails;
