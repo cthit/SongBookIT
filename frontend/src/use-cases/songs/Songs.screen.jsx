@@ -15,31 +15,44 @@ import SongDetails from "./views/ViewSongDetail.view";
 import SearchBar from "./views/Searchbar.view";
 import { useStateValue, StateActions } from "../../app/App.context";
 import styled from "styled-components";
+import { element } from "prop-types";
+
+const checkTag = tags => {
+    return song => song.tags.some(tag => tags.includes(tag))
+}
+
+const checkSong = search => {
+    return song => song.title
+        .toLowerCase()
+        .includes(search.toLowerCase())
+}
+
+const checkFilters = (songsToCheck, filters) => {
+    if (filters.length) {
+        return songsToCheck.filter(song => {
+            return filters.map(func => func(song)).every(x => x)
+        })
+    } else {
+        return songsToCheck
+    }
+}
 
 const GridOfSongs = ({ songs, tags }) => {
     const [openDialog] = useDigitCustomDialog();
     const [{ filterSearch, filterTags }] = useStateValue();
     const [filteredSongs, setFilteredSongs] = useState(songs);
 
+    const filterArr = []
+
     useEffect(() => {
-        if (filterSearch === "") {
-            setFilteredSongs(songs);
-        } else {
-            setFilteredSongs(
-                filteredSongs.filter(song =>
-                    song.tags.some(tag => {
-                        filterTags.some(fTag => fTag.tag_id === tag.tag_id);
-                    })
-                )
-            );
-            setFilteredSongs(
-                songs.filter(song =>
-                    song.title
-                        .toLowerCase()
-                        .includes(filterSearch.toLowerCase())
-                )
-            );
+        filterArr.splice(0)
+        if (filterTags.length) {
+            filterArr.push(checkTag(filterTags))
         }
+        if(filterSearch !== "") {
+            filterArr.push(checkSong(filterSearch))
+        }
+        setFilteredSongs(checkFilters(songs, filterArr))
     }, [filterSearch, filterTags]);
 
     return useMemo(
@@ -104,7 +117,7 @@ const NoMatchingSongs = () => (
 );
 
 const Songs = () => {
-    const [{ songs, getSongs, tags, filterSearch }, dispatch] = useStateValue();
+    const [{ songs, getSongs, tags, filterSearch, filterTags }, dispatch] = useStateValue();
     let history = useHistory();
 
     useEffect(() => {
@@ -123,10 +136,10 @@ const Songs = () => {
             <DigitLayout.Column>
                 <SearchBar />
 
-                {songs.length === 0 && filterSearch !== "" && (
+                {songs.length === 0 && filterSearch !== "" && filterTags.length === 0 && (
                     <NoMatchingSongs />
                 )}
-                {songs.length === 0 && filterSearch === "" && <NoSongs />}
+                {songs.length === 0 && <NoSongs />}
                 {songs.length !== 0 && (
                     <GridOfSongs songs={songs} tags={tags} />
                 )}

@@ -32,7 +32,8 @@
     ],
     "devDependencies": {
         "prettier": "^1.15.3",
-        "react-scripts": "3.4.0"
+        "react-scripts": "3.4.0",
+        "http-proxy-middleware": "^1.0.5"
     },
     "proxy": "http://songbookit-backend:5000"
 }

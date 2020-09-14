@@ -14,28 +14,28 @@ services:
       - ./frontend:/usr/src/app
     networks:
       - songbookit
-    depends_on:
-      -songbookit-backend
+    # depends_on:
+    #   - songbookit-backend
 
-  songbookit-backend:
-    depends_on:
-      - songbookit-db
-    build:
-      context: ./backend/
-      dockerfile: dev.Dockerfile
-    environment:
-      SONGBOOKIT_POSTGRES_USER: songbookit
-      SONGBOOKIT_POSTGRES_PASSWORD: password
-      SONGBOOKIT_POSTGRES_HOST: songbookit-db
-      SONGBOOKIT_POSTGRES_PORT: 5432
-      SONGBOOKIT_POSTGRES_DB: postgres
-      SONGBOOKIT_SECRET_KEY: secret
-      PYTHONUNBUFFERED: 0
-    volumes:
-      - ./backend/:/usr/src/songbookit/backend
-    networks:
-      - songbookit
-      - gamma
+  # songbookit-backend:
+  #   depends_on:
+  #     - songbookit-db
+  #   build:
+  #     context: ./backend/
+  #     dockerfile: dev.Dockerfile
+  #   environment:
+  #     SONGBOOKIT_POSTGRES_USER: songbookit
+  #     SONGBOOKIT_POSTGRES_PASSWORD: password
+  #     SONGBOOKIT_POSTGRES_HOST: songbookit-db
+  #     SONGBOOKIT_POSTGRES_PORT: 5432
+  #     SONGBOOKIT_POSTGRES_DB: postgres
+  #     SONGBOOKIT_SECRET_KEY: secret
+  #     PYTHONUNBUFFERED: 0
+  #   volumes:
+  #     - ./backend/:/usr/src/songbookit/backend
+  #   networks:
+  #     - songbookit
+  #     - gamma
 
   songbookit-db:
     image: postgres
@@ -91,7 +91,7 @@ services:
       PRODUCTION: "false"
       COOKIE_DOMAIN: localhost
       IS_MOCKING_CLIENT: "true"
-    
+
     depends_on:
       - gamma-redis
       - gamma-db
