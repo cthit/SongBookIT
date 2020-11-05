@@ -15,4 +15,4 @@ USER songbookit
 
 EXPOSE 5000
 
-CMD ["sh", "dev.start.sh"]
+CMD ["sh", "start.sh"]

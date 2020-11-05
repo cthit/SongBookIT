@@ -63,10 +63,13 @@ class SongRes(Resource):
     @db_session
     def put(self, song_id):
         data = request.get_json(force=True)
+        tags = []
+        print(data.keys())
+        for id in data['tags']:
+            tags.append(Tag[id])
+        data['tags'] = tags
         song = Song[song_id]
-        for key, value in data:
-            song[key] = value
-
+        song.set(**data)
         return to_dict(song)
 
 

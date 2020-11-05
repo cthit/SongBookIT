@@ -6,9 +6,9 @@ import {
     DigitChip,
     DigitLayout,
 } from "@cthit/react-digit-components";
-import { useStateValue } from "../../../app/App.context";
 
-const SongDetails = (s, tags) => {
+
+const SongDetails = (s, tags, history) => {
     return {
         title: s.title,
         renderMain: () => (
@@ -18,7 +18,10 @@ const SongDetails = (s, tags) => {
                 <DigitMarkdown markdownSource={s.text} />
                 <DigitLayout.Row>
                     {findTags(s.tags, tags).map(tag => (
-                        <DigitChip primary label={tag.name} />
+                        <DigitChip
+                            primary
+                            key={tag.tag_id}
+                            label={tag.name} />
                     ))}
                 </DigitLayout.Row>
             </>
@@ -36,7 +39,7 @@ const SongDetails = (s, tags) => {
             </>
         ),
         onCancel: () => {},
-        onConfirm: () => console.log("wawawawawawa"),
+        onConfirm: () => history.push("/edit/" + s.song_id)
     };
 };
 

@@ -49,6 +49,15 @@ services:
     networks:
       - songbookit
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    networks:
+      - songbookit
+      - gamma
+
   gamma-frontend:
     image: cthit/gamma-frontend:development
     environment:

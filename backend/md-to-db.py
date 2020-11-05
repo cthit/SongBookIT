@@ -10,7 +10,6 @@ parts = [mdstr[i:j] for i, j in zip(category_indices, category_indices[1:] + [No
 
 categories = [re.split(r"\n=+\n", c) for c in parts]
 
-
 def parse_song(song):
     try:
         title, rest = re.split("\n-+\n", song)
@@ -46,7 +45,6 @@ def add_category(cat, data):
         s = Song(title=song['title'], author=song['author'], text=song['text'], tags={t})
         if song['melody'] is not None:
             s.melody = song['melody']
-
 
 for cat, data in categories:
     if str.isspace(cat): continue
