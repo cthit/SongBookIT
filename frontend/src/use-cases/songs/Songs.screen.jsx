@@ -109,8 +109,8 @@ const Songs = () => {
             console.log(res.data.Song);
             dispatch({
                 type: StateActions.getSongs,
-                songs: Object.values(res.data.Song),
-                tags: Object.values(res.data.Tag),
+                songs: Object.values(res.data.songs),
+                tags: Object.values(res.data.tags),
             });
         });
     }, []);

@@ -46,7 +46,7 @@ const EditSong = () => {
 
     useEffect( () => {
         getSong(song_id).then(res => {
-            setSong(res.data.Song[song_id])
+            setSong(res.data.song[song_id])
             setHasLoadedSong(true)
         })
     }, [])

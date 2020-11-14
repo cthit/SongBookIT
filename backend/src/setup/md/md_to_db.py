@@ -1,14 +1,15 @@
 import re
 
 from pony.orm import db_session
-from db import Tag, Song
+from src.db import Tag, Song, SongToTag
 
-mdstr: str = open("md/sangbok.md", 'r', encoding="utf-8").read()
+mdstr: str = open("setup/md/sangbok.md", 'r', encoding="utf-8").read()
 category_indices = [c.start() for c in re.finditer(r"[^\n]+\n=+", mdstr)]
 
 parts = [mdstr[i:j] for i, j in zip(category_indices, category_indices[1:] + [None])]
 
 categories = [re.split(r"\n=+\n", c) for c in parts]
+
 
 def parse_song(song):
     try:
@@ -42,10 +43,13 @@ def get_songs(data):
 def add_category(cat, data):
     t = Tag(name=cat, pretty_name_sv=cat, pretty_name_en=cat)
     for song in get_songs(data):
-        s = Song(title=song['title'], author=song['author'], text=song['text'], tags={t})
+        s = Song(title=song['title'], author=song['author'], text=song['text'], melody=song['melody'])
+        SongToTag(tag=t, song=s)
         if song['melody'] is not None:
             s.melody = song['melody']
 
-for cat, data in categories:
-    if str.isspace(cat): continue
-    add_category(cat, data)
+
+def add_songs_from_md():
+    for cat, data in categories:
+        if str.isspace(cat): continue
+        add_category(cat, data)
