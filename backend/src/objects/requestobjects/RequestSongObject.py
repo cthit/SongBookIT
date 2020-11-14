@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 from typing import List, Optional
-from uuid import UUID
 
 
 @dataclass
 class RequestSongObject:
-    song_id: Optional[UUID]
+    song_id: Optional[str]
     title: str
     melody: str
     author: str
     text: str
-    tags: List[UUID]
+    tags: List[str]

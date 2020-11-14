@@ -1,6 +1,6 @@
+import string
 from typing import Dict, List
-from uuid import UUID
-from ResultWithData import ResultWithData, get_result_with_data, get_result_with_error
+from utils.ResultWithData import ResultWithData, get_result_with_data, get_result_with_error
 
 
 def validate_str(json: Dict, key: str) -> ResultWithData[str]:
@@ -14,19 +14,23 @@ def validate_str(json: Dict, key: str) -> ResultWithData[str]:
         get_result_with_error(f"{str_str} is not a string")
 
 
-def validate_id(id_str: str) -> ResultWithData[UUID]:
-    try:
-        return get_result_with_data(UUID(id_str))
-    except ValueError:
-        return get_result_with_error("Invalid id format")
+def validate_short_id(id_str: str) -> ResultWithData[str]:
+    if len(id_str) != 4:
+        get_result_with_error("Id must be of length 4")
+
+    for c in id_str:
+        if c not in string.ascii_lowercase:
+            get_result_with_error("Id may only be composed lowercase ascii letters")
+
+    return get_result_with_data(id_str)
 
 
-def validate_id_key(json: Dict, key: str) -> ResultWithData[UUID]:
+def validate_short_id_key(json: Dict, key: str) -> ResultWithData[str]:
     if key not in json:
         return get_result_with_error("Missing {0}".format(key))
     id_str = json[key]
 
-    return validate_id(id_str)
+    return validate_short_id(id_str)
 
 
 def validate_int(json: Dict, key: str) -> ResultWithData[int]:
@@ -73,4 +77,3 @@ def validate_dict(json: Dict, key: str) -> ResultWithData[Dict]:
         return get_result_with_error("{0} must be an object".format(key))
 
     return get_result_with_data(value)
-

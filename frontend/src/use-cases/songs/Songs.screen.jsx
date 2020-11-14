@@ -106,11 +106,10 @@ const Songs = () => {
 
     useEffect(() => {
         getSongs().then(res => {
-            console.log(res.data.Song);
             dispatch({
                 type: StateActions.getSongs,
-                songs: Object.values(res.data.songs),
-                tags: Object.values(res.data.tags),
+                songs: Object.values(res.data.data.songs),
+                tags: Object.values(res.data.data.tags),
             });
         });
     }, []);

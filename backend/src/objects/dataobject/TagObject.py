@@ -1,15 +1,14 @@
 from dataclasses import dataclass
 from typing import List
-from uuid import UUID
 
 
 @dataclass
 class TagObject:
-    tag_id: UUID
+    tag_id: str
     name: str
     pretty_name_sv: str
     pretty_name_en: str
-    songs: List[UUID]
+    songs: List[str]
 
     def to_json(self):
         return {
@@ -19,4 +18,3 @@ class TagObject:
             'pretty_name_en': self.pretty_name_en,
             'song': [str(song_id) for song_id in self.songs],
             }
-

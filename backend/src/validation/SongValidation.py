@@ -1,9 +1,8 @@
 from typing import Dict
 
-from ResultWithData import get_result_with_error, get_result_with_data, ResultWithData
-from objects.dataobject.SongObject import SongObject
+from utils.ResultWithData import get_result_with_error, get_result_with_data, ResultWithData
 from objects.requestobjects.RequestSongObject import RequestSongObject
-from validation.Validation import validate_str, validate_list, validate_id, validate_id_key
+from validation.Validation import validate_str, validate_list, validate_short_id, validate_short_id_key
 
 
 def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
@@ -28,7 +27,7 @@ def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
         return get_result_with_error(tags_res.message)
     tag_ids = []
     for tag in tags_res.data:
-        tag_id_res = validate_id(tag)
+        tag_id_res = validate_short_id(tag)
         if tag_id_res.is_error:
             return get_result_with_error(tag_id_res.message)
         tag_ids.append(tag_id_res.data)
@@ -44,7 +43,7 @@ def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
 
 
 def validate_song_update(song: Dict) -> ResultWithData[RequestSongObject]:
-    id_res =  validate_id_key(song, 'song_id')
+    id_res = validate_short_id_key(song, 'song_id')
     if id_res.is_error:
         return get_result_with_error(id_res.message)
 

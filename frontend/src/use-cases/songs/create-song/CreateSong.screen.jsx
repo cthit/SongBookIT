@@ -19,8 +19,7 @@ const CreateSong = () => {
 
     useEffect(() => {
         getTags().then(res => {
-            const tags = Object.values(res.data.Tag)
-            console.log(res.data)
+            const tags = Object.values(res.data.data.tags)
             setTags(
                 tags.map(tag => {
                         return { text: tag.name, value: tag.tag_id };
@@ -47,8 +46,9 @@ const CreateSong = () => {
                     alignSelf
                     justifySelf
                     onSubmit={(values, actions) => {
-                        addSong(values);
-                        actions.resetForm();
+                        addSong(values).then(res => {
+                            history.push("/edit/" + res.data.data.song_id)
+                        })
                     }}
                     initialValues={{
                         title: "",
@@ -60,7 +60,7 @@ const CreateSong = () => {
                     validationSchema={yup.object().shape({
                         title: yup.string().required("This can't be empty"),
                         author: yup.string().required("This can't be empty"),
-                        melody: yup.string().required("This can't be empty"),
+                        melody: yup.string(),
                         text: yup.string().required("This can't be empty"),
                     })}
                     titleText={"Create a song"}

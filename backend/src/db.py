@@ -8,7 +8,7 @@ db = Database()
 
 
 class Song(db.Entity):
-    song_id = PrimaryKey(UUID, auto=True)
+    song_id = PrimaryKey(str)
     title = Required(str, unique=True)
     melody = Optional(str)
     text = Required(str)
@@ -17,7 +17,7 @@ class Song(db.Entity):
 
 
 class Tag(db.Entity):
-    tag_id = PrimaryKey(UUID, auto=True)
+    tag_id = PrimaryKey(str)
     name = Required(str, unique=True)
     pretty_name_sv = Required(str)
     pretty_name_en = Required(str)

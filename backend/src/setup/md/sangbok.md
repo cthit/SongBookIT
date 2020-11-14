@@ -2508,20 +2508,6 @@ jag vill ha rödvin
 
 och gorgonzola .
 
-**TA ETT GLAS**
----------------
-
-Mel: Oh, Tannenbaum
-
-Oh, ta ett glas,\
-Oh, ta ett glas.\
-Ty vinet för oss samman.\
-Och den som inget glas vill ha,\
-han sjunger och är lika gla\'.\
-Men ta ett glas,\
-ja ta ett glas,\
-för livets fröjd och gamman.
-
 **BYSSAN LULL**
 ---------------
 

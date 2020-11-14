@@ -7,7 +7,6 @@ import {
     DigitIconButton, DigitLoading, DigitButton,
 } from "@cthit/react-digit-components";
 import { getTags } from "../../../api/tags/get.tags.api";
-import { addSong } from "../../../api/songs/post.songs.api";
 import * as yup from "yup";
 import { EditCenter, EditContainer, TopRightButton } from "../common-ui/Create.styles";
 import { ArrowBackRounded } from "@material-ui/icons";
@@ -15,11 +14,13 @@ import { useHistory, useParams } from "react-router-dom";
 import { getSong } from "../../../api/songs/get.songs.api";
 import { editSong } from "../../../api/songs/put.songs.api";
 import { deleteSong } from "../../../api/songs/delete.songs.api";
+import ErrorTextCard from "../common-ui/Error";
 
 const EditSong = () => {
     const [tags, setTags] = useState([]);
     let history = useHistory();
     let { song_id } = useParams();
+    console.log(song_id)
     const [song, setSong] = useState({
         "song_id": "",
         "title": "",
@@ -33,7 +34,7 @@ const EditSong = () => {
 
     useEffect(() => {
         getTags().then(res => {
-            const tags = Object.values(res.data.Tag)
+            const tags = Object.values(res.data.data.tags)
             setTags(
                 tags.map(tag => {
                         return { text: tag.name, value: tag.tag_id };
@@ -46,7 +47,8 @@ const EditSong = () => {
 
     useEffect( () => {
         getSong(song_id).then(res => {
-            setSong(res.data.song[song_id])
+            setSong(res.data.data.song)
+            // TODO: Handle if song with song_id does not exist
             setHasLoadedSong(true)
         })
     }, [])
@@ -64,7 +66,7 @@ const EditSong = () => {
                 />
             </TopRightButton>
             <EditCenter>
-                {hasLoadedSong && hasLoadedTag ? <EditSongCard tags={tags} song={song} />: <DigitLoading/>}
+                {hasLoadedSong && hasLoadedTag ? <EditSongColumn tags={tags} song={song} />: <DigitLoading/>}
             </EditCenter>
         </EditContainer>
 
@@ -72,16 +74,24 @@ const EditSong = () => {
     );
 };
 
-
-const EditSongCard = ({tags, song}) => {
+const EditSongColumn = ({tags, song}) => {
     let history = useHistory();
+    const [error, setError] = useState({isError: false, message: ""})
 
 return <>
+
+    {/*{error.isError && <ErrorTextCard message={error.message} />}*/}
+    <p>Om du redigerar men inte blir skickad tillbaka till startsidan var namnet fel</p>
     <DigitEditDataCard
         hasButtons
         onSubmit={(values, actions) => {
-            editSong(song.song_id, values);
-            history.push("/")
+            values['song_id'] = song.song_id
+            editSong(song.song_id, values)
+                .then(() => history.push("/"))
+                .catch(error => {
+                console.log('response: ', error.response.data.error);
+                setError(error.response.data.error)
+            });
         }}
         initialValues={{
             title: song.title,
@@ -93,11 +103,11 @@ return <>
         validationSchema={yup.object().shape({
             title: yup.string().required("This can't be empty"),
             author: yup.string().required("This can't be empty"),
-            melody: yup.string().required("This can't be empty"),
+            melody: yup.string(),
             text: yup.string().required("This can't be empty"),
         })}
         titleText={"Edit: " + song.title}
-        submitText={"Edit song"}
+        submitText={"Confirm edit"}
         keysOrder={["title", "author", "melody", "text", "tags"]}
         keysComponentData={{
             title: {
@@ -150,4 +160,4 @@ return <>
 </>
 }
 
-export default EditSong;
+export default EditSong

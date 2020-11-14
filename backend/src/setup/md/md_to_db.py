@@ -1,7 +1,13 @@
 import re
 
 from pony.orm import db_session
-from src.db import Tag, Song, SongToTag
+
+from command.SongCommands import create_song
+from command.SongsToTagsCommands import create_songtotag
+from command.TagCommands import create_tag
+from objects.dataobject.SongToTagObject import SongToTagObject
+from objects.requestobjects.RequestSongObject import RequestSongObject
+from objects.requestobjects.RequestTagObject import RequestTagObject
 
 mdstr: str = open("setup/md/sangbok.md", 'r', encoding="utf-8").read()
 category_indices = [c.start() for c in re.finditer(r"[^\n]+\n=+", mdstr)]
@@ -39,14 +45,27 @@ def get_songs(data):
     return res
 
 
-@db_session
 def add_category(cat, data):
-    t = Tag(name=cat, pretty_name_sv=cat, pretty_name_en=cat)
+    t = RequestTagObject(
+        tag_id=None,
+        name=cat,
+        pretty_name_sv=cat,
+        pretty_name_en=cat)
+    tag_id = create_tag(t).data
     for song in get_songs(data):
-        s = Song(title=song['title'], author=song['author'], text=song['text'], melody=song['melody'])
-        SongToTag(tag=t, song=s)
+        s = RequestSongObject(
+            song_id=None,
+            title=song['title'],
+            melody="",
+            author=song['author'],
+            text=song['text'],
+            tags=[]
+        )
         if song['melody'] is not None:
             s.melody = song['melody']
+        song_id = create_song(s).data
+        stt = SongToTagObject(song=song_id, tag=tag_id)
+        create_songtotag(stt)
 
 
 def add_songs_from_md():

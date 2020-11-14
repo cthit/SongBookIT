@@ -1,16 +1,15 @@
 from dataclasses import dataclass
 from typing import List
-from uuid import UUID
 
 
 @dataclass
 class SongObject:
-    song_id: UUID
+    song_id: str
     title: str
     melody: str
     author: str
     text: str
-    tags: List[UUID]
+    tags: List[str]
 
     def to_json(self):
         return {

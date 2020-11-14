@@ -12,8 +12,8 @@ from pony.orm.serialization import to_dict
 
 from config import gamma_config as config
 from db import Song, Tag
-from process.SongProcess import get_songs_and_tags, get_song_by_id, delete_song, create_song, update_song
-from process.TagProcess import get_tags, delete_tag, get_tag_by_id
+from process.SongProcess import handle_get_songs_and_tags, handle_get_song_by_id, handle_delete_song, handle_create_song, handle_update_song
+from process.TagProcess import handle_get_tags, handle_delete_tag, handle_get_tag_by_id
 
 app = Flask(__name__)
 api = Api(app)
@@ -43,33 +43,33 @@ def admin_required(f):
 class SongRes(Resource):
     @db_session
     def get(self, song_id):
-        resp = get_song_by_id(song_id).get_response()
+        resp = handle_get_song_by_id(song_id).get_response()
         return  resp
 
     @db_session
     def delete(self, song_id):
-        return delete_song(song_id).get_response()
+        return handle_delete_song(song_id).get_response()
 
     @db_session
     def put(self, song_id):
         data = request.get_json()
-        return update_song(data).get_response()
+        return handle_update_song(data).get_response()
 
 
 class SongsRes(Resource):
     def get(self):
-        return get_songs_and_tags().get_response()
+        return handle_get_songs_and_tags().get_response()
 
     @db_session
     def post(self):
         data = request.get_json()
-        return create_song(data).get_response()
+        return handle_create_song(data).get_response()
 
 
 class TagsRes(Resource):
     @db_session
     def get(self):
-        return get_tags().get_response()
+        return handle_get_tags().get_response()
 
     @db_session
     def post(self):
@@ -81,11 +81,11 @@ class TagsRes(Resource):
 class TagRes(Resource):
     @db_session
     def get(self, tag_id):
-        return get_tag_by_id(tag_id).get_response()
+        return handle_get_tag_by_id(tag_id).get_response()
 
     @db_session
     def delete(self, tag_id):
-        return delete_tag(tag_id).get_response()
+        return handle_delete_tag(tag_id).get_response()
 
 @app.route('/api/me', methods=['GET'])
 def gammaMe():

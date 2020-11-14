@@ -15,6 +15,5 @@ export const EditCenter = styled.div`
 
 
 export const TopRightButton = styled.div`
- 
   width: 100vw;
 `
