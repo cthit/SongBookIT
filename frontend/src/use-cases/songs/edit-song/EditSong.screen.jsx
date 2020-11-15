@@ -14,6 +14,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { getSong } from "../../../api/songs/get.songs.api";
 import { editSong } from "../../../api/songs/put.songs.api";
 import { deleteSong } from "../../../api/songs/delete.songs.api";
+import { ErrorTextCard } from "../common-ui/Error";
 
 const EditSong = () => {
     let history = useHistory();
@@ -82,7 +83,7 @@ const EditSongColumn = ({tags, song}) => {
 
 return <>
 
-    {/*{error.isError && <ErrorTextCard message={error.message} />}*/}
+    {error.isError && <ErrorTextCard message={error.message} />}
     <p>Om du redigerar men inte blir skickad tillbaka till startsidan var namnet fel</p>
     <DigitEditDataCard
         hasButtons

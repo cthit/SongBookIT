@@ -8,8 +8,8 @@ import {
 const ErrorTextCard = ({message}) => (
     <DigitDesign.Card>
         <DigitDesign.CardBody>
-            <DigitText.text text={"erooroorormf??"}/>
+            <DigitText.Text text={"erooroorormf??"}/>
         </DigitDesign.CardBody>
     </DigitDesign.Card>
 );
-export default ErrorTextCard
+export { ErrorTextCard }
