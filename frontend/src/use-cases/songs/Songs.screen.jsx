@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
     DigitLayout,
     DigitFAB,
@@ -15,18 +15,19 @@ import SongDetails from "./views/ViewSongDetail.view";
 import SearchBar from "./views/Searchbar.view";
 import { useStateValue, StateActions } from "../../app/App.context";
 import {findTags} from "./common/Tags";
+import { getSong, getSongs } from "../../api/songs/get.songs.api";
 
-const checkTag = tags => {
+const filterTagsFunc = tags => {
     return song => song.tags.some(tag => tags.includes(tag))
 }
 
-const checkSong = search => {
+const filterSongFunc = search => {
     return song => song.title
         .toLowerCase()
         .includes(search.toLowerCase())
 }
 
-const checkFilters = (songsToCheck, filters) => {
+const applyFilters = (songsToCheck, filters) => {
     if (filters.length) {
         return songsToCheck.filter(song => {
             return filters.map(func => func(song)).every(x => x)
@@ -38,21 +39,20 @@ const checkFilters = (songsToCheck, filters) => {
 
 const GridOfSongs = ({ songs, tags }) => {
     let history = useHistory();
-    const [openDialog] = useDigitCustomDialog();
     const [{ filterSearch, filterTags }] = useStateValue();
     const [filteredSongs, setFilteredSongs] = useState(songs);
 
-    const filterArr = []
+    const filterFuncArr = []
 
     useEffect(() => {
-        filterArr.splice(0)
+        filterFuncArr.splice(0)
         if (filterTags.length) {
-            filterArr.push(checkTag(filterTags))
+            filterFuncArr.push(filterTagsFunc(filterTags))
         }
         if(filterSearch !== "") {
-            filterArr.push(checkSong(filterSearch))
+            filterFuncArr.push(filterSongFunc(filterSearch))
         }
-        setFilteredSongs(checkFilters(songs, filterArr))
+        setFilteredSongs(applyFilters(songs, filterFuncArr))
     }, [filterSearch, filterTags]);
 
     return useMemo(
@@ -66,7 +66,7 @@ const GridOfSongs = ({ songs, tags }) => {
                     <DigitDesign.Card
                         key={s.song_id}
                         absWidth="350px"
-                        onClick={() => openDialog(SongDetails(s, tags, history))}
+                        onClick={() => history.push('/' + s.song_id)}
                     >
                         <DigitDesign.CardBody style={{ cursor: "pointer" }}>
                             <>
@@ -101,31 +101,49 @@ const GridOfSongs = ({ songs, tags }) => {
 };
 
 const Songs = () => {
-    const [{ songs, getSongs, tags, filterSearch, filterTags }, dispatch] = useStateValue();
+    const [{ songs, tags}, dispatch] = useStateValue();
     let history = useHistory();
 
+
     useEffect(() => {
-        getSongs().then(res => {
-            dispatch({
-                type: StateActions.getSongs,
-                songs: Object.values(res.data.data.songs),
-                tags: Object.values(res.data.data.tags),
+        if (songs.length === 0) {
+            getSongs().then(res => {
+                dispatch({
+                    type: StateActions.getSongs,
+                    songs: Object.values(res.data.data.songs),
+                    tags: Object.values(res.data.data.tags),
+                });
             });
-        });
+        }
     }, []);
+
+    const [openDialog] = useDigitCustomDialog();
+    let { song_id } = useParams();
+
+    const validSongId = song_id !== undefined && song_id.length === 4
+    useEffect( () => {
+        if (validSongId) {
+            getSong(song_id).then(res => {
+                let s = res.data.data.song
+                let t = Object.values(res.data.data.tags)
+                openDialog(SongDetails(s, t, history))
+            }).catch((err) => {
+
+            })
+        }
+    }, [song_id])
+
+
+
+
+
 
     return (
         <>
-            <DigitLayout.Column>
+            <DigitLayout.Column >
                 <SearchBar />
-
-                {songs.length === 0 && filterSearch !== "" && filterTags.length === 0 && (
-                    <NoMatchingSongs />
-                )}
-                {songs.length === 0 && <NoSongs />}
-                {songs.length !== 0 && (
-                    <GridOfSongs songs={songs} tags={tags} />
-                )}
+                {songs.length === 0 && <DigitLoading/>}
+                {songs.length !== 0 && <GridOfSongs songs={songs} tags={tags} />}
             </DigitLayout.Column>
 
             <DigitLayout.DownRightPosition>

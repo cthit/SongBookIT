@@ -26,9 +26,9 @@ const App = () => {
                                 exact
                                 component={CreateSong}
                             />
-                            <Route path="/edit/:song_title" exact component={EditSong} />
+                            <Route path="/edit/:song_id" exact component={EditSong} />
                             <Redirect from='/edit/' to='/' exact />
-                            <Route path="/" exact component={Songs} />
+                            <Route path="/:song_id?" exact component={Songs} />
                         </Switch>
                     )}
                 />

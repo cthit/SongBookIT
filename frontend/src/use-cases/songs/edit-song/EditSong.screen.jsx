@@ -14,13 +14,11 @@ import { useHistory, useParams } from "react-router-dom";
 import { getSong } from "../../../api/songs/get.songs.api";
 import { editSong } from "../../../api/songs/put.songs.api";
 import { deleteSong } from "../../../api/songs/delete.songs.api";
-import ErrorTextCard from "../common-ui/Error";
 
 const EditSong = () => {
-    const [tags, setTags] = useState([]);
     let history = useHistory();
     let { song_id } = useParams();
-    console.log(song_id)
+    const [tags, setTags] = useState([]);
     const [song, setSong] = useState({
         "song_id": "",
         "title": "",
@@ -31,6 +29,7 @@ const EditSong = () => {
     });
     const [hasLoadedSong, setHasLoadedSong] = useState(false)
     const [hasLoadedTag, setHasLoadedTag] = useState(false)
+    const [loadSongError, setLoadSongError] = useState({ isError:false, message: "" })
 
     useEffect(() => {
         getTags().then(res => {
@@ -42,14 +41,16 @@ const EditSong = () => {
                     .sort((a, b) => (a.text > b.text ? 1 : -1))
             );
             setHasLoadedTag(true)
-        });
+        }).catch();
     }, []);
 
     useEffect( () => {
         getSong(song_id).then(res => {
             setSong(res.data.data.song)
-            // TODO: Handle if song with song_id does not exist
             setHasLoadedSong(true)
+        }).catch((err) => {
+            setLoadSongError(err.response.data.error)
+            setHasLoadedSong(false)
         })
     }, [])
 
@@ -66,13 +67,14 @@ const EditSong = () => {
                 />
             </TopRightButton>
             <EditCenter>
+                {loadSongError.isError && <p>{loadSongError.message}</p>}
                 {hasLoadedSong && hasLoadedTag ? <EditSongColumn tags={tags} song={song} />: <DigitLoading/>}
             </EditCenter>
         </EditContainer>
 
 
-    );
-};
+    )
+}
 
 const EditSongColumn = ({tags, song}) => {
     let history = useHistory();

@@ -30,7 +30,6 @@ const CreateSong = () => {
     }, []);
 
     return (
-
         <EditContainer>
             <TopRightButton>
                 <DigitIconButton
@@ -52,19 +51,19 @@ const CreateSong = () => {
                     }}
                     initialValues={{
                         title: "",
-                        author: "Unknown",
-                        melody: "Unknown",
+                        author: "...",
+                        melody: "...",
                         text: "",
                         tags: [],
                     }}
                     validationSchema={yup.object().shape({
                         title: yup.string().required("This can't be empty"),
-                        author: yup.string().required("This can't be empty"),
+                        author: yup.string(),
                         melody: yup.string(),
                         text: yup.string().required("This can't be empty"),
                     })}
                     titleText={"Create a song"}
-                    submitText={"Submit"}
+                    submitText={"Save song"}
                     keysOrder={["title", "author", "melody", "text", "tags"]}
                     keysComponentData={{
                         title: {
@@ -106,8 +105,6 @@ const CreateSong = () => {
                 />
             </EditCenter>
         </EditContainer>
-
-
     );
 };
 

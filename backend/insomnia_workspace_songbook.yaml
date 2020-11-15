@@ -107,12 +107,12 @@ resources:
       mimeType: application/json
       text: >-
         {
-              "song_id": "f3126d19-e3e7-4409-ae3d-a0848fe97bdc",
+              "song_id": "aaaa",
         			"title": "WWssssssssssssssdddddddW",
               "melody": "Marseljäsen",
               "text": "Mel: Marseljäsen\n\nDet står en hund på fjärde våningen,\n\noch den tänker hoppa ner!\n\nBANZAI! (supen tages)\n\nDet var en japanesisk självmordshund,\n\noch den hoppar aldrig mer!\n\n*Sångarstriden i Lund, 1982*",
               "author": "Unknown",
-              "tags": ["3086c132-a065-44da-9293-873b84b87642", "21188436-4ae4-49dd-8814-95ef6d7c19a2"]
+              "tags": ["bbbb", "cccc"]
         }
     parameters: []
     headers:
@@ -145,7 +145,7 @@ resources:
               "melody": "Marseljäsen",
               "text": "Mel: Marseljäsen\n\nDet står en hund på fjärde våningen,\n\noch den tänker hoppa ner!\n\nBANZAI! (supen tages)\n\nDet var en japanesisk självmordshund,\n\noch den hoppar aldrig mer!\n\n*Sångarstriden i Lund, 1982*",
               "author": "Unknown",
-              "tags": []
+              "tags": ["dddd"]
         }
     parameters: []
     headers:

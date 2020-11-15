@@ -26,8 +26,6 @@ export const InitialState = {
     tags: [],
     filterTags: [],
     filterSearch: "",
-    getSongs: getSongs,
-    deleteSong: deleteSong,
 };
 
 export const Reducer = (state, action) => {

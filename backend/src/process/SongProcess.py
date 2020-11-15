@@ -77,9 +77,9 @@ def handle_update_song(song_request: Dict) -> HttpResponse:
         return get_with_error(400, valid_song_res.message)
     song = valid_song_res.data
 
-    # song_res = get_song_by_name_db(song.title)
-    # if not song_res.is_error and song_res.data.song_id != song.song_id:
-    #     return get_with_error(400, "There already exists a song with the specified name")
+    song_res = get_song_by_name(song.title)
+    if not song_res.is_error and song_res.data.song_id != song.song_id:
+        return get_with_error(400, "There already exists a song with the specified name")
 
     songtotags_tag_ids = [stt.tag for stt in get_songtotag_by_song_id(song.song_id)]
     for tag_id in song.tags:

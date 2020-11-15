@@ -1,7 +1,4 @@
-from uuid import UUID
-
 from pony.orm import Database, Required, PrimaryKey, Set, Optional
-
 from config import db_config as config
 
 db = Database()
@@ -10,9 +7,9 @@ db = Database()
 class Song(db.Entity):
     song_id = PrimaryKey(str)
     title = Required(str, unique=True)
+    author = Optional(str)
     melody = Optional(str)
     text = Required(str)
-    author = Required(str)
     song_tags = Set("SongToTag")
 
 
