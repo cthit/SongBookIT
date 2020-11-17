@@ -7,12 +7,13 @@ import requests
 from flask import Flask, session, Response, request
 from flask_cors import CORS
 from flask_restful import Api, Resource
-from pony.orm import db_session, ObjectNotFound
+from pony.orm import db_session
 from pony.orm.serialization import to_dict
 
 from config import gamma_config as config
-from db import Song, Tag
-from process.SongProcess import handle_get_songs_and_tags, handle_get_song_by_id, handle_delete_song, handle_create_song, handle_update_song
+from db import Tag
+from process.SongProcess import handle_get_songs_and_tags, handle_get_song_by_id, handle_delete_song, \
+    handle_create_song, handle_update_song, handle_get_avaliable_song_numbers
 from process.TagProcess import handle_get_tags, handle_delete_tag, handle_get_tag_by_id
 
 app = Flask(__name__)
@@ -65,6 +66,9 @@ class SongsRes(Resource):
         data = request.get_json()
         return handle_create_song(data).get_response()
 
+class SongNbrRes(Resource):
+    def get(self):
+        return handle_get_avaliable_song_numbers().get_response()
 
 class TagsRes(Resource):
     @db_session
@@ -134,6 +138,7 @@ def gammaPost():
 
 api.add_resource(SongsRes, '/api/songs')
 api.add_resource(SongRes, '/api/songs/<string:song_id>')
+api.add_resource(SongNbrRes, '/api/songs/numbers')
 
 api.add_resource(TagsRes, '/api/tags')
 api.add_resource(TagRes, '/api/tags/<string:tag_id>')

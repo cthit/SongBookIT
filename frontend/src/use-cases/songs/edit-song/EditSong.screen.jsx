@@ -4,14 +4,14 @@ import {
     DigitTextField,
     DigitTextArea,
     DigitAutocompleteSelectMultiple,
-    DigitIconButton, DigitLoading, DigitButton,
+    DigitIconButton, DigitLoading, DigitButton, DigitAutocompleteSelectSingle,
 } from "@cthit/react-digit-components";
 import { getTags } from "../../../api/tags/get.tags.api";
 import * as yup from "yup";
-import { EditCenter, EditContainer, TopRightButton } from "../common-ui/Create.styles";
+import { CenterContainer, ColumnContainer, TopRightButton, WideCenterContainer } from "../common-ui/Common.styles";
 import { ArrowBackRounded } from "@material-ui/icons";
 import { useHistory, useParams } from "react-router-dom";
-import { getSong } from "../../../api/songs/get.songs.api";
+import { getNbrSong, getSong } from "../../../api/songs/get.songs.api";
 import { editSong } from "../../../api/songs/put.songs.api";
 import { deleteSong } from "../../../api/songs/delete.songs.api";
 import { ErrorTextCard } from "../common-ui/Error";
@@ -20,6 +20,7 @@ const EditSong = () => {
     let history = useHistory();
     let { song_id } = useParams();
     const [tags, setTags] = useState([]);
+    const [numbers, setNumbers] = useState([]);
     const [song, setSong] = useState({
         "song_id": "",
         "title": "",
@@ -55,10 +56,16 @@ const EditSong = () => {
         })
     }, [])
 
+    useEffect(() => {
+        getNbrSong().then( res => {
+            setNumbers(res.data.data.numbers.map(number => ({text: "nr. " + number, value: number})))
+        })
+    }, [])
+
 
     return (
 
-        <EditContainer>
+        <ColumnContainer>
             <TopRightButton>
                 <DigitIconButton
                 icon={ArrowBackRounded}
@@ -67,30 +74,29 @@ const EditSong = () => {
                 onClick={() => history.goBack()}
                 />
             </TopRightButton>
-            <EditCenter>
-                {loadSongError.isError && <p>{loadSongError.message}</p>}
-                {hasLoadedSong && hasLoadedTag ? <EditSongColumn tags={tags} song={song} />: <DigitLoading/>}
-            </EditCenter>
-        </EditContainer>
+            <WideCenterContainer>
+                {loadSongError.isError && <ErrorTextCard message={loadSongError.message}/> }
+                {hasLoadedSong && hasLoadedTag ? <EditSongColumn tags={tags} song={song} numbers={numbers} />: (loadSongError ? <div/> : <DigitLoading/>)}
+            </WideCenterContainer>
+        </ColumnContainer>
 
 
     )
 }
 
-const EditSongColumn = ({tags, song}) => {
+const EditSongColumn = ({tags, song, numbers}) => {
     let history = useHistory();
     const [error, setError] = useState({isError: false, message: ""})
 
 return <>
 
     {error.isError && <ErrorTextCard message={error.message} />}
-    <p>Om du redigerar men inte blir skickad tillbaka till startsidan var namnet fel</p>
     <DigitEditDataCard
         hasButtons
         onSubmit={(values, actions) => {
             values['song_id'] = song.song_id
             editSong(song.song_id, values)
-                .then(() => history.push("/"))
+                .then(() => history.push("/songs/" + song.song_id))
                 .catch(error => {
                 console.log('response: ', error.response.data.error);
                 setError(error.response.data.error)
@@ -98,6 +104,7 @@ return <>
         }}
         initialValues={{
             title: song.title,
+            number: song.number,
             author: song.author,
             melody: song.melody,
             text: song.text,
@@ -105,30 +112,42 @@ return <>
         }}
         validationSchema={yup.object().shape({
             title: yup.string().required("This can't be empty"),
-            author: yup.string().required("This can't be empty"),
+            number: yup.number().required("This can't be empty"),
+            author: yup.string(),
             melody: yup.string(),
             text: yup.string().required("This can't be empty"),
         })}
         titleText={"Edit: " + song.title}
         submitText={"Confirm edit"}
-        keysOrder={["title", "author", "melody", "text", "tags"]}
+        keysOrder={["title", "number", "author", "melody", "text", "tags"]}
         keysComponentData={{
             title: {
                 component: DigitTextField,
                 componentProps: {
                     upperLabel: "Title",
+                    size: {width: "90%"}
+                },
+            },
+            number: {
+                component: DigitAutocompleteSelectSingle,
+                componentProps: {
+                    upperLabel: "Song Number",
+                    options: numbers,
+                    size: {width: "90%"}
                 },
             },
             author: {
                 component: DigitTextField,
                 componentProps: {
                     upperLabel: "Author",
+                    size: {width: "90%"}
                 },
             },
             melody: {
                 component: DigitTextField,
                 componentProps: {
                     upperLabel: "Melody",
+                    size: {width: "90%"}
                 },
             },
             text: {
@@ -136,6 +155,7 @@ return <>
                 componentProps: {
                     primary: true,
                     upperLabel: "Text",
+                    size: {width: "90%"}
                 },
             },
             tags: {
@@ -143,6 +163,8 @@ return <>
                 componentProps: {
                     upperLabel: "Give your song tags",
                     options: tags,
+                    size: {width: "90%"},
+                    style: {fontSize:"5px"}
                 },
             },
         }}
@@ -156,7 +178,7 @@ return <>
     raised
     onClick={() => {
         deleteSong(song.song_id);
-        history.push("/");
+        history.push("/songs/");
         history.go(0); // force-reload
     }}
     />

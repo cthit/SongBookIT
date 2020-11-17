@@ -22,13 +22,21 @@ const App = () => {
                     renderMain={() => (
                         <Switch>
                             <Route
-                                path="/create"
+                                path="/songs/create"
                                 exact
                                 component={CreateSong}
                             />
-                            <Route path="/edit/:song_id" exact component={EditSong} />
-                            <Redirect from='/edit/' to='/' exact />
-                            <Route path="/:song_id?" exact component={Songs} />
+                            <Route
+                                path="/songs/edit/:song_id"
+                                exact
+                                component={EditSong} />
+                            <Redirect from='/songs/edit/' to='/' exact />
+
+                            <Route
+                                path="/songs/:song_id?"
+                                exact
+                                component={Songs} />
+                            <Redirect from='/' to='/songs/'  />
                         </Switch>
                     )}
                 />

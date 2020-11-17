@@ -5,6 +5,7 @@ from typing import List, Optional
 @dataclass
 class RequestSongObject:
     song_id: Optional[str]
+    number: int
     title: str
     melody: str
     author: str

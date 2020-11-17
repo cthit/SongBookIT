@@ -16,13 +16,17 @@ import SearchBar from "./views/Searchbar.view";
 import { useStateValue, StateActions } from "../../app/App.context";
 import {findTags} from "./common/Tags";
 import { getSong, getSongs } from "../../api/songs/get.songs.api";
+import { ScreenContainer, SongCard, SongCardBody, SongGrid, TagList } from "./Songs.styles";
+import { CentralLoading } from "./common-ui/CentralLoading";
+import { ErrorTextCard } from "./common-ui/Error";
+import { CenterContainer } from "./common-ui/Common.styles";
 
 const filterTagsFunc = tags => {
     return song => song.tags.some(tag => tags.includes(tag))
 }
 
-const filterSongFunc = search => {
-    return song => song.title
+const filterSearchFunc = search => {
+    return song => (song.title + song.number)
         .toLowerCase()
         .includes(search.toLowerCase())
 }
@@ -50,68 +54,60 @@ const GridOfSongs = ({ songs, tags }) => {
             filterFuncArr.push(filterTagsFunc(filterTags))
         }
         if(filterSearch !== "") {
-            filterFuncArr.push(filterSongFunc(filterSearch))
+            filterFuncArr.push(filterSearchFunc(filterSearch))
         }
         setFilteredSongs(applyFilters(songs, filterFuncArr))
     }, [filterSearch, filterTags]);
 
     return useMemo(
         () => (
-            <DigitLayout.UniformGrid
-                margin="20px"
-                minItemWidth="350px"
-                justifyItems="center"
-            >
+            <SongGrid>
                 {filteredSongs.map(s => (
-                    <DigitDesign.Card
+                    <SongCard
                         key={s.song_id}
-                        absWidth="350px"
-                        onClick={() => history.push('/' + s.song_id)}
+                        onClick={() => history.push('/songs/' + s.song_id)}
                     >
-                        <DigitDesign.CardBody style={{ cursor: "pointer" }}>
-                            <>
-                                <DigitText.Title text={s.title} />
-                                <DigitText.Text
-                                    bold
-                                    text={"Författare: " + s.author}
-                                />
-                                <DigitText.Text text={"Mel: " + s.melody} />
-                                <DigitMarkdown
-                                    markdownSource={
-                                        s.text.slice(0, 150) + "..."
-                                    }
-                                />
-                                <DigitLayout.Row>
-                                    {findTags(s.tags, tags).map(tag => (
-                                        <DigitChip
-                                            primary
-                                            key={tag.tag_id}
-                                            label={tag.name}
-                                        />
-                                    ))}
-                                </DigitLayout.Row>
-                            </>
-                        </DigitDesign.CardBody>
-                    </DigitDesign.Card>
+                        <SongCardBody>
+                            <DigitText.Title text={s.number + ". " + s.title} />
+                            <DigitText.Text
+                                bold
+                                text={"Författare: " + s.author}
+                            />
+                            <DigitText.Text text={"Mel: " + s.melody} />
+                            <DigitMarkdown
+                                markdownSource={
+                                    s.text.slice(0, 100) + "..."
+                                }
+                            />
+                            <TagList>
+                                {findTags(s.tags, tags).map(tag => (
+                                    <DigitChip
+                                        primary
+                                        key={tag.tag_id}
+                                        label={tag.name}
+                                    />
+                                ))}
+                            </TagList>
+                        </SongCardBody>
+                    </SongCard>
                 ))}
-            </DigitLayout.UniformGrid>
+            </SongGrid>
         ),
         [JSON.stringify(filteredSongs)]
     );
 };
 
 const Songs = () => {
-    const [{ songs, tags}, dispatch] = useStateValue();
     let history = useHistory();
-
-
+    const [error, setError] = useState({isError: false, message: ""})
+    const [{ songs, tags}, dispatch] = useStateValue();
     useEffect(() => {
         if (songs.length === 0) {
             getSongs().then(res => {
                 dispatch({
                     type: StateActions.getSongs,
-                    songs: Object.values(res.data.data.songs),
-                    tags: Object.values(res.data.data.tags),
+                    songs: Object.values(res.data.data.songs).sort((a, b) => (a.number > b.number ? 1 : -1)),
+                    tags: Object.values(res.data.data.tags).sort((a, b) => (a.name > b.name ? 1 : -1)),
                 });
             });
         }
@@ -119,7 +115,6 @@ const Songs = () => {
 
     const [openDialog] = useDigitCustomDialog();
     let { song_id } = useParams();
-
     const validSongId = song_id !== undefined && song_id.length === 4
     useEffect( () => {
         if (validSongId) {
@@ -128,46 +123,34 @@ const Songs = () => {
                 let t = Object.values(res.data.data.tags)
                 openDialog(SongDetails(s, t, history))
             }).catch((err) => {
-
+                    setError(err.response.data.error)
             })
         }
     }, [song_id])
 
-
-
-
-
-
     return (
         <>
-            <DigitLayout.Column >
+            <ScreenContainer>
                 <SearchBar />
-                {songs.length === 0 && <DigitLoading/>}
-                {songs.length !== 0 && <GridOfSongs songs={songs} tags={tags} />}
-            </DigitLayout.Column>
+                {songs.length === 0 &&
+                    <CentralLoading/>}
+                {error.isError &&
+                    <CenterContainer>
+                        <ErrorTextCard message={error.message} />
+                    </CenterContainer>}
+                {songs.length !== 0 &&
+                    <GridOfSongs songs={songs} tags={tags} />}
+            </ScreenContainer>
 
             <DigitLayout.DownRightPosition>
                 <DigitFAB
                     icon={Add}
                     secondary
-                    onClick={() => history.push("/create")}
+                    onClick={() => history.push("/songs/create")}
                 />
             </DigitLayout.DownRightPosition>
         </>
     );
 };
-
-
-const NoSongs = () => (
-    <DigitLayout.Column centerHorizontal>
-        <DigitLoading loading size={80} />
-    </DigitLayout.Column>
-);
-const NoMatchingSongs = () => (
-    <DigitLayout.Column centerHorizontal padding="50">
-        <DigitText.Text text={"There were no songs matching your search.."} />
-    </DigitLayout.Column>
-);
-
 
 export default Songs;

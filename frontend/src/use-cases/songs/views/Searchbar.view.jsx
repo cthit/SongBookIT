@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import {
     DigitDesign,
-    DigitTextField,
+    DigitText,
     DigitAutocompleteSelectMultiple,
 } from "@cthit/react-digit-components";
 import { useStateValue, StateActions } from "../../../app/App.context";
+import { FilterBody, StyledField, StyledSearchbar } from "./views.styles";
 
 const TagFilter = () => {
     const [{ tags }, dispatch] = useStateValue();
@@ -38,7 +39,7 @@ const SearchField = () => {
     const [{}, dispatch] = useStateValue();
 
     return (
-        <DigitTextField
+        <StyledField
             value={searchText}
             upperLabel="Search for a song"
             onChange={e => {
@@ -56,8 +57,11 @@ const SearchField = () => {
 const SearchBar = () => (
     <DigitDesign.Card>
         <DigitDesign.CardBody>
-            <SearchField />
-            <TagFilter />
+            <DigitText.Title  text={"Search or browse the songs"} />
+            <FilterBody>
+                <SearchField />
+                <TagFilter />
+            </FilterBody>
         </DigitDesign.CardBody>
     </DigitDesign.Card>
 );

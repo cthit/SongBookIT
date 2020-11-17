@@ -5,7 +5,7 @@ from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
 from command.SongCommands import remove_song, create_song, update_song
 from command.SongsToTagsCommands import create_songtotag, remove_songtotag
 from objects.dataobject.SongToTagObject import SongToTagObject
-from query.SongQueries import get_song_by_id, get_songs, get_song_by_name
+from query.SongQueries import get_song_by_id, get_songs, get_song_by_name, get_avaliable_song_numbers
 from query.SongToTagQueries import get_songtotag_by_song_id
 from query.TagQueries import get_tags, get_tag_by_id
 from validation.SongValidation import validate_song, validate_song_update
@@ -50,6 +50,11 @@ def handle_get_song_by_id(song_id: str) -> HttpResponse:
         })
 
 
+def handle_get_avaliable_song_numbers() -> HttpResponse:
+    numbers_res = get_avaliable_song_numbers()
+    return get_with_data({'numbers': numbers_res.data})
+
+
 def handle_create_song(song_request: Dict) -> HttpResponse:
     valid_song_res = validate_song(song_request)
     if valid_song_res.is_error:
@@ -58,7 +63,7 @@ def handle_create_song(song_request: Dict) -> HttpResponse:
 
     song_res = get_song_by_name(song.title)
     if not song_res.is_error:
-        return get_with_error(400, song_res.message)
+        return get_with_error(400, "There already exists a song with the specified name")
 
     for tag_id in song.tags:
         tag_res = get_tag_by_id(tag_id)

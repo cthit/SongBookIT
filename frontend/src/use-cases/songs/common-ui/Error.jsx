@@ -3,13 +3,15 @@ import {
     DigitDesign,
     DigitText
 } from "@cthit/react-digit-components";
+import { DangerCard } from "./Common.styles";
 
 
 const ErrorTextCard = ({message}) => (
-    <DigitDesign.Card>
+    <DangerCard>
         <DigitDesign.CardBody>
-            <DigitText.Text text={"erooroorormf??"}/>
+            <DigitText.Text text={message}/>
         </DigitDesign.CardBody>
-    </DigitDesign.Card>
-);
+    </DangerCard>
+
+        );
 export { ErrorTextCard }

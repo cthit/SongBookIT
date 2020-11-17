@@ -5,6 +5,7 @@ from typing import List
 @dataclass
 class SongObject:
     song_id: str
+    number: int
     title: str
     melody: str
     author: str
@@ -14,6 +15,7 @@ class SongObject:
     def to_json(self):
         return {
             'song_id': str(self.song_id),
+            'number': self.number,
             'title': self.title,
             'melody': self.melody,
             'author': self.author,

@@ -6,6 +6,7 @@ db = Database()
 
 class Song(db.Entity):
     song_id = PrimaryKey(str)
+    number = Optional(int, unique=True)
     title = Required(str, unique=True)
     author = Optional(str)
     melody = Optional(str)

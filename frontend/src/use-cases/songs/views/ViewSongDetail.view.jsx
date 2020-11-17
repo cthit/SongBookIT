@@ -8,12 +8,13 @@ import {
 } from "@cthit/react-digit-components";
 
 const SongDetails = (s, tags, history) => {
-    const melody = s.melody ? s.melody : "..."
+    const melody = s.melody ? s.melody : "Unknown"
+    const author = s.author ? s.author : "Unknown"
     return {
-        title: s.title,
+        title: s.number + ". " + s.title,
         renderMain: () => (
             <>
-                <DigitText.Text bold text={"Text: " + s.author} />
+                <DigitText.Text bold text={"Text: " + author} />
                 <DigitText.Text text={"Mel: " + melody} />
                 <DigitMarkdown markdownSource={s.text} />
                 <DigitLayout.Row>
@@ -41,8 +42,8 @@ const SongDetails = (s, tags, history) => {
                 />
             </>
         ),
-        onCancel: () => history.push("/"),
-        onConfirm: () => history.push("/edit/" + s.song_id)
+        onCancel: () => history.goBack(),
+        onConfirm: () => history.push("/songs/edit/" + s.song_id)
     };
 };
 
