@@ -31,13 +31,6 @@ def get_song_by_name(title: str) -> ResultWithData[SongObject]:
         return get_result_with_data(db_song_to_song_object(song))
 
 @db_session
-def get_avaliable_song_numbers() -> ResultWithData[List[int]]:
-    existing_numbers = set(select(s.number for s in Song))
-    all_numbers = range(1, max(existing_numbers)+1+1)
-    not_used_numbers = [x for x in all_numbers if x not in existing_numbers]
-    return get_result_with_data(not_used_numbers)
-
-@db_session
 def db_song_to_song_object(song: Song) -> SongObject:
     return SongObject(
         song_id=song.song_id,

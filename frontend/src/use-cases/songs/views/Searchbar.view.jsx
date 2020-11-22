@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
     DigitDesign,
     DigitText,
-    DigitAutocompleteSelectMultiple,
+    DigitAutocompleteSelectMultiple, DigitTextField,
 } from "@cthit/react-digit-components";
 import { useStateValue, StateActions } from "../../../app/App.context";
 import { FilterBody, StyledField, StyledSearchbar } from "./views.styles";
@@ -23,6 +23,7 @@ const TagFilter = () => {
             upperLabel="Filter the songs by tags"
             options={options}
             value={value}
+            size={{ width: "300px" }}
             onChange={e => {
                 setValue(e.target.value);
                 dispatch({
@@ -39,9 +40,10 @@ const SearchField = () => {
     const [{}, dispatch] = useStateValue();
 
     return (
-        <StyledField
+        <DigitTextField
             value={searchText}
             upperLabel="Search for a song"
+            size={{ width: "300px" }}
             onChange={e => {
                 setSearchText(e.target.value);
                 dispatch({

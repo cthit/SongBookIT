@@ -10,10 +10,6 @@ def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
     if title_res.is_error:
         return get_result_with_error(title_res.message)
 
-    number_res = validate_int(song, 'number')
-    if number_res.is_error:
-        return get_result_with_error(number_res.message)
-
     melody_res = validate_str(song, 'melody')
     if melody_res.is_error:
         return get_result_with_error(melody_res.message)
@@ -39,7 +35,6 @@ def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
     return get_result_with_data(RequestSongObject(
         song_id=None,
         title=title_res.data,
-        number=number_res.data,
         melody=melody_res.data,
         author=author_res.data,
         text=text_res.data,
@@ -59,7 +54,6 @@ def validate_song_update(song: Dict) -> ResultWithData[RequestSongObject]:
 
     return get_result_with_data(RequestSongObject(
         song_id=id_res.data,
-        number=valid_song.number,
         title=valid_song.title,
         melody=valid_song.melody,
         author=valid_song.author,

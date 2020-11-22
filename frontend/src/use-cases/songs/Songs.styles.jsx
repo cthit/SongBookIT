@@ -17,17 +17,14 @@ export const SongGrid = styled.div`
     column-gap: 10px;
 `;
 
-
 export const SongCard = styled(DigitDesign.Card)`
     width: 300px;
     margin: 5px;
-    cursor: "pointer"; 
 `;
 
 export const SongCardBody = styled(DigitDesign.CardBody)`
     display: flex;
     flex-direction: column;
-    cursor: "pointer"; 
 `;
 
 export const TagList = styled.div`

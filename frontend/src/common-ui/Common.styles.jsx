@@ -19,10 +19,6 @@ export const WideCenterContainer = styled(CenterContainer)`
     width: min(80vw, 600px);
 `
 
-export const WideTextField = styled(DigitTextField)`
-    width: min(80vw, 600px);    
-`
-
 export const TopRightButton = styled.div`
   width: 100vw;
 `

@@ -14,12 +14,12 @@ import Add from "@material-ui/icons/Add";
 import SongDetails from "./views/ViewSongDetail.view";
 import SearchBar from "./views/Searchbar.view";
 import { useStateValue, StateActions } from "../../app/App.context";
-import {findTags} from "./common/Tags";
+import {findTags} from "../../common/Tags";
 import { getSong, getSongs } from "../../api/songs/get.songs.api";
 import { ScreenContainer, SongCard, SongCardBody, SongGrid, TagList } from "./Songs.styles";
-import { CentralLoading } from "./common-ui/CentralLoading";
-import { ErrorTextCard } from "./common-ui/Error";
-import { CenterContainer } from "./common-ui/Common.styles";
+import { CentralLoading } from "../../common-ui/CentralLoading";
+import { ErrorTextCard } from "../../common-ui/Error";
+import { CenterContainer } from "../../common-ui/Common.styles";
 
 const filterTagsFunc = tags => {
     return song => song.tags.some(tag => tags.includes(tag))
@@ -65,6 +65,7 @@ const GridOfSongs = ({ songs, tags }) => {
                 {filteredSongs.map(s => (
                     <SongCard
                         key={s.song_id}
+                        style={{    cursor: "pointer" }}
                         onClick={() => history.push('/songs/' + s.song_id)}
                     >
                         <SongCardBody>

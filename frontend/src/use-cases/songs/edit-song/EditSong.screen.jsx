@@ -8,19 +8,18 @@ import {
 } from "@cthit/react-digit-components";
 import { getTags } from "../../../api/tags/get.tags.api";
 import * as yup from "yup";
-import { CenterContainer, ColumnContainer, TopRightButton, WideCenterContainer } from "../common-ui/Common.styles";
+import { CenterContainer, ColumnContainer, TopRightButton, WideCenterContainer } from "../../../common-ui/Common.styles";
 import { ArrowBackRounded } from "@material-ui/icons";
 import { useHistory, useParams } from "react-router-dom";
-import { getNbrSong, getSong } from "../../../api/songs/get.songs.api";
 import { editSong } from "../../../api/songs/put.songs.api";
 import { deleteSong } from "../../../api/songs/delete.songs.api";
-import { ErrorTextCard } from "../common-ui/Error";
+import { ErrorTextCard } from "../../../common-ui/Error";
+import { getSong } from "../../../api/songs/get.songs.api";
 
 const EditSong = () => {
     let history = useHistory();
     let { song_id } = useParams();
     const [tags, setTags] = useState([]);
-    const [numbers, setNumbers] = useState([]);
     const [song, setSong] = useState({
         "song_id": "",
         "title": "",
@@ -56,13 +55,6 @@ const EditSong = () => {
         })
     }, [])
 
-    useEffect(() => {
-        getNbrSong().then( res => {
-            setNumbers(res.data.data.numbers.map(number => ({text: "nr. " + number, value: number})))
-        })
-    }, [])
-
-
     return (
 
         <ColumnContainer>
@@ -76,7 +68,7 @@ const EditSong = () => {
             </TopRightButton>
             <WideCenterContainer>
                 {loadSongError.isError && <ErrorTextCard message={loadSongError.message}/> }
-                {hasLoadedSong && hasLoadedTag ? <EditSongColumn tags={tags} song={song} numbers={numbers} />: (loadSongError ? <div/> : <DigitLoading/>)}
+                {hasLoadedSong && hasLoadedTag ? <EditSongColumn tags={tags} song={song} />: (loadSongError ? <div/> : <DigitLoading/>)}
             </WideCenterContainer>
         </ColumnContainer>
 
@@ -84,7 +76,7 @@ const EditSong = () => {
     )
 }
 
-const EditSongColumn = ({tags, song, numbers}) => {
+const EditSongColumn = ({tags, song}) => {
     let history = useHistory();
     const [error, setError] = useState({isError: false, message: ""})
 
@@ -93,18 +85,17 @@ return <>
     {error.isError && <ErrorTextCard message={error.message} />}
     <DigitEditDataCard
         hasButtons
+        size={{width: "min(80vw, 600px)"}}
         onSubmit={(values, actions) => {
             values['song_id'] = song.song_id
             editSong(song.song_id, values)
                 .then(() => history.push("/songs/" + song.song_id))
                 .catch(error => {
-                console.log('response: ', error.response.data.error);
                 setError(error.response.data.error)
             });
         }}
         initialValues={{
             title: song.title,
-            number: song.number,
             author: song.author,
             melody: song.melody,
             text: song.text,
@@ -112,42 +103,33 @@ return <>
         }}
         validationSchema={yup.object().shape({
             title: yup.string().required("This can't be empty"),
-            number: yup.number().required("This can't be empty"),
             author: yup.string(),
             melody: yup.string(),
             text: yup.string().required("This can't be empty"),
         })}
-        titleText={"Edit: " + song.title}
+        titleText={"Edit: Nr." + song.number  + " "+ song.title}
         submitText={"Confirm edit"}
-        keysOrder={["title", "number", "author", "melody", "text", "tags"]}
+        keysOrder={["title", "author", "melody", "text", "tags"]}
         keysComponentData={{
             title: {
                 component: DigitTextField,
                 componentProps: {
                     upperLabel: "Title",
-                    size: {width: "90%"}
-                },
-            },
-            number: {
-                component: DigitAutocompleteSelectSingle,
-                componentProps: {
-                    upperLabel: "Song Number",
-                    options: numbers,
-                    size: {width: "90%"}
+                    size: {width: "min(60vw, 550px)"}
                 },
             },
             author: {
                 component: DigitTextField,
                 componentProps: {
                     upperLabel: "Author",
-                    size: {width: "90%"}
+                    size: {width: "min(60vw, 550px)"}
                 },
             },
             melody: {
                 component: DigitTextField,
                 componentProps: {
                     upperLabel: "Melody",
-                    size: {width: "90%"}
+                    size: {width: "min(60vw, 550px)"}
                 },
             },
             text: {
@@ -155,7 +137,7 @@ return <>
                 componentProps: {
                     primary: true,
                     upperLabel: "Text",
-                    size: {width: "90%"}
+                    size: {width: "min(60vw, 550px)"}
                 },
             },
             tags: {
@@ -163,8 +145,7 @@ return <>
                 componentProps: {
                     upperLabel: "Give your song tags",
                     options: tags,
-                    size: {width: "90%"},
-                    style: {fontSize:"5px"}
+                    size: {width: "min(60vw, 550px)"},
                 },
             },
         }}

@@ -1,4 +1,4 @@
-from pony.orm import db_session
+from pony.orm import db_session, select
 
 from utils.ResultWithData import ResultWithData, get_result_with_data
 from db import Song
@@ -9,9 +9,14 @@ from utils.ShortUnique import short_unique_id
 @db_session
 def create_song(song: RequestSongObject) -> ResultWithData[str]:
     song_id = short_unique_id()
+    song_numbers = list(select(s.number for s in Song))
+    if song_numbers:
+        highest_song_nbr = max(song_numbers) + 1
+    else:
+        highest_song_nbr = 1
     song_created = Song(
         song_id=song_id,
-        number=song.number,
+        number=highest_song_nbr,
         title=song.title,
         melody=song.melody,
         author=song.author,

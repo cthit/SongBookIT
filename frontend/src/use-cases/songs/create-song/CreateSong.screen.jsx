@@ -9,15 +9,13 @@ import {
 import { getTags } from "../../../api/tags/get.tags.api";
 import { addSong } from "../../../api/songs/post.songs.api";
 import * as yup from "yup";
-import { CenterContainer, ColumnContainer, TopRightButton } from "../common-ui/Common.styles";
+import { CenterContainer, ColumnContainer, TopRightButton } from "../../../common-ui/Common.styles";
 import { ArrowBackRounded } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
-import { getNbrSong } from "../../../api/songs/get.songs.api";
-import { ErrorTextCard } from "../common-ui/Error";
+import { ErrorTextCard } from "../../../common-ui/Error";
 
 const CreateSong = () => {
     const [tags, setTags] = useState([]);
-    const [numbers, setNumbers] = useState([]);
     const [error, setError] = useState({isError: false, message: ""})
     let history = useHistory();
 
@@ -30,12 +28,6 @@ const CreateSong = () => {
             );
         });
     }, []);
-
-    useEffect(() => {
-        getNbrSong().then( res => {
-            setNumbers(res.data.data.numbers.map(number => ({text: "nr. " + number, value: number})))
-        })
-    }, [])
 
     return (
         <ColumnContainer>
@@ -57,13 +49,11 @@ const CreateSong = () => {
                         addSong(values).then(res => {
                             history.push("/songs/edit/" + res.data.data.song_id)
                         })  .catch(error => {
-                            console.log('response: ', error.response.data.error);
                             setError(error.response.data.error)
                         })
                     }}
                     initialValues={{
                         title: "",
-                        number: [],
                         author: "",
                         melody: "",
                         text: "",
@@ -71,26 +61,18 @@ const CreateSong = () => {
                     }}
                     validationSchema={yup.object().shape({
                         title: yup.string().required("This can't be empty"),
-                        number: yup.number().required("This can't be empty"),
                         author: yup.string(),
                         melody: yup.string(),
                         text: yup.string().required("This can't be empty"),
                     })}
                     titleText={"Create a song"}
                     submitText={"Save song"}
-                    keysOrder={["title", "number", "author", "melody", "text", "tags"]}
+                    keysOrder={["title", "author", "melody", "text", "tags"]}
                     keysComponentData={{
                         title: {
                             component: DigitTextField,
                             componentProps: {
                                 upperLabel: "Title",
-                            },
-                        },
-                        number: {
-                            component: DigitAutocompleteSelectSingle,
-                            componentProps: {
-                                upperLabel: "Song Number",
-                                options: numbers,
                             },
                         },
                         author: {

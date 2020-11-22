@@ -42,7 +42,7 @@ const SongDetails = (s, tags, history) => {
                 />
             </>
         ),
-        onCancel: () => history.goBack(),
+        onCancel: () => history.push("/songs"),
         onConfirm: () => history.push("/songs/edit/" + s.song_id)
     };
 };

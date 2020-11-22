@@ -1,7 +1,5 @@
 import re
 
-from pony.orm import db_session
-
 from command.SongCommands import create_song
 from command.SongsToTagsCommands import create_songtotag
 from command.TagCommands import create_tag
@@ -45,7 +43,7 @@ def get_songs(data):
     return res
 
 
-def add_category(cat, data, number):
+def add_category(cat, data):
     t = RequestTagObject(
         tag_id=None,
         name=cat,
@@ -55,24 +53,21 @@ def add_category(cat, data, number):
     for song in get_songs(data):
         s = RequestSongObject(
             song_id=None,
-            number=number,
             title=song['title'],
             melody="",
             author=song['author'],
             text=song['text'],
             tags=[]
         )
-        number += 1
         if song['melody'] is not None:
             s.melody = song['melody']
         song_id = create_song(s).data
         stt = SongToTagObject(song=song_id, tag=tag_id)
         create_songtotag(stt)
-    return number
 
 
 def add_songs_from_md():
-    number = 1
     for cat, data in categories:
-        if str.isspace(cat): continue
-        number = add_category(cat, data, number)
+        if str.isspace(cat):
+            continue
+        add_category(cat, data)
