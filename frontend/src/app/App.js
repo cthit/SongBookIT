@@ -16,47 +16,43 @@ import { StateProvider, InitialState, Reducer } from "./App.context";
 import Songs from "../use-cases/songs";
 import CreateSong from "../use-cases/songs/create-song";
 import EditSong from "../use-cases/songs/edit-song"
-import useAdmin from "../common/hooks/useAdmin";
+import useAdmin from "../common/hooks/use-admin";
 import { AccountCircle } from "@material-ui/icons";
+import { signoutFromSongbook } from "../api/gamma-signout/post.gamma-signout.api";
 
 const App = () => {
     const [loading, err , signIn] = useGamma("/api/me", "/api/auth", false);
-    console.log("wassload", loading)
-    console.log("wasserr", err)
-    console.log("wasssign", signIn)
     return (
-        <DigitProviders>
-            <StateProvider initialState={InitialState} reducer={Reducer}>
-                <DigitHeader
-                    title="SongBook"
-                    headerRowProps={{
-                        flex: "1",
-                        justifyContent: "space-between"
-                    }}
-                    renderHeader={() => <Header loading={loading} signIn={signIn} />}
-                    renderMain={() => (
-                        <Switch>
-                            <Route
-                                path="/songs/create"
-                                exact
-                                component={CreateSong}
-                            />
-                            <Route
-                                path="/songs/edit/:song_id"
-                                exact
-                                component={EditSong} />
-                            <Redirect from='/songs/edit/' to='/' exact />
+        <StateProvider initialState={InitialState} reducer={Reducer}>
+            <DigitHeader
+                title="SongBook"
+                headerRowProps={{
+                    flex: "1",
+                    justifyContent: "space-between"
+                }}
+                renderHeader={() => <Header loading={loading} signIn={signIn} />}
+                renderMain={() => (
+                    <Switch>
+                        <Route
+                            path="/songs/create"
+                            exact
+                            component={CreateSong}
+                        />
+                        <Route
+                            path="/songs/edit/:song_id"
+                            exact
+                            component={EditSong} />
+                        <Redirect from='/songs/edit/' to='/' exact />
 
-                            <Route
-                                path="/songs/:song_id?"
-                                exact
-                                component={Songs} />
-                            <Redirect from='/' to='/songs/'  />
-                        </Switch>
-                    )}
-                />
-            </StateProvider>
-        </DigitProviders>
+                        <Route
+                            path="/songs/:song_id?"
+                            exact
+                            component={Songs} />
+                        <Redirect from='/' to='/songs/'  />
+                    </Switch>
+                )}
+            />
+        </StateProvider>
     );
 };
 
@@ -65,8 +61,7 @@ const Header = ({ loading, signIn }) => {
     const user = useGammaMe();
     const admin = useAdmin();
 
-    console.log("signin", signIn)
-    console.log("me", useGammaMe())
+    console.log("Admin: ", admin)
 
     return (
         <DigitLayout.Row
@@ -83,20 +78,35 @@ const Header = ({ loading, signIn }) => {
                 />
             )}
             <DigitGammaActions
-                customOptionsOnClick={item =>
-                    item === "adminSongs"
-                        ? history.push("/admin/songs")
-                        : null
+                customOptionsOnClick={item => {
+                    if (item === "addSong") {
+                        history.push("/songs/create")
+                    }}
                 }
                 customOptions={{
-                    adminSongs: "Administrate songs"
+                    addSong: "Add a new song"
                 }}
                 customOrder={
                     admin
-                        ? ["adminSongs", "viewAccount", "signOut"]
+                        ? ["addSong","viewAccount", "signOut"]
                         : ["viewAccount", "signOut"]
                 }
+
+                signOut={() => signoutFromSongbook()}
+
                 size={{ width: "min-content" }}
+
+                frontendUrl={
+                    process.env.NODE_ENV === "development"
+                        ? "http://localhost:3000"
+                        : "https://gamma.chalmers.it"
+                }
+                backendUrl={
+                    process.env.NODE_ENV === "development"
+                        ? "http://localhost:8081/api"
+                        : "https://gamma.chalmers.it/api"
+                }
+
             />
         </DigitLayout.Row>
     );

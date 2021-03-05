@@ -6,10 +6,12 @@ import {
     DigitChip,
     DigitLayout,
 } from "@cthit/react-digit-components";
+import useAdmin from "../../../common/hooks/use-admin";
 
-const SongDetails = (s, tags, history) => {
+const SongDetails = (admin, s, tags, history) => {
     const melody = s.melody ? s.melody : "Unknown"
     const author = s.author ? s.author : "Unknown"
+
     return {
         title: s.number + ". " + s.title,
         renderMain: () => (
@@ -33,13 +35,14 @@ const SongDetails = (s, tags, history) => {
                     text={"Close song"}
                     raised
                     onClick={cancel} />
-                <DigitButton
+                {admin &&
+                (<DigitButton
                     text={"Edit song"}
                     primary
                     raised
                     submit
                     onClick={confirm}
-                />
+                />)}
             </>
         ),
         onCancel: () => history.push("/songs"),

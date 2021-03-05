@@ -20,6 +20,7 @@ import { ScreenContainer, SongCard, SongCardBody, SongGrid, TagList } from "./So
 import { CentralLoading } from "../../common-ui/CentralLoading";
 import { ErrorTextCard } from "../../common-ui/Error";
 import { CenterContainer } from "../../common-ui/Common.styles";
+import useAdmin from "../../common/hooks/use-admin";
 
 const filterTagsFunc = tags => {
     return song => song.tags.some(tag => tags.includes(tag))
@@ -99,6 +100,7 @@ const GridOfSongs = ({ songs, tags }) => {
 };
 
 const Songs = () => {
+    const admin = useAdmin();
     let history = useHistory();
     const [error, setError] = useState({isError: false, message: ""})
     const [{ songs, tags}, dispatch] = useStateValue();
@@ -122,35 +124,26 @@ const Songs = () => {
             getSong(song_id).then(res => {
                 let s = res.data.data.song
                 let t = Object.values(res.data.data.tags)
-                openDialog(SongDetails(s, t, history))
+                openDialog(SongDetails(admin, s, t, history))
             }).catch((err) => {
+                    console.log("what", err)
                     setError(err.response.data.error)
             })
         }
     }, [song_id])
 
     return (
-        <>
-            <ScreenContainer>
-                <SearchBar />
-                {songs.length === 0 &&
-                    <CentralLoading/>}
-                {error.isError &&
-                    <CenterContainer>
-                        <ErrorTextCard message={error.message} />
-                    </CenterContainer>}
-                {songs.length !== 0 &&
-                    <GridOfSongs songs={songs} tags={tags} />}
-            </ScreenContainer>
-
-            <DigitLayout.DownRightPosition>
-                <DigitFAB
-                    icon={Add}
-                    secondary
-                    onClick={() => history.push("/songs/create")}
-                />
-            </DigitLayout.DownRightPosition>
-        </>
+        <ScreenContainer>
+            <SearchBar />
+            {songs.length === 0 &&
+                <CentralLoading/>}
+            {error.isError &&
+                <CenterContainer>
+                    <ErrorTextCard message={error.message} />
+                </CenterContainer>}
+            {songs.length !== 0 &&
+                <GridOfSongs songs={songs} tags={tags} />}
+        </ScreenContainer>
     );
 };
 

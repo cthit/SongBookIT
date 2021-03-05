@@ -13,11 +13,17 @@ import { CenterContainer, ColumnContainer, TopRightButton } from "../../../commo
 import { ArrowBackRounded } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 import { ErrorTextCard } from "../../../common-ui/Error";
+import useAdmin from "../../../common/hooks/use-admin";
+import InsufficientAccess from "../../../common/InsufficientAccess";
 
 const CreateSong = () => {
     const [tags, setTags] = useState([]);
     const [error, setError] = useState({isError: false, message: ""})
     let history = useHistory();
+
+
+    const admin = useAdmin();
+
 
     useEffect(() => {
         getTags().then(res => {
@@ -28,6 +34,11 @@ const CreateSong = () => {
             );
         });
     }, []);
+
+
+    if (!admin) {
+        return <InsufficientAccess/>
+    }
 
     return (
         <ColumnContainer>

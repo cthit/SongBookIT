@@ -15,6 +15,8 @@ import { editSong } from "../../../api/songs/put.songs.api";
 import { deleteSong } from "../../../api/songs/delete.songs.api";
 import { ErrorTextCard } from "../../../common-ui/Error";
 import { getSong } from "../../../api/songs/get.songs.api";
+import useAdmin from "../../../common/hooks/use-admin";
+import InsufficientAccess from "../../../common/InsufficientAccess";
 
 const EditSong = () => {
     let history = useHistory();
@@ -31,6 +33,8 @@ const EditSong = () => {
     const [hasLoadedSong, setHasLoadedSong] = useState(false)
     const [hasLoadedTag, setHasLoadedTag] = useState(false)
     const [loadSongError, setLoadSongError] = useState({ isError:false, message: "" })
+
+    const admin = useAdmin();
 
     useEffect(() => {
         getTags().then(res => {
@@ -54,6 +58,10 @@ const EditSong = () => {
             setHasLoadedSong(false)
         })
     }, [])
+
+    if (!admin) {
+        return <InsufficientAccess/>
+    }
 
     return (
 
