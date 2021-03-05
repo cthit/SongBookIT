@@ -66,6 +66,7 @@ const Header = ({ loading, signIn }) => {
     const admin = useAdmin();
 
     console.log("signin", signIn)
+    console.log("me", useGammaMe())
 
     return (
         <DigitLayout.Row
