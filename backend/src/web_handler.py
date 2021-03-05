@@ -9,7 +9,7 @@ from pony.orm.serialization import to_dict
 
 from config import gamma_config as config
 from db import Tag
-from process.GammaProcess import handle_gamma_me, handle_gamma_auth
+from process.GammaProcess import handle_gamma_me, handle_gamma_auth, handle_gamma_signout
 from process.SongProcess import handle_get_songs_and_tags, handle_get_song_by_id, handle_delete_song, \
     handle_create_song, handle_update_song
 from process.TagProcess import handle_get_tags, handle_delete_tag, handle_get_tag_by_id
@@ -96,6 +96,10 @@ class GammaAuth(Resource):
         data = request.get_json()
         return handle_gamma_auth(data, session).get_response()
 
+class GammaSignout(Resource):
+    def post(self):
+        return handle_gamma_signout().get_response()
+
 
 api.add_resource(SongsRes, '/api/songs')
 api.add_resource(SongRes, '/api/songs/<string:song_id>')
@@ -105,6 +109,7 @@ api.add_resource(TagRes, '/api/tags/<string:tag_id>')
 
 api.add_resource(GammaAuth, '/api/auth')
 api.add_resource(GammaMe, '/api/me')
+api.add_resource(GammaSignout, '/api/signout')
 
 
 def host():
