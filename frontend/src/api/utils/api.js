@@ -8,7 +8,7 @@ export function getRequest(endpoint) {
 }
 
 export function postRequest(endpoint, data) {
-    return axios.post(removeLastSlash(endpoint),data);
+    return axios.post(removeLastSlash(endpoint), data);
 }
 
 export function deleteRequest(endpoint) {

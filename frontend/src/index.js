@@ -6,7 +6,7 @@ import App from "./app";
 
 ReactDOM.render(
     <DigitProviders>
-            <App />
+        <App />
     </DigitProviders>,
     document.getElementById("root")
 );

@@ -4,13 +4,13 @@ import {
     DigitText,
     DigitMarkdown,
     DigitChip,
-    DigitLayout,
+    DigitLayout
 } from "@cthit/react-digit-components";
 import useAdmin from "../../../common/hooks/use-admin";
 
 const SongDetails = (admin, s, tags, history) => {
-    const melody = s.melody ? s.melody : "Unknown"
-    const author = s.author ? s.author : "Unknown"
+    const melody = s.melody ? s.melody : "Unknown";
+    const author = s.author ? s.author : "Unknown";
 
     return {
         title: s.number + ". " + s.title,
@@ -21,28 +21,23 @@ const SongDetails = (admin, s, tags, history) => {
                 <DigitMarkdown markdownSource={s.text} />
                 <DigitLayout.Row>
                     {tags.map(tag => (
-                        <DigitChip
-                            primary
-                            key={tag.tag_id}
-                            label={tag.name} />
+                        <DigitChip primary key={tag.tag_id} label={tag.name} />
                     ))}
                 </DigitLayout.Row>
             </>
         ),
         renderButtons: (confirm, cancel) => (
             <>
-                <DigitButton
-                    text={"Close song"}
-                    raised
-                    onClick={cancel} />
-                {admin &&
-                (<DigitButton
-                    text={"Edit song"}
-                    primary
-                    raised
-                    submit
-                    onClick={confirm}
-                />)}
+                <DigitButton text={"Close song"} raised onClick={cancel} />
+                {admin && (
+                    <DigitButton
+                        text={"Edit song"}
+                        primary
+                        raised
+                        submit
+                        onClick={confirm}
+                    />
+                )}
             </>
         ),
         onCancel: () => history.push("/songs"),

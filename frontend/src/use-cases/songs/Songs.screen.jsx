@@ -8,56 +8,61 @@ import {
     DigitMarkdown,
     DigitLoading,
     useDigitCustomDialog,
-    DigitChip,
+    DigitChip
 } from "@cthit/react-digit-components";
 import Add from "@material-ui/icons/Add";
 import SongDetails from "./views/ViewSongDetail.view";
 import SearchBar from "./views/Searchbar.view";
 import { useStateValue, StateActions } from "../../app/App.context";
-import {findTags} from "../../common/Tags";
+import { findTags } from "../../common/Tags";
 import { getSong, getSongs } from "../../api/songs/get.songs.api";
-import { ScreenContainer, SongCard, SongCardBody, SongGrid, TagList } from "./Songs.styles";
+import {
+    ScreenContainer,
+    SongCard,
+    SongCardBody,
+    SongGrid,
+    TagList
+} from "./Songs.styles";
 import { CentralLoading } from "../../common-ui/CentralLoading";
 import { ErrorTextCard } from "../../common-ui/Error";
 import { CenterContainer } from "../../common-ui/Common.styles";
 import useAdmin from "../../common/hooks/use-admin";
 
 const filterTagsFunc = tags => {
-    return song => song.tags.some(tag => tags.includes(tag))
-}
+    return song => song.tags.some(tag => tags.includes(tag));
+};
 
 const filterSearchFunc = search => {
-    return song => (song.title + song.number)
-        .toLowerCase()
-        .includes(search.toLowerCase())
-}
+    return song =>
+        (song.title + song.number).toLowerCase().includes(search.toLowerCase());
+};
 
 const applyFilters = (songsToCheck, filters) => {
     if (filters.length) {
         return songsToCheck.filter(song => {
-            return filters.map(func => func(song)).every(x => x)
-        })
+            return filters.map(func => func(song)).every(x => x);
+        });
     } else {
-        return songsToCheck
+        return songsToCheck;
     }
-}
+};
 
 const GridOfSongs = ({ songs, tags }) => {
     let history = useHistory();
     const [{ filterSearch, filterTags }] = useStateValue();
     const [filteredSongs, setFilteredSongs] = useState(songs);
 
-    const filterFuncArr = []
+    const filterFuncArr = [];
 
     useEffect(() => {
-        filterFuncArr.splice(0)
+        filterFuncArr.splice(0);
         if (filterTags.length) {
-            filterFuncArr.push(filterTagsFunc(filterTags))
+            filterFuncArr.push(filterTagsFunc(filterTags));
         }
-        if(filterSearch !== "") {
-            filterFuncArr.push(filterSearchFunc(filterSearch))
+        if (filterSearch !== "") {
+            filterFuncArr.push(filterSearchFunc(filterSearch));
         }
-        setFilteredSongs(applyFilters(songs, filterFuncArr))
+        setFilteredSongs(applyFilters(songs, filterFuncArr));
     }, [filterSearch, filterTags]);
 
     return useMemo(
@@ -66,8 +71,8 @@ const GridOfSongs = ({ songs, tags }) => {
                 {filteredSongs.map(s => (
                     <SongCard
                         key={s.song_id}
-                        style={{    cursor: "pointer" }}
-                        onClick={() => history.push('/songs/' + s.song_id)}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => history.push("/songs/" + s.song_id)}
                     >
                         <SongCardBody>
                             <DigitText.Title text={s.number + ". " + s.title} />
@@ -77,9 +82,7 @@ const GridOfSongs = ({ songs, tags }) => {
                             />
                             <DigitText.Text text={"Mel: " + s.melody} />
                             <DigitMarkdown
-                                markdownSource={
-                                    s.text.slice(0, 100) + "..."
-                                }
+                                markdownSource={s.text.slice(0, 100) + "..."}
                             />
                             <TagList>
                                 {findTags(s.tags, tags).map(tag => (
@@ -102,15 +105,19 @@ const GridOfSongs = ({ songs, tags }) => {
 const Songs = () => {
     const admin = useAdmin();
     let history = useHistory();
-    const [error, setError] = useState({isError: false, message: ""})
-    const [{ songs, tags}, dispatch] = useStateValue();
+    const [error, setError] = useState({ isError: false, message: "" });
+    const [{ songs, tags }, dispatch] = useStateValue();
     useEffect(() => {
         if (songs.length === 0) {
             getSongs().then(res => {
                 dispatch({
                     type: StateActions.getSongs,
-                    songs: Object.values(res.data.data.songs).sort((a, b) => (a.number > b.number ? 1 : -1)),
-                    tags: Object.values(res.data.data.tags).sort((a, b) => (a.name > b.name ? 1 : -1)),
+                    songs: Object.values(res.data.data.songs).sort((a, b) =>
+                        a.number > b.number ? 1 : -1
+                    ),
+                    tags: Object.values(res.data.data.tags).sort((a, b) =>
+                        a.name > b.name ? 1 : -1
+                    )
                 });
             });
         }
@@ -118,31 +125,32 @@ const Songs = () => {
 
     const [openDialog] = useDigitCustomDialog();
     let { song_id } = useParams();
-    const validSongId = song_id !== undefined && song_id.length === 4
-    useEffect( () => {
+    const validSongId = song_id !== undefined && song_id.length === 4;
+    useEffect(() => {
         if (validSongId) {
-            getSong(song_id).then(res => {
-                let s = res.data.data.song
-                let t = Object.values(res.data.data.tags)
-                openDialog(SongDetails(admin, s, t, history))
-            }).catch((err) => {
-                    console.log("what", err)
-                    setError(err.response.data.error)
-            })
+            getSong(song_id)
+                .then(res => {
+                    let s = res.data.data.song;
+                    let t = Object.values(res.data.data.tags);
+                    openDialog(SongDetails(admin, s, t, history));
+                })
+                .catch(err => {
+                    console.log("what", err);
+                    setError(err.response.data.error);
+                });
         }
-    }, [song_id])
+    }, [song_id]);
 
     return (
         <ScreenContainer>
             <SearchBar />
-            {songs.length === 0 &&
-                <CentralLoading/>}
-            {error.isError &&
+            {songs.length === 0 && <CentralLoading />}
+            {error.isError && (
                 <CenterContainer>
                     <ErrorTextCard message={error.message} />
-                </CenterContainer>}
-            {songs.length !== 0 &&
-                <GridOfSongs songs={songs} tags={tags} />}
+                </CenterContainer>
+            )}
+            {songs.length !== 0 && <GridOfSongs songs={songs} tags={tags} />}
         </ScreenContainer>
     );
 };

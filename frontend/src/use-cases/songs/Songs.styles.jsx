@@ -5,8 +5,7 @@ export const ScreenContainer = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
-    
-`
+`;
 
 export const SongGrid = styled.div`
     display: grid;
@@ -28,6 +27,6 @@ export const SongCardBody = styled(DigitDesign.CardBody)`
 `;
 
 export const TagList = styled.div`
-  margin-top: auto;
-  flex-direction: row;
+    margin-top: auto;
+    flex-direction: row;
 `;

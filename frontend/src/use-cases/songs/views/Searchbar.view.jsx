@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import {
     DigitDesign,
     DigitText,
-    DigitAutocompleteSelectMultiple, DigitTextField,
+    DigitAutocompleteSelectMultiple,
+    DigitTextField
 } from "@cthit/react-digit-components";
 import { useStateValue, StateActions } from "../../../app/App.context";
 import { FilterBody, StyledField, StyledSearchbar } from "./views.styles";
@@ -28,7 +29,7 @@ const TagFilter = () => {
                 setValue(e.target.value);
                 dispatch({
                     type: StateActions.filterTags,
-                    tags: e.target.value,
+                    tags: e.target.value
                 });
             }}
         />
@@ -48,7 +49,7 @@ const SearchField = () => {
                 setSearchText(e.target.value);
                 dispatch({
                     type: StateActions.filterSearch,
-                    search: e.target.value,
+                    search: e.target.value
                 });
             }}
             outlined
@@ -59,7 +60,7 @@ const SearchField = () => {
 const SearchBar = () => (
     <DigitDesign.Card>
         <DigitDesign.CardBody>
-            <DigitText.Title  text={"Search or browse the songs"} />
+            <DigitText.Title text={"Search or browse the songs"} />
             <FilterBody>
                 <SearchField />
                 <TagFilter />

@@ -7,7 +7,7 @@ import {
     useGamma,
     useGammaMe,
     DigitLayout,
-    DigitText,
+    DigitText
 } from "@cthit/react-digit-components";
 
 import { useHistory } from "react-router-dom";
@@ -15,13 +15,16 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { StateProvider, InitialState, Reducer } from "./App.context";
 import Songs from "../use-cases/songs";
 import CreateSong from "../use-cases/songs/create-song";
-import EditSong from "../use-cases/songs/edit-song"
+import EditSong from "../use-cases/songs/edit-song";
 import useAdmin from "../common/hooks/use-admin";
 import { AccountCircle } from "@material-ui/icons";
 import { signoutFromSongbook } from "../api/gamma-signout/post.gamma-signout.api";
 
 const App = () => {
-    const [loading, err , signIn] = useGamma("/api/me", "/api/auth", false);
+    const [loading, err, signIn] = useGamma("/api/me", "/api/auth", false);
+    console.log("LOADING", loading);
+    console.log("Err, ", err);
+    console.log("-----RESTARTED AGAIN!!!-----");
     return (
         <StateProvider initialState={InitialState} reducer={Reducer}>
             <DigitHeader
@@ -30,7 +33,9 @@ const App = () => {
                     flex: "1",
                     justifyContent: "space-between"
                 }}
-                renderHeader={() => <Header loading={loading} signIn={signIn} />}
+                renderHeader={() => (
+                    <Header loading={loading} signIn={signIn} />
+                )}
                 renderMain={() => (
                     <Switch>
                         <Route
@@ -41,14 +46,16 @@ const App = () => {
                         <Route
                             path="/songs/edit/:song_id"
                             exact
-                            component={EditSong} />
-                        <Redirect from='/songs/edit/' to='/' exact />
+                            component={EditSong}
+                        />
+                        <Redirect from="/songs/edit/" to="/" exact />
 
                         <Route
                             path="/songs/:song_id?"
                             exact
-                            component={Songs} />
-                        <Redirect from='/' to='/songs/'  />
+                            component={Songs}
+                        />
+                        <Redirect from="/" to="/songs/" />
                     </Switch>
                 )}
             />
@@ -61,7 +68,10 @@ const Header = ({ loading, signIn }) => {
     const user = useGammaMe();
     const admin = useAdmin();
 
-    console.log("Admin: ", admin)
+    const backendUrl =
+        process.env.NODE_ENV === "development"
+            ? "http://localhost:8081/api"
+            : "https://gamma.chalmers.it/api";
 
     return (
         <DigitLayout.Row
@@ -78,40 +88,33 @@ const Header = ({ loading, signIn }) => {
                 />
             )}
             <DigitGammaActions
+                customOptions={{
+                    addSong: "Add a new song",
+                    signoutFromSongbook: "Signout "
+                }}
                 customOptionsOnClick={item => {
                     if (item === "addSong") {
-                        history.push("/songs/create")
-                    }}
-                }
-                customOptions={{
-                    addSong: "Add a new song"
+                        history.push("/songs/create");
+                    } else if (item === "signoutFromSongbook") {
+                        signoutFromSongbook();
+                        window.location.href = backendUrl + "api/logout";
+                    }
                 }}
                 customOrder={
                     admin
-                        ? ["addSong","viewAccount", "signOut"]
-                        : ["viewAccount", "signOut"]
+                        ? ["addSong", "viewAccount", "signoutFromSongbook"]
+                        : ["viewAccount", "signoutFromSongbook"]
                 }
-
-                signOut={() => signoutFromSongbook()}
-
                 size={{ width: "min-content" }}
-
                 frontendUrl={
                     process.env.NODE_ENV === "development"
                         ? "http://localhost:3000"
                         : "https://gamma.chalmers.it"
                 }
-                backendUrl={
-                    process.env.NODE_ENV === "development"
-                        ? "http://localhost:8081/api"
-                        : "https://gamma.chalmers.it/api"
-                }
-
+                backendUrl={backendUrl}
             />
         </DigitLayout.Row>
     );
 };
-
-
 
 export default App;
