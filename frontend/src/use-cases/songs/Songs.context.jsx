@@ -13,7 +13,7 @@ export const SongTagProvider = ({ reducer, initialState, children }) => (
 export const useStateValue = () => useContext(SongTagContext);
 
 export const SongTagActions = {
-    getSongs: "GET_SONGS",
+    loadSongsTags: "LOAD_SONGS_TAGS",
     filterSearch: "FILTER_SEARCH",
     filterTags: "FILTER_TAGS"
 };
@@ -27,7 +27,7 @@ export const InitialSongTagState = {
 
 export const SongTagReducer = (state, action) => {
     switch (action.type) {
-        case SongTagActions.getSongs:
+        case SongTagActions.loadSongsTags:
             return {
                 ...state,
                 songs: action.songs,

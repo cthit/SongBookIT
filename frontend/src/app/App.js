@@ -1,11 +1,52 @@
-import React from "react";
-import { DigitHeader, useGamma } from "@cthit/react-digit-components";
-import { Switch, Route, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+    DigitHeader,
+    useDigitTranslations,
+    useGamma,
+    useGammaMe
+} from "@cthit/react-digit-components";
+import { Switch, Route } from "react-router-dom";
 import Songs from "../use-cases/songs";
 import Header from "./Elements/Header/Header.element";
+import translations from "./App.translations";
+import { BASE_ROUTE } from "./App.Routes";
+import { GAMMA_AUTH_ENDPOINT, GAMMA_ME_ENDPOINT } from "../api/utils/endpoints";
+
+const getUserLanguage = user => {
+    let language = user == null ? null : user.language;
+
+    if (language == null) {
+        language = "en";
+    }
+
+    return language;
+};
 
 const App = () => {
-    const [loading, , signIn] = useGamma("/api/me", "/api/auth", false);
+    const [loading, , signIn] = useGamma(
+        GAMMA_ME_ENDPOINT,
+        GAMMA_AUTH_ENDPOINT,
+        false
+    );
+
+    const [
+        ,
+        ,
+        setActiveLanguage,
+        setCommonTranslations
+    ] = useDigitTranslations();
+
+    const user = useGammaMe();
+    const userLanguage = getUserLanguage(user);
+
+    useEffect(() => {
+        setActiveLanguage(userLanguage);
+    }, [setActiveLanguage, userLanguage]);
+
+    useEffect(() => {
+        setCommonTranslations(translations);
+    }, [setCommonTranslations]);
+
     return (
         <DigitHeader
             title="SongBook"
@@ -18,9 +59,7 @@ const App = () => {
             )}
             renderMain={() => (
                 <Switch>
-                    <Route path="/songs/" component={Songs} />
-
-                    <Redirect to="/songs/" />
+                    <Route from={BASE_ROUTE} component={Songs} />
                 </Switch>
             )}
         />

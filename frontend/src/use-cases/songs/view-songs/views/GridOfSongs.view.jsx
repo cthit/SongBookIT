@@ -5,9 +5,11 @@ import { SongCard, SongCardBody, SongGrid, TagList } from "../Songs.styles";
 import {
     DigitChip,
     DigitMarkdown,
-    DigitText
+    DigitText,
+    useDigitTranslations
 } from "@cthit/react-digit-components";
-import { findTags } from "../../../../common/hooks/Tags";
+import { findTags } from "../../../../common/hooks/tags";
+import { navViewSong } from "../../../../app/App.Routes";
 
 const filterTagsFunc = tags => {
     return song => song.tags.some(tag => tags.includes(tag));
@@ -29,6 +31,7 @@ const applyFilters = (songsToCheck, filters) => {
 };
 
 export const GridOfSongs = ({ songs, tags }) => {
+    const [text] = useDigitTranslations();
     let history = useHistory();
     const [{ filterSearch, filterTags }] = useStateValue();
     const [filteredSongs, setFilteredSongs] = useState(songs);
@@ -53,13 +56,13 @@ export const GridOfSongs = ({ songs, tags }) => {
                     <SongCard
                         key={s.song_id}
                         style={{ cursor: "pointer" }}
-                        onClick={() => history.push("/songs/" + s.song_id)}
+                        onClick={() => navViewSong(history, s.song_id)}
                     >
                         <SongCardBody>
                             <DigitText.Title text={s.number + ". " + s.title} />
                             <DigitText.Text
                                 bold
-                                text={"Författare: " + s.author}
+                                text={text.Author + ": " + s.author}
                             />
                             <DigitText.Text text={"Mel: " + s.melody} />
                             <DigitMarkdown
@@ -79,7 +82,7 @@ export const GridOfSongs = ({ songs, tags }) => {
                 ))}
             </SongGrid>
         ),
-        [JSON.stringify(filteredSongs)]
+        [JSON.stringify(filteredSongs), text]
     );
 };
 

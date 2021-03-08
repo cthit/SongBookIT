@@ -23,8 +23,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app.secret_key = config.SECRET_KEY
 
 
-# TODO: Add @admin_required where it's needed
-
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

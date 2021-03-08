@@ -17,6 +17,6 @@ export function putRequest(endpoint, data) {
     return axios.put(removeLastSlash(endpoint), data);
 }
 
-function removeLastSlash(path) {
+export function removeLastSlash(path) {
     return _.trimEnd(path, "/");
 }

@@ -5,7 +5,6 @@ const authority = "soongbook";
 
 function useAdmin() {
     const user = useGammaMe();
-    //const user = null;
     return user != null && some(user.authorities, ["authority", authority]);
 }
 

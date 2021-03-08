@@ -3,13 +3,15 @@ import {
     DigitDesign,
     DigitText,
     DigitAutocompleteSelectMultiple,
-    DigitTextField
+    DigitTextField,
+    useDigitTranslations
 } from "@cthit/react-digit-components";
 import { useStateValue, SongTagActions } from "../../Songs.context";
 import { FilterBody } from "./views.styles";
 
 const TagFilter = () => {
     const [{ tags }, dispatch] = useStateValue();
+    const [text] = useDigitTranslations();
 
     const options = tags
         .map(tag => {
@@ -21,7 +23,7 @@ const TagFilter = () => {
     return (
         <DigitAutocompleteSelectMultiple
             outlined
-            upperLabel="Filter the songs by tags"
+            upperLabel={text.FilterTag}
             options={options}
             value={value}
             margin={"!important"} // Unclear why this is necessary for TagFilter and SearchField to align
@@ -40,11 +42,12 @@ const TagFilter = () => {
 const SearchField = () => {
     const [searchText, setSearchText] = useState("");
     const [, dispatch] = useStateValue();
+    const [text] = useDigitTranslations();
 
     return (
         <DigitTextField
             value={searchText}
-            upperLabel="Search for a song"
+            upperLabel={text.FilterSearch}
             size={{ width: "300px" }}
             onChange={e => {
                 setSearchText(e.target.value);
@@ -58,16 +61,20 @@ const SearchField = () => {
     );
 };
 
-const SearchBar = () => (
-    <DigitDesign.Card>
-        <DigitDesign.CardBody>
-            <DigitText.Title text={"Search or browse the songs"} />
-            <FilterBody>
-                <SearchField />
-                <TagFilter />
-            </FilterBody>
-        </DigitDesign.CardBody>
-    </DigitDesign.Card>
-);
+const SearchBar = () => {
+    const [text] = useDigitTranslations();
+
+    return (
+        <DigitDesign.Card>
+            <DigitDesign.CardBody>
+                <DigitText.Title text={text.Browse} />
+                <FilterBody>
+                    <SearchField />
+                    <TagFilter />
+                </FilterBody>
+            </DigitDesign.CardBody>
+        </DigitDesign.Card>
+    );
+};
 
 export default SearchBar;

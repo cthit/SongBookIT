@@ -1,25 +1,30 @@
 import React from "react";
 import {
-    DigitButton,
+    useDigitTranslations,
     DigitDesign,
     DigitText,
-    useDigitTranslations
+    DigitButton
 } from "@cthit/react-digit-components";
 import { useHistory } from "react-router-dom";
 import { navHome } from "../../app/App.Routes";
 
-const InsufficientAccess = () => {
+const FourZeroFour = () => {
     const [text] = useDigitTranslations();
     const history = useHistory();
 
     return (
         <DigitDesign.Card margin={"auto"} size={{ width: "300px" }}>
             <DigitDesign.CardHeader>
-                <DigitDesign.CardTitle text={text.InsufficientAccess} />
+                <DigitDesign.CardTitle text={text.PageNotFound} />
             </DigitDesign.CardHeader>
-            <DigitDesign.CardHeaderImage src="/403.gif" />
+            <DigitDesign.CardHeaderImage src="/404.jpg" />
             <DigitDesign.CardBody>
-                <DigitText.Text text={text.YouDontHaveAccess} />
+                <DigitText.Text
+                    text={
+                        "This is not the site you're looking for! \n" +
+                        text.ContactDigit
+                    }
+                />
             </DigitDesign.CardBody>
             <DigitDesign.CardButtons>
                 <DigitButton
@@ -32,4 +37,4 @@ const InsufficientAccess = () => {
     );
 };
 
-export default InsufficientAccess;
+export default FourZeroFour;

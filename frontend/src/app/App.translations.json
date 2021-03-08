@@ -1,0 +1,122 @@
+{
+  "SignInWithGamma": [
+    "Sign in",
+    "Logga in"
+  ],
+  "AddSong": [
+    "Add a song",
+    "Lägg till en sång"
+  ],
+  "SignOut": [
+    "Sign out",
+    "Logga ut"
+  ],
+  "InsufficientAccess": [
+    "403 - Insufficient access",
+    "403 - Otillräcklig tillgång"
+  ],
+  "YouDontHaveAccess": [
+    "You do not have access to this page. Please contact digit@chalmers.it if you think this is a mistake.",
+    "Du har inte tillgång till denna sida. Kontakta digit@chalmers.it om du tror det här är ett misstag."
+  ],
+  "Back": [
+    "Back",
+    "Tillbaka"
+  ],
+  "EditSong": [
+    "Edit song",
+    "Redigera låt"
+  ],
+  "DeleteSong": [
+    "Delete song",
+    "Ta bort låt"
+  ],
+  "Close": [
+    "Close",
+    "Stäng"
+  ],
+  "Unknown": [
+    "Unknown",
+    "Okänd"
+  ],
+  "FilterTag": [
+    "Filter by tags",
+    "Filtrera med taggar"
+  ],
+  "FilterSearch": [
+    "Search songs",
+    "Sök bland sångerna"
+  ],
+  "Browse": [
+    "Welcome to ITs songbook",
+    "Välkommen till ITs sångbok"
+  ],
+  "Title": [
+    "Title",
+    "Titel"
+  ],
+  "Author": [
+    "Author",
+    "Författare"
+  ],
+  "Melody": [
+    "Melody",
+    "Melodi"
+  ],
+  "Text": [
+    "Lyrics",
+    "Text"
+  ],
+  "Tags": [
+    "Tags",
+    "Taggar"
+  ],
+  "Save": [
+    "Save",
+    "Spara"
+  ],
+  "CantBeEmpty": [
+    "This field can't be empty",
+    "Fältet får inte vara tomt"
+  ],
+  "Contact": [
+    "If this happens often, please send a mail with what you tried to do to digit@chalmers.it",
+    "Om det här händer ofta, skicka ett mail till digit@chalmers.it med vad du försökte göra"
+  ],
+  "ContactDigit": [
+    "If you still think it is? Contact digIT@chalmers.it.",
+    "Om du fortfarande tror att du har träffat rätt, kontaka digIT@chalmers.it."
+  ],
+  "PageNotFound": [
+    "404 - Page not found",
+    "404 - Sida ej funnen"
+  ],
+  "SomethingWentWrong": [
+    "500 - Something went wrong",
+    "500 - Någonting gick fel"
+  ],
+  "AddSongSuccessful": [
+    "Successfully added song",
+    "Lyckades lägga till sång"
+  ],
+  "AddSongFailed": [
+    "Failed to add song",
+    "Misslyckades lägga till sång"
+  ],
+  "DeleteSongSuccessful": [
+    "Successfully deleted song",
+    "Lyckades ta bort sången"
+  ],
+  "DeleteSongFailed": [
+    "Failed to delete song",
+    "Misslyckades ta bort sången"
+  ],
+  "EditSongSuccessful": [
+    "Successfully edited song",
+    "Lyckades redigera sången"
+  ],
+  "EditSongFailed": [
+    "Failed to edit song",
+    "Misslyckades redigera sången"
+  ]
+}

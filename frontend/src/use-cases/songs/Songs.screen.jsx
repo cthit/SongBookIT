@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import CreateSong from "./create-song";
 import EditSong from "./edit-song";
 import ViewSongs from "./view-songs";
@@ -8,6 +8,12 @@ import {
     SongTagReducer,
     SongTagProvider
 } from "./Songs.context";
+import {
+    SONGS_CREATE_ROUTE,
+    SONGS_EDIT_ROUTE,
+    BASE_ROUTE
+} from "../../app/App.Routes";
+import FourZeroFour from "../../common/elements/FourZeroZero";
 
 const Songs = () => (
     <SongTagProvider
@@ -15,12 +21,19 @@ const Songs = () => (
         reducer={SongTagReducer}
     >
         <Switch>
-            <Route path="/songs/create" exact component={CreateSong} />
-            <Route path="/songs/edit/:song_id" exact component={EditSong} />
-            <Redirect from="/songs/edit/" to="/" exact />
+            <Route path={SONGS_CREATE_ROUTE} exact component={CreateSong} />
+            <Route
+                path={SONGS_EDIT_ROUTE + "/:song_id?"}
+                exact
+                component={EditSong}
+            />
 
-            <Route path="/songs/:song_id?" exact component={ViewSongs} />
-            <Redirect from="*" to="/songs/" />
+            <Route
+                path={BASE_ROUTE + ":song_id?"}
+                exact
+                component={ViewSongs}
+            />
+            <Route component={FourZeroFour} />
         </Switch>
     </SongTagProvider>
 );

@@ -6,17 +6,18 @@ import {
     DigitChip,
     DigitLayout
 } from "@cthit/react-digit-components";
+import { navEditSong, navHome } from "../../../../app/App.Routes";
 
-const SongDetails = (admin, s, tags, history) => {
-    const melody = s.melody ? s.melody : "Unknown";
-    const author = s.author ? s.author : "Unknown";
+const SongDetails = (admin, s, tags, history, text) => {
+    const melody = s.melody ? s.melody : text.Unknown;
+    const author = s.author ? s.author : text.Unknown;
 
     return {
         title: s.number + ". " + s.title,
         renderMain: () => (
             <>
-                <DigitText.Text bold text={"Text: " + author} />
-                <DigitText.Text text={"Mel: " + melody} />
+                <DigitText.Text bold text={text.Author + ": " + author} />
+                <DigitText.Text text={text.Melody + ": " + melody} />
                 <DigitMarkdown markdownSource={s.text} />
                 <DigitLayout.Row>
                     {tags.map(tag => (
@@ -27,20 +28,20 @@ const SongDetails = (admin, s, tags, history) => {
         ),
         renderButtons: (confirm, cancel) => (
             <>
-                <DigitButton text={"Close"} raised onClick={cancel} />
                 {admin && (
                     <DigitButton
-                        text={"Edit song"}
+                        text={text.EditSong}
                         primary
                         raised
                         submit
                         onClick={confirm}
                     />
                 )}
+                <DigitButton text={text.Close} raised onClick={cancel} />
             </>
         ),
-        onCancel: () => history.push("/songs"),
-        onConfirm: () => history.push("/songs/edit/" + s.song_id)
+        onCancel: () => navHome(history),
+        onConfirm: () => navEditSong(history, s.song_id)
     };
 };
 

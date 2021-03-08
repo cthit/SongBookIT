@@ -4,7 +4,9 @@ import {
     DigitTextField,
     DigitTextArea,
     DigitAutocompleteSelectMultiple,
-    DigitIconButton
+    DigitIconButton,
+    useDigitTranslations,
+    useDigitToast
 } from "@cthit/react-digit-components";
 import { getTags } from "../../../api/tags/get.tags.api";
 import { addSong } from "../../../api/songs/post.songs.api";
@@ -19,11 +21,14 @@ import { useHistory } from "react-router-dom";
 import { ErrorTextCard } from "../../../common/elements/Error";
 import useAdmin from "../../../common/hooks/use-admin";
 import InsufficientAccess from "../../../common/views/InsufficientAccess";
+import { navEditSong } from "../../../app/App.Routes";
 
 const CreateSong = () => {
     const [tags, setTags] = useState([]);
     const [error, setError] = useState({ isError: false, message: "" });
     let history = useHistory();
+    const [text] = useDigitTranslations();
+    const [queueToast] = useDigitToast();
 
     const admin = useAdmin();
 
@@ -61,11 +66,15 @@ const CreateSong = () => {
                     onSubmit={(values, actions) => {
                         addSong(values)
                             .then(res => {
-                                history.push(
-                                    "/songs/edit/" + res.data.data.song_id
-                                );
+                                queueToast({
+                                    text: text.AddSongSuccessful
+                                });
+                                navEditSong(history, res.data.data.song_id);
                             })
                             .catch(error => {
+                                queueToast({
+                                    text: text.AddSongFailed
+                                });
                                 setError(error.response.data.error);
                             });
                     }}
@@ -77,50 +86,50 @@ const CreateSong = () => {
                         tags: []
                     }}
                     validationSchema={yup.object().shape({
-                        title: yup.string().required("This can't be empty"),
+                        title: yup.string().required(text.CantBeEmpty),
                         author: yup.string(),
                         melody: yup.string(),
-                        text: yup.string().required("This can't be empty")
+                        text: yup.string().required(text.CantBeEmpty)
                     })}
-                    titleText={"Create a song"}
-                    submitText={"Save song"}
+                    titleText={text.AddSong}
+                    submitText={text.Save}
                     keysOrder={["title", "author", "melody", "text", "tags"]}
                     keysComponentData={{
                         title: {
                             component: DigitTextField,
                             componentProps: {
-                                upperLabel: "Title"
+                                upperLabel: text.Title
                             }
                         },
                         author: {
                             component: DigitTextField,
                             componentProps: {
-                                upperLabel: "Author"
+                                upperLabel: text.Author
                             }
                         },
                         melody: {
                             component: DigitTextField,
                             componentProps: {
-                                upperLabel: "Melody"
+                                upperLabel: text.Melody
                             }
                         },
                         text: {
                             component: DigitTextArea,
                             componentProps: {
                                 primary: true,
-                                upperLabel: "Text"
+                                upperLabel: text.Text
                             }
                         },
                         tags: {
                             component: DigitAutocompleteSelectMultiple,
                             componentProps: {
-                                upperLabel: "Give your song tags",
+                                upperLabel: text.Tags,
                                 options: tags
                             }
                         }
                     }}
                     submitButton={{
-                        text: "Create"
+                        text: text.Save
                     }}
                 />
             </CenterContainer>
