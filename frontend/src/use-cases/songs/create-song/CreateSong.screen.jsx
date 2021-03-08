@@ -4,50 +4,52 @@ import {
     DigitTextField,
     DigitTextArea,
     DigitAutocompleteSelectMultiple,
-    DigitIconButton, DigitAutocompleteSelectSingle,
+    DigitIconButton
 } from "@cthit/react-digit-components";
 import { getTags } from "../../../api/tags/get.tags.api";
 import { addSong } from "../../../api/songs/post.songs.api";
 import * as yup from "yup";
-import { CenterContainer, ColumnContainer, TopRightButton } from "../../../common-ui/Common.styles";
+import {
+    CenterContainer,
+    ColumnContainer,
+    TopRightButton
+} from "../../../common-ui/design/Common.styles";
 import { ArrowBackRounded } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
-import { ErrorTextCard } from "../../../common-ui/Error";
+import { ErrorTextCard } from "../../../common/elements/Error";
 import useAdmin from "../../../common/hooks/use-admin";
-import InsufficientAccess from "../../../common/InsufficientAccess";
+import InsufficientAccess from "../../../common/views/InsufficientAccess";
 
 const CreateSong = () => {
     const [tags, setTags] = useState([]);
-    const [error, setError] = useState({isError: false, message: ""})
+    const [error, setError] = useState({ isError: false, message: "" });
     let history = useHistory();
-
 
     const admin = useAdmin();
 
-
     useEffect(() => {
         getTags().then(res => {
-            const tags_res = Object.values(res.data.data.tags)
+            const tags_res = Object.values(res.data.data.tags);
             setTags(
-                tags_res.map(tag => ({ text: tag.name, value: tag.tag_id }))
+                tags_res
+                    .map(tag => ({ text: tag.name, value: tag.tag_id }))
                     .sort((a, b) => (a.text > b.text ? 1 : -1))
             );
         });
     }, []);
 
-
     if (!admin) {
-        return <InsufficientAccess/>
+        return <InsufficientAccess />;
     }
 
     return (
         <ColumnContainer>
             <TopRightButton>
                 <DigitIconButton
-                icon={ArrowBackRounded}
-                primary
-                raised
-                onClick={() => history.goBack()}
+                    icon={ArrowBackRounded}
+                    primary
+                    raised
+                    onClick={() => history.goBack()}
                 />
             </TopRightButton>
             <CenterContainer>
@@ -57,24 +59,28 @@ const CreateSong = () => {
                     alignSelf
                     justifySelf
                     onSubmit={(values, actions) => {
-                        addSong(values).then(res => {
-                            history.push("/songs/edit/" + res.data.data.song_id)
-                        })  .catch(error => {
-                            setError(error.response.data.error)
-                        })
+                        addSong(values)
+                            .then(res => {
+                                history.push(
+                                    "/songs/edit/" + res.data.data.song_id
+                                );
+                            })
+                            .catch(error => {
+                                setError(error.response.data.error);
+                            });
                     }}
                     initialValues={{
                         title: "",
                         author: "",
                         melody: "",
                         text: "",
-                        tags: [],
+                        tags: []
                     }}
                     validationSchema={yup.object().shape({
                         title: yup.string().required("This can't be empty"),
                         author: yup.string(),
                         melody: yup.string(),
-                        text: yup.string().required("This can't be empty"),
+                        text: yup.string().required("This can't be empty")
                     })}
                     titleText={"Create a song"}
                     submitText={"Save song"}
@@ -83,38 +89,38 @@ const CreateSong = () => {
                         title: {
                             component: DigitTextField,
                             componentProps: {
-                                upperLabel: "Title",
-                            },
+                                upperLabel: "Title"
+                            }
                         },
                         author: {
                             component: DigitTextField,
                             componentProps: {
-                                upperLabel: "Author",
-                            },
+                                upperLabel: "Author"
+                            }
                         },
                         melody: {
                             component: DigitTextField,
                             componentProps: {
-                                upperLabel: "Melody",
-                            },
+                                upperLabel: "Melody"
+                            }
                         },
                         text: {
                             component: DigitTextArea,
                             componentProps: {
                                 primary: true,
-                                upperLabel: "Text",
-                            },
+                                upperLabel: "Text"
+                            }
                         },
                         tags: {
                             component: DigitAutocompleteSelectMultiple,
                             componentProps: {
                                 upperLabel: "Give your song tags",
-                                options: tags,
-                            },
-                        },
+                                options: tags
+                            }
+                        }
                     }}
                     submitButton={{
-                        text: "Create",
+                        text: "Create"
                     }}
                 />
             </CenterContainer>

@@ -6,6 +6,7 @@ import requests
 from flask import Response, session
 
 from config import gamma_config as config
+from config.gamma_config import GAMMA_AUTHORIZATION_URI
 
 from utils.HttpResponse import HttpResponse, get_with_response
 
@@ -13,18 +14,20 @@ from utils.HttpResponse import HttpResponse, get_with_response
 def handle_gamma_me(session: Dict) -> HttpResponse:
     if "token" in session:
         headers = {
-            'Authorization': 'Bearer ' + session["token"]
-
+            'Authorization': f'Bearer {session["token"]}'
         }
         res = requests.get(config.GAMMA_ME_URI, headers=headers)
         if res.ok:
-            return get_with_response(Response(response=res, status=200, mimetype='application/json'))
+            return get_with_response(Response(response=res, status=200))
 
     response_type = "response_type=code"
     client_id = "client_id=" + config.GAMMA_CLIENT_ID
     redirect_uri = "redirect_uri=" + config.GAMMA_REDIRECT_URI
-    return get_with_response(Response(config.GAMMA_AUTHORIZATION_URI + "?" + response_type + "&" + client_id + "&" + redirect_uri,
-                    status=401))
+    response = f"{GAMMA_AUTHORIZATION_URI}?{response_type}&{client_id}&{redirect_uri}"
+    headers = {
+        "location": response
+    }
+    return get_with_response(Response(response=response, headers=headers, status=401))
 
 
 def handle_gamma_auth(request: Dict, session: Dict) -> HttpResponse:
@@ -42,7 +45,7 @@ def handle_gamma_auth(request: Dict, session: Dict) -> HttpResponse:
 
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + encodedStr
+        'Authorization': f'Basic {encodedStr}'
     }
 
     res = requests.post(config.GAMMA_TOKEN_URI + "?" + urllib.parse.urlencode(data), headers=headers)

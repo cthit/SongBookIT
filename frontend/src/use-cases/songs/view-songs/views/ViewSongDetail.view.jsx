@@ -6,7 +6,6 @@ import {
     DigitChip,
     DigitLayout
 } from "@cthit/react-digit-components";
-import useAdmin from "../../../common/hooks/use-admin";
 
 const SongDetails = (admin, s, tags, history) => {
     const melody = s.melody ? s.melody : "Unknown";
@@ -28,7 +27,7 @@ const SongDetails = (admin, s, tags, history) => {
         ),
         renderButtons: (confirm, cancel) => (
             <>
-                <DigitButton text={"Close song"} raised onClick={cancel} />
+                <DigitButton text={"Close"} raised onClick={cancel} />
                 {admin && (
                     <DigitButton
                         text={"Edit song"}

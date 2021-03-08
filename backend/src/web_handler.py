@@ -44,10 +44,12 @@ class SongRes(Resource):
         resp = handle_get_song_by_id(song_id).get_response()
         return resp
 
+    @admin_required
     @db_session
     def delete(self, song_id):
         return handle_delete_song(song_id).get_response()
 
+    @admin_required
     @db_session
     def put(self, song_id):
         data = request.get_json()
@@ -58,6 +60,7 @@ class SongsRes(Resource):
     def get(self):
         return handle_get_songs_and_tags().get_response()
 
+    @admin_required
     @db_session
     def post(self):
         data = request.get_json()
@@ -69,6 +72,7 @@ class TagsRes(Resource):
     def get(self):
         return handle_get_tags().get_response()
 
+    @admin_required
     @db_session
     def post(self):
         data = request.get_json(force=True)
@@ -81,6 +85,7 @@ class TagRes(Resource):
     def get(self, tag_id):
         return handle_get_tag_by_id(tag_id).get_response()
 
+    @admin_required
     @db_session
     def delete(self, tag_id):
         return handle_delete_tag(tag_id).get_response()
@@ -95,6 +100,7 @@ class GammaAuth(Resource):
     def post(self):
         data = request.get_json()
         return handle_gamma_auth(data, session).get_response()
+
 
 class GammaSignout(Resource):
     def post(self):

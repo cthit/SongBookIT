@@ -2,8 +2,7 @@ import React from "react";
 import {
     DigitDesign,
     DigitLayout,
-    DigitText,
-    useDigitTranslations
+    DigitText
 } from "@cthit/react-digit-components";
 
 const InsufficientAccess = () => {
@@ -13,7 +12,10 @@ const InsufficientAccess = () => {
                 <DigitDesign.CardHeader>
                     <DigitDesign.CardTitle text={"Nope"} />
                 </DigitDesign.CardHeader>
-                <DigitDesign.CardHeaderImage src="/403.gif" alt="This is so sad" />
+                <DigitDesign.CardHeaderImage
+                    src="/403.gif"
+                    alt="This is so sad"
+                />
                 <DigitDesign.CardBody>
                     <DigitText.Text text={"lel nope, Git out ya wanker"} />
                 </DigitDesign.CardBody>

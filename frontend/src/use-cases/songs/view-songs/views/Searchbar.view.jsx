@@ -5,8 +5,8 @@ import {
     DigitAutocompleteSelectMultiple,
     DigitTextField
 } from "@cthit/react-digit-components";
-import { useStateValue, StateActions } from "../../../app/App.context";
-import { FilterBody, StyledField, StyledSearchbar } from "./views.styles";
+import { useStateValue, SongTagActions } from "../../Songs.context";
+import { FilterBody } from "./views.styles";
 
 const TagFilter = () => {
     const [{ tags }, dispatch] = useStateValue();
@@ -24,11 +24,12 @@ const TagFilter = () => {
             upperLabel="Filter the songs by tags"
             options={options}
             value={value}
+            margin={"!important"} // Unclear why this is necessary for TagFilter and SearchField to align
             size={{ width: "300px" }}
             onChange={e => {
                 setValue(e.target.value);
                 dispatch({
-                    type: StateActions.filterTags,
+                    type: SongTagActions.filterTags,
                     tags: e.target.value
                 });
             }}
@@ -38,7 +39,7 @@ const TagFilter = () => {
 
 const SearchField = () => {
     const [searchText, setSearchText] = useState("");
-    const [{}, dispatch] = useStateValue();
+    const [, dispatch] = useStateValue();
 
     return (
         <DigitTextField
@@ -48,7 +49,7 @@ const SearchField = () => {
             onChange={e => {
                 setSearchText(e.target.value);
                 dispatch({
-                    type: StateActions.filterSearch,
+                    type: SongTagActions.filterSearch,
                     search: e.target.value
                 });
             }}
