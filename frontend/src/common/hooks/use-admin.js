@@ -1,7 +1,7 @@
 import some from "lodash/some";
-import { useGammaMe } from "@cthit/react-digit-components";
+import {useGammaMe} from "@cthit/react-digit-components";
 
-const authority = "soongbook";
+const authority = "songbook";
 
 function useAdmin() {
     const user = useGammaMe();

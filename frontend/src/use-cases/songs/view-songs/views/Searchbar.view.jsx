@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
     DigitDesign,
     DigitText,
@@ -6,16 +6,16 @@ import {
     DigitTextField,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import { useStateValue, SongTagActions } from "../../Songs.context";
-import { FilterBody } from "./views.styles";
+import {useStateValue, SongTagActions} from "../../Songs.context";
+import {FilterBody} from "./views.styles";
 
 const TagFilter = () => {
-    const [{ tags }, dispatch] = useStateValue();
+    const [{tags}, dispatch] = useStateValue();
     const [text] = useDigitTranslations();
 
     const options = tags
         .map(tag => {
-            return { text: tag.name, value: tag.tag_id };
+            return {text: tag.name, value: tag.tag_id};
         })
         .sort((a, b) => (a.text > b.text ? 1 : -1));
     const [value, setValue] = useState([]);
@@ -27,7 +27,7 @@ const TagFilter = () => {
             options={options}
             value={value}
             margin={"!important"} // Unclear why this is necessary for TagFilter and SearchField to align
-            size={{ width: "300px" }}
+            size={{width: "300px"}}
             onChange={e => {
                 setValue(e.target.value);
                 dispatch({
@@ -48,7 +48,7 @@ const SearchField = () => {
         <DigitTextField
             value={searchText}
             upperLabel={text.FilterSearch}
-            size={{ width: "300px" }}
+            size={{width: "300px"}}
             onChange={e => {
                 setSearchText(e.target.value);
                 dispatch({
@@ -67,10 +67,10 @@ const SearchBar = () => {
     return (
         <DigitDesign.Card>
             <DigitDesign.CardBody>
-                <DigitText.Title text={text.Browse} />
+                <DigitText.Title text={text.Browse}/>
                 <FilterBody>
-                    <SearchField />
-                    <TagFilter />
+                    <SearchField/>
+                    <TagFilter/>
                 </FilterBody>
             </DigitDesign.CardBody>
         </DigitDesign.Card>

@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { DigitIconButton, DigitLoading } from "@cthit/react-digit-components";
-import { getTags } from "../../../api/tags/get.tags.api";
+import React, {useEffect, useState} from "react";
+import {DigitIconButton, DigitLoading} from "@cthit/react-digit-components";
+import {getTags} from "../../../api/tags/get.tags.api";
 import {
     ColumnContainer,
     TopRightButton,
     WideCenterContainer
 } from "../../../common-ui/design/Common.styles";
-import { ArrowBackRounded } from "@material-ui/icons";
-import { useHistory, useParams } from "react-router-dom";
-import { ErrorTextCard } from "../../../common/elements/Error";
-import { getSong } from "../../../api/songs/get.songs.api";
+import {ArrowBackRounded} from "@material-ui/icons";
+import {useHistory, useParams} from "react-router-dom";
+import {ErrorTextCard} from "../../../common/elements/Error";
+import {getSong} from "../../../api/songs/get.songs.api";
 import useAdmin from "../../../common/hooks/use-admin";
 import InsufficientAccess from "../../../common/views/InsufficientAccess";
 import EditSongForm from "./views/EditSongForm.view";
 
 const EditSong = () => {
     let history = useHistory();
-    let { song_id } = useParams();
+    let {song_id} = useParams();
     const [tags, setTags] = useState([]);
     const [song, setSong] = useState({
         song_id: "",
@@ -40,7 +40,7 @@ const EditSong = () => {
                 setTags(
                     tags
                         .map(tag => {
-                            return { text: tag.name, value: tag.tag_id };
+                            return {text: tag.name, value: tag.tag_id};
                         })
                         .sort((a, b) => (a.text > b.text ? 1 : -1))
                 );
@@ -64,7 +64,7 @@ const EditSong = () => {
     const admin = useAdmin();
 
     if (!admin) {
-        return <InsufficientAccess />;
+        return <InsufficientAccess/>;
     }
 
     return (
@@ -79,14 +79,14 @@ const EditSong = () => {
             </TopRightButton>
             <WideCenterContainer>
                 {loadSongError.isError && (
-                    <ErrorTextCard message={loadSongError.message} />
+                    <ErrorTextCard message={loadSongError.message}/>
                 )}
                 {hasLoadedSong && hasLoadedTag ? (
-                    <EditSongForm tags={tags} song={song} />
+                    <EditSongForm tags={tags} song={song}/>
                 ) : loadSongError ? (
-                    <div />
+                    <div/>
                 ) : (
-                    <DigitLoading />
+                    <DigitLoading/>
                 )}
             </WideCenterContainer>
         </ColumnContainer>

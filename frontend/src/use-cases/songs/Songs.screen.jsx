@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 import CreateSong from "./create-song";
 import EditSong from "./edit-song";
 import ViewSongs from "./view-songs";
@@ -21,7 +21,7 @@ const Songs = () => (
         reducer={SongTagReducer}
     >
         <Switch>
-            <Route path={SONGS_CREATE_ROUTE} exact component={CreateSong} />
+            <Route path={SONGS_CREATE_ROUTE} exact component={CreateSong}/>
             <Route
                 path={SONGS_EDIT_ROUTE + "/:song_id?"}
                 exact
@@ -33,7 +33,7 @@ const Songs = () => (
                 exact
                 component={ViewSongs}
             />
-            <Route component={FourZeroFour} />
+            <Route component={FourZeroFour}/>
         </Switch>
     </SongTagProvider>
 );

@@ -1,6 +1,6 @@
-import { useHistory } from "react-router-dom";
-import React, { useState } from "react";
-import { ErrorTextCard } from "../../../../common/elements/Error";
+import {useHistory} from "react-router-dom";
+import React, {useState} from "react";
+import {ErrorTextCard} from "../../../../common/elements/Error";
 import {
     DigitAutocompleteSelectMultiple,
     DigitButton,
@@ -10,23 +10,23 @@ import {
     useDigitToast,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import { editSong } from "../../../../api/songs/put.songs.api";
+import {editSong} from "../../../../api/songs/put.songs.api";
 import * as yup from "yup";
-import { deleteSong } from "../../../../api/songs/delete.songs.api";
-import { navHome, navViewSong } from "../../../../app/App.Routes";
+import {deleteSong} from "../../../../api/songs/delete.songs.api";
+import {navHome, navViewSong} from "../../../../app/App.Routes";
 
-const EditSongForm = ({ tags, song }) => {
+const EditSongForm = ({tags, song}) => {
     let history = useHistory();
     const [text] = useDigitTranslations();
-    const [error, setError] = useState({ isError: false, message: "" });
+    const [error, setError] = useState({isError: false, message: ""});
     const [queueToast] = useDigitToast();
 
     return (
         <>
-            {error.isError && <ErrorTextCard message={error.message} />}
+            {error.isError && <ErrorTextCard message={error.message}/>}
             <DigitEditDataCard
                 hasButtons
-                size={{ width: "min(80vw, 600px)" }}
+                size={{width: "min(80vw, 600px)"}}
                 onSubmit={(values, actions) => {
                     values["song_id"] = song.song_id;
                     editSong(song.song_id, values)
@@ -67,21 +67,21 @@ const EditSongForm = ({ tags, song }) => {
                         component: DigitTextField,
                         componentProps: {
                             upperLabel: text.Title,
-                            size: { width: "min(60vw, 550px)" }
+                            size: {width: "min(60vw, 550px)"}
                         }
                     },
                     author: {
                         component: DigitTextField,
                         componentProps: {
                             upperLabel: text.Author,
-                            size: { width: "min(60vw, 550px)" }
+                            size: {width: "min(60vw, 550px)"}
                         }
                     },
                     melody: {
                         component: DigitTextField,
                         componentProps: {
                             upperLabel: text.Melody,
-                            size: { width: "min(60vw, 550px)" }
+                            size: {width: "min(60vw, 550px)"}
                         }
                     },
                     text: {
@@ -89,7 +89,7 @@ const EditSongForm = ({ tags, song }) => {
                         componentProps: {
                             primary: true,
                             upperLabel: text.Tags,
-                            size: { width: "min(60vw, 550px)" }
+                            size: {width: "min(60vw, 550px)"}
                         }
                     },
                     tags: {
@@ -97,7 +97,7 @@ const EditSongForm = ({ tags, song }) => {
                         componentProps: {
                             upperLabel: text.tags,
                             options: tags,
-                            size: { width: "min(60vw, 550px)" }
+                            size: {width: "min(60vw, 550px)"}
                         }
                     }
                 }}

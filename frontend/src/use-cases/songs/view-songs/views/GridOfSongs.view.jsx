@@ -1,15 +1,15 @@
-import { useHistory } from "react-router-dom";
-import { useStateValue } from "../../Songs.context";
-import React, { useEffect, useMemo, useState } from "react";
-import { SongCard, SongCardBody, SongGrid, TagList } from "../Songs.styles";
+import {useHistory} from "react-router-dom";
+import {useStateValue} from "../../Songs.context";
+import React, {useEffect, useMemo, useState} from "react";
+import {SongCard, SongCardBody, SongGrid, TagList} from "../Songs.styles";
 import {
     DigitChip,
     DigitMarkdown,
     DigitText,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import { findTags } from "../../../../common/hooks/tags";
-import { navViewSong } from "../../../../app/App.Routes";
+import {findTags} from "../../../../common/hooks/tags";
+import {navViewSong} from "../../../../app/App.Routes";
 
 const filterTagsFunc = tags => {
     return song => song.tags.some(tag => tags.includes(tag));
@@ -30,10 +30,10 @@ const applyFilters = (songsToCheck, filters) => {
     }
 };
 
-export const GridOfSongs = ({ songs, tags }) => {
+export const GridOfSongs = ({songs, tags}) => {
     const [text] = useDigitTranslations();
     let history = useHistory();
-    const [{ filterSearch, filterTags }] = useStateValue();
+    const [{filterSearch, filterTags}] = useStateValue();
     const [filteredSongs, setFilteredSongs] = useState(songs);
 
     const filterFuncArr = [];
@@ -55,16 +55,16 @@ export const GridOfSongs = ({ songs, tags }) => {
                 {filteredSongs.map(s => (
                     <SongCard
                         key={s.song_id}
-                        style={{ cursor: "pointer" }}
+                        style={{cursor: "pointer"}}
                         onClick={() => navViewSong(history, s.song_id)}
                     >
                         <SongCardBody>
-                            <DigitText.Title text={s.number + ". " + s.title} />
+                            <DigitText.Title text={s.number + ". " + s.title}/>
                             <DigitText.Text
                                 bold
                                 text={text.Author + ": " + s.author}
                             />
-                            <DigitText.Text text={"Mel: " + s.melody} />
+                            <DigitText.Text text={"Mel: " + s.melody}/>
                             <DigitMarkdown
                                 markdownSource={s.text.slice(0, 100) + "..."}
                             />

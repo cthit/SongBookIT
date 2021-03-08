@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR /usr/src/songbookit/backend
+WORKDIR /usr/src/songbook/backend
 
 COPY requirements.txt .
 
@@ -8,11 +8,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN useradd songbookit
-RUN chown -R songbookit /usr/src/songbookit/backend
+RUN useradd songbook
+RUN chown -R songbook /usr/src/songbook/backend
 
-USER songbookit
+USER songbook
+
+ENV SONGBOOK_POSTGRES_USER songbook
+ENV SONGBOOK_POSTGRES_PASSWORD password
+ENV SONGBOOK_POSTGRES_HOST songbook-db
+ENV SONGBOOK_POSTGRES_PORT 5432
+ENV PYTHONUNBUFFERED 0
 
 EXPOSE 5000
 
-CMD ["sh", "start.sh"]
+CMD ["sh", "dev_start.sh"]

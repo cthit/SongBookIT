@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import {
     DigitHeader,
     useDigitTranslations,
     useGamma,
     useGammaMe
 } from "@cthit/react-digit-components";
-import { Switch, Route } from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 import Songs from "../use-cases/songs";
 import Header from "./Elements/Header/Header.element";
 import translations from "./App.translations";
-import { BASE_ROUTE } from "./App.Routes";
-import { GAMMA_AUTH_ENDPOINT, GAMMA_ME_ENDPOINT } from "../api/utils/endpoints";
+import {BASE_ROUTE} from "./App.Routes";
+import {GAMMA_AUTH_ENDPOINT, GAMMA_ME_ENDPOINT} from "../api/utils/endpoints";
 
 const getUserLanguage = user => {
     let language = user == null ? null : user.language;
@@ -55,11 +55,11 @@ const App = () => {
                 justifyContent: "space-between"
             }}
             renderCustomHeader={() => (
-                <Header loading={loading} signIn={signIn} />
+                <Header loading={loading} signIn={signIn}/>
             )}
             renderMain={() => (
                 <Switch>
-                    <Route from={BASE_ROUTE} component={Songs} />
+                    <Route from={BASE_ROUTE} component={Songs}/>
                 </Switch>
             )}
         />

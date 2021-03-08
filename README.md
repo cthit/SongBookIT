@@ -4,19 +4,33 @@ The digital songbook of the software engineering student division with all the s
 
 ## Development
 
-The easiest way to get started is via docker!
+The easiest way to get started is via docker with the backend running in an IDE!
 
+### Docker-compose
 `docker-compose up --build`
 
 `docker-compose.yml` sets up the following dependencies:
 
-* Frontend and backend with hot reloading support.
+* Frontend with hot reloading support.
 * Postgres database for the backend.
 * The frontend, backend, a database, and a Redis instance for [Gamma](https://github.com/cthit/gamma).
 
+### Set up backend
+For the backend to connect to the other dependencies, a proxy has to be set up. 
+This value, `HTTP_PROXY` is specified in `frontend/.env.development` and should have the value of the Gateway address for the frontend's docker container.
+It can be found by following the steps below.
+
+* Run `docker-compose up`
+* When all the containers are active, execute `docker ps`.
+* Copy a Container ID for a container in the Songbook application. 
+  There should be a several containers listed in table, any of which can be used. 
+* Execute `docker inspect <Contianer ID> | grep "Gateway":`
+* The address/es found is the value of you `HTTP_PROXY`
+
 ### Adding mocking data
 
-In `App.py` in the backend the function `setup_db.py` is used to reset, create and populate the database with mockingdata. It is controlled by the boolean passed to it.
+In `backend/src/App.py` the function `setup_db(bool)` is used to reset, create and populate the database with mocking data.
+It is controlled by the boolean passed to it.
 
 ### Adding or updating dependencies
 
@@ -25,12 +39,11 @@ Docker can be unforgiving when trying to update dependencies.
 * Start with updating your dependencies in one of the package.json, either the one for the frontend or the one for the backend.
 * Run `yarn install`.
 * Run `docker-compose rm`. This will remove your volumes and any previously saved data.
-* Run `docker-compose build --force-rm --no-cache songbook-frontend`
+* Run `docker-compose build --force-rm --no-cache songbook_songbook-frontend_1`
 
 After that, you can just run `docker-compose up` to get started again.
 
 ## Deployment
-
 What's needed to run songbook in production is:
 
 - Frontend
@@ -39,8 +52,9 @@ What's needed to run songbook in production is:
 - Reverse proxy (to run the frontend and backend from the same port)
 
 ### Database migration
-
-Right now there's no migration script installed on songbook.chalmers.it. You'll have to do it manually. Just don't forget to make a backup before starting. In the future, there should be SQL files for migration in `/database/migration`.
+Right now there's no migration script installed on songbook.chalmers.it.
+You'll have to do it manually. Just don't forget to make a backup before starting.
+In the future, there should be SQL files for migration in `/database/migration`.
 
 ### Environment variables
 

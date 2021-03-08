@@ -1,7 +1,7 @@
 from pony.orm import db_session
 
 from db import db, create_db
-from src.setup.md.md_to_db import add_songs_from_md
+from setup.md.md_to_db import add_songs_from_md
 
 
 @db_session

@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR /usr/src/songbookit/backend
+WORKDIR /usr/src/songbook/backend
 
 COPY requirements.txt .
 
@@ -8,10 +8,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN useradd songbookit
-RUN chown -R songbookit /usr/src/songbookit/backend
+RUN useradd songbook
+RUN chown -R songbook /usr/src/songbook/backend
 
-USER songbookit
+USER songbook
 
 ENV PYTHONUNBUFFERED 0
 

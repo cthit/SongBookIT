@@ -6,7 +6,7 @@ import {
     DigitChip,
     DigitLayout
 } from "@cthit/react-digit-components";
-import { navEditSong, navHome } from "../../../../app/App.Routes";
+import {navEditSong, navHome} from "../../../../app/App.Routes";
 
 const SongDetails = (admin, s, tags, history, text) => {
     const melody = s.melody ? s.melody : text.Unknown;
@@ -16,12 +16,12 @@ const SongDetails = (admin, s, tags, history, text) => {
         title: s.number + ". " + s.title,
         renderMain: () => (
             <>
-                <DigitText.Text bold text={text.Author + ": " + author} />
-                <DigitText.Text text={text.Melody + ": " + melody} />
-                <DigitMarkdown markdownSource={s.text} />
+                <DigitText.Text bold text={text.Author + ": " + author}/>
+                <DigitText.Text text={text.Melody + ": " + melody}/>
+                <DigitMarkdown markdownSource={s.text}/>
                 <DigitLayout.Row>
                     {tags.map(tag => (
-                        <DigitChip primary key={tag.tag_id} label={tag.name} />
+                        <DigitChip primary key={tag.tag_id} label={tag.name}/>
                     ))}
                 </DigitLayout.Row>
             </>
@@ -37,7 +37,7 @@ const SongDetails = (admin, s, tags, history, text) => {
                         onClick={confirm}
                     />
                 )}
-                <DigitButton text={text.Close} raised onClick={cancel} />
+                <DigitButton text={text.Close} raised onClick={cancel}/>
             </>
         ),
         onCancel: () => navHome(history),

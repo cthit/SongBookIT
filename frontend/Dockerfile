@@ -1,7 +1,7 @@
-from node:latest as build
+FROM node:latest as build
 
-RUN mkdir -p /usr/src/songbookit/frontend
-WORKDIR /usr/src/songbookit/frontend
+RUN mkdir -p /usr/src/songbook/frontend
+WORKDIR /usr/src/songbook/frontend
 
 COPY . .
 

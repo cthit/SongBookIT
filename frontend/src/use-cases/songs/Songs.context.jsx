@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, {createContext, useContext, useReducer} from "react";
 
 // Explanation of how it works can be found in the link below:
 // https://medium.com/simply/state-management-with-react-hooks-and-context-api-at-10-lines-of-code-baf6be8302c
 export const SongTagContext = createContext();
 
-export const SongTagProvider = ({ reducer, initialState, children }) => (
+export const SongTagProvider = ({reducer, initialState, children}) => (
     <SongTagContext.Provider value={useReducer(reducer, initialState)}>
         {children}
     </SongTagContext.Provider>
