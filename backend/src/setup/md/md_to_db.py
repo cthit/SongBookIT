@@ -3,11 +3,13 @@ import re
 from command.SongCommands import create_song
 from command.SongsToTagsCommands import create_songtotag
 from command.TagCommands import create_tag
+from config.config import INIT_DATA_PATH
 from objects.dataobject.SongToTagObject import SongToTagObject
 from objects.requestobjects.RequestSongObject import RequestSongObject
 from objects.requestobjects.RequestTagObject import RequestTagObject
 
-mdstr: str = open("src/setup/md/sangbok.md", 'r', encoding="utf-8").read()
+mdstr: str = open( f"{INIT_DATA_PATH}sangbok.md", 'r', encoding="utf-8").read()
+
 category_indices = [c.start() for c in re.finditer(r"[^\n]+\n=+", mdstr)]
 
 parts = [mdstr[i:j] for i, j in zip(category_indices, category_indices[1:] + [None])]

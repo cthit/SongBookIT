@@ -60,6 +60,11 @@ In the future, there should be SQL files for migration in `/database/migration`.
 
 The frontend has as of right now the gamma URL hardcoded to https://gamma.chalmers.it.
 
+The path in the backend differ between the IDE and docker so the following variable is necessary if a reset has to be done.  
+- `INIT_DATA_PATH`:
+  - Production should use: `src/setup/md/`
+  - Default, since the module `src` should be marked as Source in your IDE: `setup/md/`
+
 Environment variables for the backend to connect to a PostgreSQL database.
 - `SONGBOOK_POSTGRES_HOST`
 - `SONGBOOK_POSTGRES_PORT`
@@ -70,7 +75,6 @@ Environment variables for the backend to connect to a PostgreSQL database.
 ### Gamma properties
 songbook.chalmers.it is designed with usage with Gamma.
 Note that the defaults are matched with the values in `docker-compose.yml` for ease to start developing locally.
-
 
 #### Authority
 An authority `songbook` has to exist in Gamma. The name of which is to be provided to songbook.chalmers.it using `GAMMA_ADMIN_AUTHORITY`.
