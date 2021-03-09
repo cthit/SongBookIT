@@ -4,7 +4,7 @@ The digital songbook of the software engineering student division with all the s
 
 ## Development
 
-The easiest way to get started is via docker with the backend running in an IDE!
+The easiest way to get started is via docker with the backend running in an IDE.
 
 ### Docker-compose
 `docker-compose up --build`
@@ -25,7 +25,7 @@ It can be found by following the steps below.
 * Copy a Container ID for a container in the Songbook application. 
   There should be a several containers listed in table, any of which can be used. 
 * Execute `docker inspect <Contianer ID> | grep "Gateway":`
-* The address/es found is the value of you `HTTP_PROXY`
+* The address/es found is the value of yout `HTTP_PROXY`.
 
 ### Adding mocking data
 
@@ -34,7 +34,7 @@ It is controlled by the boolean passed to it.
 
 ### Adding or updating dependencies
 
-Docker can be unforgiving when trying to update dependencies.
+Docker can sometimes be unforgiving when trying to update dependencies.
 
 * Start with updating your dependencies in one of the package.json, either the one for the frontend or the one for the backend.
 * Run `yarn install`.
@@ -60,20 +60,37 @@ In the future, there should be SQL files for migration in `/database/migration`.
 
 The frontend has as of right now the gamma URL hardcoded to https://gamma.chalmers.it.
 
-## Production
-Environment variables for the backend:
+Environment variables for the backend to connect to a PostgreSQL database.
+- `SONGBOOK_POSTGRES_HOST`
+- `SONGBOOK_POSTGRES_PORT`
+- `SONGBOOK_POSTGRES_USER`
+- `SONGBOOK_POSTGRES_DB`
+- `SONGBOOK_POSTGRES_PASSWORD`: 
 
-- `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER`, `POSTGRES_DB`, `POSTGRES_PASSWORD`: Connecting to a PostgreSQL database.
+### Gamma properties
+songbook.chalmers.it is designed with usage with Gamma.
+Note that the defaults are matched with the values in `docker-compose.yml` for ease to start developing locally.
 
-To add mock songs to DB, run the following command after docker-compose has finished building
 
-#### Gamma properties
-songbook.chalmers.it is designed with usage with Gamma. Note that the defaults are matched with the values in `docker-compose.yml` for ease to start developing locally.
+#### Authority
+An authority `songbook` has to exist in Gamma. The name of which is to be provided to songbook.chalmers.it using `GAMMA_ADMIN_AUTHORITY`.
+This variable is necessary for both frontend and backend.
+- `GAMMA_ADMIN_AUTHORITY`: The name of the gamma authority. Default is `songbook`.
 
+#### The rest of 'em
+These only apply to the backend.
 - `GAMMA_SECRET`: Default `secret`.
-- `GAMMA_ADMIN_AUTHORITY`: The name of the gamma authority. Default is `sexit`.
 - `GAMMA_CLIENT_ID`, `GAMMA_CLIENT_SECRET`: Id and secret of the client from Gamma. Default is `id`/`secret`.
-- `GAMMA_ME_URI`: Default `/users/me`.
-- `GAMMA_TOKEN_URI`: Default `/oauth/token`.
-- `GAMMA_AUTHORIZATION_URI`: Should be the full URL, probably: `https://songbook.chalmers.it/api/oauth/authorize`. Default: `http://localhost:8081/api/oauth/authorize`.
-- `GAMMA_REDIRECT_URI`: Should as well be the full URL, probably: `https://gamma.chalmers.it/api/auth/account/callback`. Default `http://localhost:3001/auth/account/callback`.
+- `GAMMA_AUTHORIZATION_URI`:
+  - Should be the full URL, probably: `https://songbook.chalmers.it/api/oauth/authorize`.
+  - Default: `http://localhost:8081/api/oauth/authorize`.
+- `GAMMA_REDIRECT_URI`:
+  - Should as well be the full URL, probably: `https://gamma.chalmers.it/api/auth/account/callback`.
+  - Default `http://localhost:3001/auth/account/callback`.
+- `GAMMA_ME_URI`: 
+  - Yep, full URL, probably: `https://gamma.chalmers.it/api/users/me`
+  - Default `http://localhost:8081/api/users/me`.
+- `GAMMA_TOKEN_URI`:
+  - Same old story here, probably: `https://gamma.chalmers.it/api/oauth/token`
+  - Default `http://localhost:8081/api/oauth/token`.
+
