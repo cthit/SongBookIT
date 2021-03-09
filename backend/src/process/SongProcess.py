@@ -1,5 +1,4 @@
 from typing import Dict
-from uuid import UUID
 
 from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
 from command.SongCommands import remove_song, create_song, update_song

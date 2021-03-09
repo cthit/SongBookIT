@@ -4,7 +4,7 @@ from typing import Dict
 
 import requests
 from flask import Response, session
-
+from logging import getLogger
 from config import gamma_config as config
 from config.gamma_config import GAMMA_AUTHORIZATION_URI
 
@@ -54,6 +54,9 @@ def handle_gamma_auth(request: Dict, session: Dict) -> HttpResponse:
         session["token"] = access_token
         return get_with_response(Response(response=res, status=200))
     else:
+        logger = getLogger(__name__)
+        logger.error(f"An error occurred when communicating with Gamma:")
+        logger.error(res)
         return get_with_response(Response(status=500))
 
 
