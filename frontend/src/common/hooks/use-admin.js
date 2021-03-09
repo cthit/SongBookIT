@@ -1,7 +1,7 @@
 import some from "lodash/some";
 import {useGammaMe} from "@cthit/react-digit-components";
 
-const authority = "songbook";
+const authority = process.env.REACT_APP_GAMMA_ADMIN_AUTHORITY;
 
 function useAdmin() {
     const user = useGammaMe();

@@ -11,7 +11,7 @@ services:
     ports:
       - 3001:3000
     environment:
-      GAMMA_ADMIN_AUTHORITY: songbook
+      REACT_APP_GAMMA_ADMIN_AUTHORITY: songbook
     volumes:
       - ./frontend:/usr/src/app
     networks:

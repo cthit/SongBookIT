@@ -77,9 +77,10 @@ songbook.chalmers.it is designed with usage with Gamma.
 Note that the defaults are matched with the values in `docker-compose.yml` for ease to start developing locally.
 
 #### Authority
-An authority `songbook` has to exist in Gamma. The name of which is to be provided to songbook.chalmers.it using `GAMMA_ADMIN_AUTHORITY`.
-This variable is necessary for both frontend and backend.
-- `GAMMA_ADMIN_AUTHORITY`: The name of the gamma authority. Default is `songbook`.
+Songbook checks for the Authority specified in the following variables.
+`GAMMA_ADMIN_AUTHORITY` is passed to the backend, and the other is passed to the frontend as you might have guessed.
+- `GAMMA_ADMIN_AUTHORITY`: Default is `songbook`.
+- `REACT_APP_GAMMA_ADMIN_AUTHORITY`: Default is `songbook`.
 
 #### The rest of 'em
 These only apply to the backend.
