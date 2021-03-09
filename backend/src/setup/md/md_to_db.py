@@ -7,7 +7,7 @@ from objects.dataobject.SongToTagObject import SongToTagObject
 from objects.requestobjects.RequestSongObject import RequestSongObject
 from objects.requestobjects.RequestTagObject import RequestTagObject
 
-mdstr: str = open("setup/md/sangbok.md", 'r', encoding="utf-8").read()
+mdstr: str = open("src/setup/md/sangbok.md", 'r', encoding="utf-8").read()
 category_indices = [c.start() for c in re.finditer(r"[^\n]+\n=+", mdstr)]
 
 parts = [mdstr[i:j] for i, j in zip(category_indices, category_indices[1:] + [None])]

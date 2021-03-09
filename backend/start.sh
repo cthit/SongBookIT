@@ -1,4 +1,3 @@
-
 wait_for_postgres() (
     first_iteration=true
     while ! pg_isready -h "$SONGBOOK_POSTGRES_HOST" -p "$SONGBOOK_POSTGRES_PORT" -q; do
