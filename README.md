@@ -25,7 +25,7 @@ It can be found by following the steps below.
 * Copy a Container ID for a container in the Songbook application. 
   There should be a several containers listed in table, any of which can be used. 
 * Execute `docker inspect <Contianer ID> | grep "Gateway":`
-* The address/es found is the value of yout `HTTP_PROXY`.
+* The address/es found is the value of your `HTTP_PROXY`.
 
 ### Adding mocking data
 
@@ -34,7 +34,7 @@ It is controlled by the boolean passed to it.
 
 ### Adding or updating dependencies
 
-Docker can sometimes be unforgiving when trying to update dependencies.
+Docker can be unforgiving when trying to update dependencies.
 
 * Start with updating your dependencies in one of the package.json, either the one for the frontend or the one for the backend.
 * Run `yarn install`.
@@ -83,7 +83,7 @@ Songbook checks for the Authority specified in the following variables.
 - `REACT_APP_GAMMA_ADMIN_AUTHORITY`: Default is `songbook`.
 
 #### The rest of 'em
-These only apply to the backend.
+These variables should all be applied to the backend.
 - `GAMMA_SECRET`: Default `secret`.
 - `GAMMA_CLIENT_ID`, `GAMMA_CLIENT_SECRET`: Id and secret of the client from Gamma. Default is `id`/`secret`.
 - `GAMMA_AUTHORIZATION_URI`:
