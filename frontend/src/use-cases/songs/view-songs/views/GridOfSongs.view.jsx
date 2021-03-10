@@ -52,34 +52,39 @@ export const GridOfSongs = ({songs, tags}) => {
     return useMemo(
         () => (
             <SongGrid>
-                {filteredSongs.map(s => (
-                    <SongCard
-                        key={s.song_id}
-                        style={{cursor: "pointer"}}
-                        onClick={() => navViewSong(history, s.song_id)}
-                    >
-                        <SongCardBody>
-                            <DigitText.Title text={s.number + ". " + s.title}/>
-                            <DigitText.Text
-                                bold
-                                text={text.Author + ": " + s.author}
-                            />
-                            <DigitText.Text text={"Mel: " + s.melody}/>
-                            <DigitMarkdown
-                                markdownSource={s.text.slice(0, 100) + "..."}
-                            />
-                            <TagList>
-                                {findTags(s.tags, tags).map(tag => (
-                                    <DigitChip
-                                        primary
-                                        key={tag.tag_id}
-                                        label={tag.name}
-                                    />
-                                ))}
-                            </TagList>
-                        </SongCardBody>
-                    </SongCard>
-                ))}
+                {filteredSongs.map(s => {
+
+                    const melody = s.melody ? s.melody : text.Unknown;
+                    const author = s.author ? s.author : text.Unknown;
+
+                    return (<SongCard
+                            key={s.song_id}
+                            style={{cursor: "pointer"}}
+                            onClick={() => navViewSong(history, s.song_id)}
+                        >
+                            <SongCardBody>
+                                <DigitText.Title text={s.number + ". " + s.title}/>
+                                <DigitText.Text
+                                    bold
+                                    text={text.Author + ": " + author}
+                                />
+                                <DigitText.Text text={"Mel: " + melody}/>
+                                <DigitMarkdown
+                                    markdownSource={s.text.slice(0, 100) + "..."}
+                                />
+                                <TagList>
+                                    {findTags(s.tags, tags).map(tag => (
+                                        <DigitChip
+                                            primary
+                                            key={tag.tag_id}
+                                            label={tag.name}
+                                        />
+                                    ))}
+                                </TagList>
+                            </SongCardBody>
+                        </SongCard>
+                    )
+                })}
             </SongGrid>
         ),
         [JSON.stringify(filteredSongs), text]
