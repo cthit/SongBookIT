@@ -21,7 +21,7 @@ import {useHistory} from "react-router-dom";
 import {ErrorTextCard} from "../../../common/elements/Error";
 import useAdmin from "../../../common/hooks/use-admin";
 import InsufficientAccess from "../../../common/views/InsufficientAccess";
-import {navEditSong} from "../../../app/App.Routes";
+import {navViewSong} from "../../../app/App.Routes";
 
 const CreateSong = () => {
     const [tags, setTags] = useState([]);
@@ -69,7 +69,7 @@ const CreateSong = () => {
                                 queueToast({
                                     text: text.AddSongSuccessful
                                 });
-                                navEditSong(history, res.data.data.song_id);
+                                navViewSong(history, res.data.data.song_id);
                             })
                             .catch(error => {
                                 queueToast({
