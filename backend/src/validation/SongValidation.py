@@ -2,11 +2,12 @@ from typing import Dict
 
 from utils.ResultWithData import get_result_with_error, get_result_with_data, ResultWithData
 from objects.requestobjects.RequestSongObject import RequestSongObject
-from validation.Validation import validate_str, validate_list, validate_short_id, validate_short_id_key, validate_int
+from validation.Validation import validate_str, validate_list, validate_short_id, validate_short_id_key, validate_int, \
+    validate_required_str
 
 
 def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
-    title_res = validate_str(song, 'title')
+    title_res = validate_required_str(song, 'title')
     if title_res.is_error:
         return get_result_with_error(title_res.message)
 
@@ -18,7 +19,7 @@ def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
     if author_res.is_error:
         return get_result_with_error(author_res.message)
 
-    text_res = validate_str(song, 'text')
+    text_res = validate_required_str(song, 'text')
     if text_res.is_error:
         return get_result_with_error(text_res.message)
 
@@ -42,8 +43,8 @@ def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
     ))
 
 
-def validate_song_update(song: Dict) -> ResultWithData[RequestSongObject]:
-    id_res = validate_short_id_key(song, 'song_id')
+def validate_song_update(song: Dict, song_id: str) -> ResultWithData[RequestSongObject]:
+    id_res = validate_short_id(song_id)
     if id_res.is_error:
         return get_result_with_error(id_res.message)
 

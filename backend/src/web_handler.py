@@ -51,7 +51,7 @@ class SongRes(Resource):
     @db_session
     def put(self, song_id):
         data = request.get_json()
-        return handle_update_song(data).get_response()
+        return handle_update_song(data, song_id).get_response()
 
 
 class SongsRes(Resource):

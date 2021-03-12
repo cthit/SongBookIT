@@ -27,8 +27,8 @@ def create_song(song: RequestSongObject) -> ResultWithData[str]:
 
 @db_session
 def update_song(song: RequestSongObject) -> ResultWithData:
-    song = Song[song.song_id]
-    song.set(title=song.title, melody=song.melody, author=song.author, text=song.text)
+    db_song = Song[song.song_id]
+    db_song.set(title=song.title, melody=song.melody, author=song.author, text=song.text)
     return get_result_with_data({})
 
 

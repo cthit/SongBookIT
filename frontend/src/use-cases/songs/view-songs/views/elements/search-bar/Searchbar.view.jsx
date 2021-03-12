@@ -6,11 +6,19 @@ import {
     DigitTextField,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import {useStateValue, SongTagActions} from "../../Songs.context";
-import {FilterBody} from "./views.styles";
+import {useStateValue, SongTagActions, useSongTag} from "../../../../contexts/Songs.context";
+import styled from "styled-components";
+import {FilterSongsActions, useFilterSongs} from "../../../../contexts/FilterSongs.context";
+
+export const FilterBody = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
 
 const TagFilter = () => {
-    const [{tags}, dispatch] = useStateValue();
+    const {tags} = useSongTag();
+    const [{}, dispatch] = useFilterSongs()
     const [text] = useDigitTranslations();
 
     const options = tags
@@ -31,7 +39,7 @@ const TagFilter = () => {
             onChange={e => {
                 setValue(e.target.value);
                 dispatch({
-                    type: SongTagActions.filterTags,
+                    type: FilterSongsActions.SET_FILTER_TAGS,
                     tags: e.target.value
                 });
             }}
@@ -41,7 +49,7 @@ const TagFilter = () => {
 
 const SearchField = () => {
     const [searchText, setSearchText] = useState("");
-    const [, dispatch] = useStateValue();
+    const [{}, dispatch] = useFilterSongs();
     const [text] = useDigitTranslations();
 
     return (
@@ -49,14 +57,14 @@ const SearchField = () => {
             value={searchText}
             upperLabel={text.FilterSearch}
             size={{width: "300px"}}
+            outlined
             onChange={e => {
                 setSearchText(e.target.value);
                 dispatch({
-                    type: SongTagActions.filterSearch,
+                    type: FilterSongsActions.SET_FILTER_SEARCH,
                     search: e.target.value
                 });
             }}
-            outlined
         />
     );
 };

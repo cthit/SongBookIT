@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {DigitIconButton, DigitLoading} from "@cthit/react-digit-components";
+import {DigitIconButton, DigitLoading, useGammaStatus, DigitLayout} from "@cthit/react-digit-components";
 import {getTags} from "../../../api/tags/get.tags.api";
 import {
-    ColumnContainer,
-    TopRightButton,
-    WideCenterContainer
+    TopLeftPosition,
 } from "../../../common-ui/design/Common.styles";
 import {ArrowBackRounded} from "@material-ui/icons";
 import {useHistory, useParams} from "react-router-dom";
@@ -62,22 +60,15 @@ const EditSong = () => {
     }, [song_id]);
 
     const admin = useAdmin();
-
-    if (!admin) {
+    const [loading,] = useGammaStatus()
+    ;
+    if (!loading && !admin) {
         return <InsufficientAccess/>;
     }
 
     return (
-        <ColumnContainer>
-            <TopRightButton>
-                <DigitIconButton
-                    icon={ArrowBackRounded}
-                    primary
-                    raised
-                    onClick={() => history.goBack()}
-                />
-            </TopRightButton>
-            <WideCenterContainer>
+        <>
+            <DigitLayout.Column centerHorizontal flex={1}>
                 {loadSongError.isError && (
                     <ErrorTextCard message={loadSongError.message}/>
                 )}
@@ -86,11 +77,14 @@ const EditSong = () => {
                 ) : loadSongError ? (
                     <div/>
                 ) : (
-                    <DigitLoading/>
+                    <DigitLoading loading margin={{ left: "auto", right: "auto", top: "32px" }} />
                 )}
-            </WideCenterContainer>
-        </ColumnContainer>
-    );
+            </DigitLayout.Column>
+
+        </>
+
+    )
+        ;
 };
 
 export default EditSong;

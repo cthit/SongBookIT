@@ -5,75 +5,90 @@ from utils.ResultWithData import ResultWithData, get_result_with_data, get_resul
 
 def validate_str(json: Dict, key: str) -> ResultWithData[str]:
     if key not in json:
-        return get_result_with_error("Missing {0}".format(key))
+        return get_result_with_error(f"Missing {key}")
 
     str_str = json[key]
     if isinstance(str_str, str):
         return get_result_with_data(str_str)
     else:
-        get_result_with_error(f"{str_str} is not a string")
+        return get_result_with_error(f"Error in {key}: {str_str} is not a string")
+
+
+def validate_required_str(json: Dict, key: str) -> ResultWithData[str]:
+    if key not in json:
+        return get_result_with_error(f"Missing {key}")
+
+    str_str = json[key]
+    if len(str_str) == 0:
+        return get_result_with_error(f"Error in {key}: Can't be length zero")
+    if isinstance(str_str, str):
+        return get_result_with_data(str_str)
+    else:
+        return get_result_with_error(f"Error in {key}: {str_str} is not a string")
 
 
 def validate_short_id(id_str: str) -> ResultWithData[str]:
     if len(id_str) != 4:
-        get_result_with_error("Id must be of length 4")
+        return get_result_with_error("Id must be of length 4")
 
     for c in id_str:
         if c not in string.ascii_lowercase:
-            get_result_with_error("Id may only be composed lowercase ascii letters")
+            return get_result_with_error("Id may only be composed lowercase ascii letters")
 
     return get_result_with_data(id_str)
 
 
 def validate_short_id_key(json: Dict, key: str) -> ResultWithData[str]:
     if key not in json:
-        return get_result_with_error("Missing {0}".format(key))
+        return get_result_with_error(f"Missing {key}")
     id_str = json[key]
 
-    return validate_short_id(id_str)
+    res = validate_short_id(id_str)
+    res.message = f"Error in {key}: " + res.message
+    return res
 
 
 def validate_int(json: Dict, key: str) -> ResultWithData[int]:
     if key not in json:
-        return get_result_with_error("Missing {0}".format(key))
+        return get_result_with_error(f"Missing {key}")
 
     int_str = json[key]
     try:
         val = int(int_str)
         return get_result_with_data(val)
     except ValueError:
-        return get_result_with_error("{0} is not a valid integer".format(int_str))
+        return get_result_with_error(f"Error in {key}: {int_str} is not a valid integer")
 
 
 def validate_bool(json: Dict, key: str) -> ResultWithData[bool]:
     if key not in json:
-        return get_result_with_error("Missing {0}".format(key))
+        return get_result_with_error(f"Missing {key}")
 
     bool_str = json[key]
     try:
         val = bool(bool_str)
         return get_result_with_data(val)
     except ValueError:
-        get_result_with_error("{0} is not a valid boolean".format(bool_str))
+        return get_result_with_error(f"Error in {key}: {bool_str} is not a valid boolean")
 
 
 def validate_list(json: Dict, key: str) -> ResultWithData[List]:
     if key not in json:
-        return get_result_with_error("Missing {0}".format(key))
+        return get_result_with_error(f"Missing {key}")
 
     value = json[key]
     if type(value) is not list:
-        return get_result_with_error("{0} must be a list".format(key))
+        return get_result_with_error(f"{key} must be a list")
 
     return get_result_with_data(value)
 
 
 def validate_dict(json: Dict, key: str) -> ResultWithData[Dict]:
     if key not in json:
-        return get_result_with_error("Missing {0}".format(key))
+        return get_result_with_error(f"Missing {key}")
 
     value = json[key]
     if type(value) is not dict:
-        return get_result_with_error("{0} must be an object".format(key))
+        return get_result_with_error(f"{key} must be an object")
 
     return get_result_with_data(value)

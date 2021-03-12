@@ -70,8 +70,8 @@ def handle_create_song(song_request: Dict) -> HttpResponse:
     return get_with_data({'song_id': str(song_id)})
 
 
-def handle_update_song(song_request: Dict) -> HttpResponse:
-    valid_song_res = validate_song_update(song_request)
+def handle_update_song(song_request: Dict, song_id: str) -> HttpResponse:
+    valid_song_res = validate_song_update(song_request, song_id)
     if valid_song_res.is_error:
         return get_with_error(400, valid_song_res.message)
     song = valid_song_res.data

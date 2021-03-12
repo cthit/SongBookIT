@@ -1,45 +1,31 @@
 import useAdmin from "../../../common/hooks/use-admin";
 import {useHistory, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {SongTagActions, useStateValue} from "../Songs.context";
+import {SongTagActions, useSongTag, useStateValue} from "../contexts/Songs.context";
 import {getSong, getSongs} from "../../../api/songs/get.songs.api";
 import {
+    DigitLayout, DigitLoading,
     useDigitCustomDialog,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import SongDetails from "./views/ViewSongDetail.view";
+import SongDetails from "./views/elements/song-detail/SongDetail.view";
 import {ScreenContainer} from "./Songs.styles";
-import SearchBar from "./views/Searchbar.view";
-import {CentralLoading} from "../../../common-ui/layout/CentralLoading";
-import {CenterContainer} from "../../../common-ui/design/Common.styles";
+import SearchBar from "./views/elements/search-bar/Searchbar.view";
 import {ErrorTextCard} from "../../../common/elements/Error";
-import GridOfSongs from "./views/GridOfSongs.view";
+import SongMasonry from "./views/SongMasonry.view";
 
 const ViewSongs = () => {
     const admin = useAdmin();
     const history = useHistory();
     const [error, setError] = useState({isError: false, message: ""});
-    const [{songs, tags}, dispatch] = useStateValue();
-    useEffect(() => {
-        if (songs.length === 0) {
-            getSongs().then(res => {
-                dispatch({
-                    type: SongTagActions.loadSongsTags,
-                    songs: Object.values(res.data.data.songs).sort((a, b) =>
-                        a.number > b.number ? 1 : -1
-                    ),
-                    tags: Object.values(res.data.data.tags).sort((a, b) =>
-                        a.name > b.name ? 1 : -1
-                    )
-                });
-            });
-        }
-    }, []);
+    const {songs, tags, loading, loadSongs} = useSongTag()
+    useEffect(() => loadSongs(),[])
 
     const [openDialog] = useDigitCustomDialog();
     const {song_id} = useParams();
     const [text] = useDigitTranslations();
     const [dialogData, setDialogData] = useState({s: {}, t: []})
+
     useEffect(() => {
         if (song_id) {
             getSong(song_id)
@@ -64,13 +50,13 @@ const ViewSongs = () => {
     return (
         <ScreenContainer>
             <SearchBar/>
-            {songs.length === 0 && <CentralLoading/>}
+            {loading && <DigitLoading margin={{ left: "auto", right: "auto", top: "32px" }} loading/>}
             {error.isError && (
-                <CenterContainer>
+                <DigitLayout.Column centerHorizontal flex={1}>
                     <ErrorTextCard message={error.message}/>
-                </CenterContainer>
+                </DigitLayout.Column>
             )}
-            {songs.length !== 0 && <GridOfSongs songs={songs} tags={tags}/>}
+            {!loading && <SongMasonry songs={songs} tags={tags}/>}
         </ScreenContainer>
     );
 };

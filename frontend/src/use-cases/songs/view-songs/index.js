@@ -1,3 +1,3 @@
-import ViewSongs from "./View-Songs.Screen";
+import ViewSongs from "./ViewSongs.Screen";
 
 export default ViewSongs;

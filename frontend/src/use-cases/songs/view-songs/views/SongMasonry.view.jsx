@@ -1,15 +1,17 @@
 import {useHistory} from "react-router-dom";
-import {useStateValue} from "../../Songs.context";
+import {useStateValue} from "../../contexts/Songs.context";
 import React, {useEffect, useMemo, useState} from "react";
-import {SongCard, SongCardBody, SongGrid, TagList} from "../Songs.styles";
+import {SongCardBody, TagList} from "../Songs.styles";
 import {
-    DigitChip,
+    DigitChip, DigitDesign,
     DigitMarkdown,
     DigitText,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import {findTags} from "../../../../common/hooks/tags";
+import {findTags} from "../../../../common/logic/tags";
 import {navViewSong} from "../../../../app/App.Routes";
+import Masonry from "./elements/masonry/Masonry";
+import {useFilterSongs} from "../../contexts/FilterSongs.context";
 
 const filterTagsFunc = tags => {
     return song => song.tags.some(tag => tags.includes(tag));
@@ -30,10 +32,16 @@ const applyFilters = (songsToCheck, filters) => {
     }
 };
 
-export const GridOfSongs = ({songs, tags}) => {
+const startOfText = (text) => {
+    const start = text.slice(0,100)
+    const [restOfLine, ] = text.slice(100).split("\n", 1)
+    return start.concat(restOfLine, "\n\n...")
+}
+
+export const SongMasonry = ({songs, tags}) => {
     const [text] = useDigitTranslations();
     let history = useHistory();
-    const [{filterSearch, filterTags}] = useStateValue();
+    const [{filterSearch, filterTags}] = useFilterSongs();
     const [filteredSongs, setFilteredSongs] = useState(songs);
 
     const filterFuncArr = [];
@@ -51,13 +59,13 @@ export const GridOfSongs = ({songs, tags}) => {
 
     return useMemo(
         () => (
-            <SongGrid>
+            <Masonry>
                 {filteredSongs.map(s => {
-
                     const melody = s.melody ? s.melody : text.Unknown;
                     const author = s.author ? s.author : text.Unknown;
 
-                    return (<SongCard
+                    return (
+                        <DigitDesign.Card
                             key={s.song_id}
                             style={{cursor: "pointer"}}
                             onClick={() => navViewSong(history, s.song_id)}
@@ -70,7 +78,7 @@ export const GridOfSongs = ({songs, tags}) => {
                                 />
                                 <DigitText.Text text={"Mel: " + melody}/>
                                 <DigitMarkdown
-                                    markdownSource={s.text.slice(0, 100) + "..."}
+                                    markdownSource={startOfText(s.text)}
                                 />
                                 <TagList>
                                     {findTags(s.tags, tags).map(tag => (
@@ -82,13 +90,14 @@ export const GridOfSongs = ({songs, tags}) => {
                                     ))}
                                 </TagList>
                             </SongCardBody>
-                        </SongCard>
+                        </DigitDesign.Card>
                     )
                 })}
-            </SongGrid>
+            </Masonry>
         ),
         [JSON.stringify(filteredSongs), text]
-    );
-};
+    )
+}
 
-export default GridOfSongs;
+
+export default SongMasonry;
