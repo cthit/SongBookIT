@@ -1,8 +1,8 @@
 import useAdmin from "../../../common/hooks/use-admin";
 import {useHistory, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {SongTagActions, useSongTag, useStateValue} from "../contexts/Songs.context";
-import {getSong, getSongs} from "../../../api/songs/get.songs.api";
+import { useSongTag} from "../contexts/Songs.context";
+import {getSong} from "../../../api/songs/get.songs.api";
 import {
     DigitLayout, DigitLoading,
     useDigitCustomDialog,

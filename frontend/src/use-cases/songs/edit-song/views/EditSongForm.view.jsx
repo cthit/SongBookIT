@@ -1,22 +1,19 @@
 import {useHistory} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import {ErrorTextCard} from "../../../../common/elements/Error";
 import {
     DigitAutocompleteSelectMultiple,
-    DigitButton, DigitChip, DigitDesign,
-    DigitEditDataCard, DigitForm, DigitLayout, DigitMarkdown, DigitText,
+    DigitButton, DigitDesign,
+    DigitForm, DigitLayout, DigitText,
     DigitTextArea,
-    DigitTextField, useDigitCustomDialog, useDigitDialog, useDigitFormField,
+    DigitTextField, useDigitCustomDialog, useDigitFormField,
     useDigitToast,
     useDigitTranslations
 } from "@cthit/react-digit-components";
 import {editSong} from "../../../../api/songs/put.songs.api";
 import * as yup from "yup";
 import {deleteSong} from "../../../../api/songs/delete.songs.api";
-import {navEditSong, navHome, navViewSong} from "../../../../app/App.Routes";
-import {getTags} from "../../../../api/tags/get.tags.api";
-import {addSong} from "../../../../api/songs/post.songs.api";
-import {SongContainer} from "../../view-songs/views/elements/song-detail/SongDetail.view";
+import {navHome, navViewSong} from "../../../../app/App.Routes";
 import {useSongTag} from "../../contexts/Songs.context";
 
 const defineDeleteDialog = (text, deleteFunction) => ({

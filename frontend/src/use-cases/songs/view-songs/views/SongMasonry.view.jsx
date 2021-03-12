@@ -1,5 +1,4 @@
 import {useHistory} from "react-router-dom";
-import {useStateValue} from "../../contexts/Songs.context";
 import React, {useEffect, useMemo, useState} from "react";
 import {SongCardBody, TagList} from "../Songs.styles";
 import {

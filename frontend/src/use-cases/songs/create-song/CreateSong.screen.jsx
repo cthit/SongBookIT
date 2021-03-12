@@ -1,12 +1,7 @@
 import React from "react";
 import {
-    DigitIconButton, useGammaStatus, DigitLayout
+    useGammaStatus
 } from "@cthit/react-digit-components";
-import {
-    TopLeftPosition
-} from "../../../common-ui/design/Common.styles";
-import {ArrowBackRounded} from "@material-ui/icons";
-import {useHistory} from "react-router-dom";
 import useAdmin from "../../../common/hooks/use-admin";
 import InsufficientAccess from "../../../common/views/InsufficientAccess";
 import CreateSongForm from "./views/CreateSongForm.view";
@@ -21,10 +16,9 @@ const Container = styled.div`
 `;
 
 const CreateSong = () => {
-    let history = useHistory();
     const [loading,] = useGammaStatus()
-
     const admin = useAdmin();
+
     if (!loading && !admin) {
         return <InsufficientAccess/>;
     }

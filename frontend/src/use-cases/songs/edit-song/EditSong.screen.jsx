@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {DigitIconButton, DigitLoading, useGammaStatus, DigitLayout} from "@cthit/react-digit-components";
+import {DigitLoading, useGammaStatus, DigitLayout} from "@cthit/react-digit-components";
 import {getTags} from "../../../api/tags/get.tags.api";
-import {
-    TopLeftPosition,
-} from "../../../common-ui/design/Common.styles";
-import {ArrowBackRounded} from "@material-ui/icons";
-import {useHistory, useParams} from "react-router-dom";
+import { useParams} from "react-router-dom";
 import {ErrorTextCard} from "../../../common/elements/Error";
 import {getSong} from "../../../api/songs/get.songs.api";
 import useAdmin from "../../../common/hooks/use-admin";
@@ -13,7 +9,6 @@ import InsufficientAccess from "../../../common/views/InsufficientAccess";
 import EditSongForm from "./views/EditSongForm.view";
 
 const EditSong = () => {
-    let history = useHistory();
     let {song_id} = useParams();
     const [tags, setTags] = useState([]);
     const [song, setSong] = useState({

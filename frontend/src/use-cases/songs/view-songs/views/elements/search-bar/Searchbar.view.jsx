@@ -6,7 +6,7 @@ import {
     DigitTextField,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import {useStateValue, SongTagActions, useSongTag} from "../../../../contexts/Songs.context";
+import { useSongTag} from "../../../../contexts/Songs.context";
 import styled from "styled-components";
 import {FilterSongsActions, useFilterSongs} from "../../../../contexts/FilterSongs.context";
 
@@ -18,7 +18,7 @@ export const FilterBody = styled.div`
 
 const TagFilter = () => {
     const {tags} = useSongTag();
-    const [{}, dispatch] = useFilterSongs()
+    const [, dispatch] = useFilterSongs()
     const [text] = useDigitTranslations();
 
     const options = tags
@@ -49,7 +49,7 @@ const TagFilter = () => {
 
 const SearchField = () => {
     const [searchText, setSearchText] = useState("");
-    const [{}, dispatch] = useFilterSongs();
+    const [, dispatch] = useFilterSongs();
     const [text] = useDigitTranslations();
 
     return (
