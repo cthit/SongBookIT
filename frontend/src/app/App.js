@@ -1,13 +1,8 @@
 import React, {useEffect} from "react";
-import {
-    DigitHeader,
-    useDigitTranslations,
-    useGamma,
-    useGammaMe
-} from "@cthit/react-digit-components";
-import {Switch, Route} from "react-router-dom";
+import {DigitHeader, useDigitTranslations, useGamma, useGammaMe} from "@cthit/react-digit-components";
+import {Route, Switch} from "react-router-dom";
 import Songs from "../use-cases/songs";
-import Header from "./Elements/Header/Header.element";
+import Header from "./elements/Header/Header.element";
 import translations from "./App.translations";
 import {BASE_ROUTE} from "./App.Routes";
 import {GAMMA_AUTH_ENDPOINT, GAMMA_ME_ENDPOINT} from "../api/utils/endpoints";

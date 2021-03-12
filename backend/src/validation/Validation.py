@@ -1,5 +1,7 @@
 import string
 from typing import Dict, List
+
+from utils.ErrorCodes import ID_NOT_LENGTH_FOUR, ID_NOT_LOWERCASE
 from utils.ResultWithData import ResultWithData, get_result_with_data, get_result_with_error
 
 
@@ -29,13 +31,13 @@ def validate_required_str(json: Dict, key: str) -> ResultWithData[str]:
 
 def validate_short_id(id_str: str) -> ResultWithData[str]:
     if len(id_str) != 4:
-        return get_result_with_error("Id must be of length 4")
+        return get_result_with_error(ID_NOT_LENGTH_FOUR)
 
     for c in id_str:
         if c not in string.ascii_lowercase:
-            return get_result_with_error("Id may only be composed lowercase ascii letters")
+            return get_result_with_error(ID_NOT_LOWERCASE)
 
-    return get_result_with_data(id_str)
+    return get_result_with_data( id_str)
 
 
 def validate_short_id_key(json: Dict, key: str) -> ResultWithData[str]:

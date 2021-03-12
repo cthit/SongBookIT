@@ -7,10 +7,8 @@ import {
     DigitText,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import {findTags} from "../../../../common/logic/tags";
 import {navViewSong} from "../../../../app/App.Routes";
 import Masonry from "./elements/masonry/Masonry";
-import {useFilterSongs} from "../../contexts/FilterSongs.context";
 
 const filterTagsFunc = tags => {
     return song => song.tags.some(tag => tags.includes(tag));
@@ -31,16 +29,19 @@ const applyFilters = (songsToCheck, filters) => {
     }
 };
 
+const findTags = (tagIds, tags) => {
+    return tagIds.map(id => tags.find(tag => tag.tag_id === id));
+};
+
 const startOfText = (text) => {
     const start = text.slice(0,100)
     const [restOfLine, ] = text.slice(100).split("\n", 1)
     return start.concat(restOfLine, "\n\n...")
 }
 
-export const SongMasonry = ({songs, tags}) => {
+export const SongMasonry = ({songs, tags, filterTags, filterText}) => {
     const [text] = useDigitTranslations();
     let history = useHistory();
-    const [{filterSearch, filterTags}] = useFilterSongs();
     const [filteredSongs, setFilteredSongs] = useState(songs);
 
     const filterFuncArr = [];
@@ -50,11 +51,11 @@ export const SongMasonry = ({songs, tags}) => {
         if (filterTags.length) {
             filterFuncArr.push(filterTagsFunc(filterTags));
         }
-        if (filterSearch !== "") {
-            filterFuncArr.push(filterSearchFunc(filterSearch));
+        if (filterText !== "") {
+            filterFuncArr.push(filterSearchFunc(filterText));
         }
         setFilteredSongs(applyFilters(songs, filterFuncArr));
-    }, [filterSearch, filterTags]);
+    }, [filterText, filterTags]);
 
     return useMemo(
         () => (

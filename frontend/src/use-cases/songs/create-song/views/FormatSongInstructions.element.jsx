@@ -6,7 +6,7 @@ const Sticky = styled.div`
   position: sticky;
   width: 100%;
   height: auto;
-
+  top: 16px;
 `;
 
 const Desktop = styled.div`

@@ -1,5 +1,6 @@
 from typing import Dict
 
+from utils.ErrorCodes import SONG_TITLE_ALREADY_EXIST
 from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
 from command.SongCommands import remove_song, create_song, update_song
 from command.SongsToTagsCommands import create_songtotag, remove_songtotag
@@ -57,7 +58,7 @@ def handle_create_song(song_request: Dict) -> HttpResponse:
 
     song_res = get_song_by_name(song.title)
     if not song_res.is_error:
-        return get_with_error(400, "There already exists a song with the specified name")
+        return get_with_error(400, SONG_TITLE_ALREADY_EXIST)
 
     for tag_id in song.tags:
         tag_res = get_tag_by_id(tag_id)
@@ -78,7 +79,7 @@ def handle_update_song(song_request: Dict, song_id: str) -> HttpResponse:
 
     song_res = get_song_by_name(song.title)
     if not song_res.is_error and song_res.data.song_id != song.song_id:
-        return get_with_error(400, "There already exists a song with the specified name")
+        return get_with_error(400, SONG_TITLE_ALREADY_EXIST)
 
     songtotags_tag_ids = [stt.tag for stt in get_songtotag_by_song_id(song.song_id)]
     for tag_id in song.tags:

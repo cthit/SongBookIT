@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
-import {DigitLoading, useGammaStatus, DigitLayout} from "@cthit/react-digit-components";
-import {getTags} from "../../../api/tags/get.tags.api";
-import { useParams} from "react-router-dom";
-import {ErrorTextCard} from "../../../common/elements/Error";
+import {DigitLayout, DigitLoading, useGammaStatus} from "@cthit/react-digit-components";
+import {useParams} from "react-router-dom";
 import {getSong} from "../../../api/songs/get.songs.api";
 import useAdmin from "../../../common/hooks/use-admin";
-import InsufficientAccess from "../../../common/views/InsufficientAccess";
+import InsufficientAccess from "../../../common/elements/InsufficientAccess";
 import EditSongForm from "./views/EditSongForm.view";
+import FourZeroFour from "../../../common/elements/FourZeroZero";
 
 const EditSong = () => {
     let {song_id} = useParams();
-    const [tags, setTags] = useState([]);
-    const [song, setSong] = useState({
+    const [faultySongId, setFaultySongId] = useState(false)
+    const [hasLoadedSong, setHasLoadedSong] = useState(false);
+    const [songToEdit, setSongToEdit] = useState({
         song_id: "",
         title: "",
         melody: "",
@@ -19,37 +19,15 @@ const EditSong = () => {
         author: "",
         tags: []
     });
-    const [hasLoadedSong, setHasLoadedSong] = useState(false);
-    const [hasLoadedTag, setHasLoadedTag] = useState(false);
-    const [loadSongError, setLoadSongError] = useState({
-        isError: false,
-        message: ""
-    });
-
-    useEffect(() => {
-        getTags()
-            .then(res => {
-                const tags = Object.values(res.data.data.tags);
-                setTags(
-                    tags
-                        .map(tag => {
-                            return {text: tag.name, value: tag.tag_id};
-                        })
-                        .sort((a, b) => (a.text > b.text ? 1 : -1))
-                );
-                setHasLoadedTag(true);
-            })
-            .catch();
-    }, []);
 
     useEffect(() => {
         getSong(song_id)
             .then(res => {
-                setSong(res.data.data.song);
+                setSongToEdit(res.data.data.song);
                 setHasLoadedSong(true);
             })
             .catch(err => {
-                setLoadSongError(err.response.data.error);
+                setFaultySongId(true);
                 setHasLoadedSong(false);
             });
     }, [song_id]);
@@ -61,25 +39,22 @@ const EditSong = () => {
         return <InsufficientAccess/>;
     }
 
+    if (faultySongId) {
+        return <FourZeroFour/>
+    }
+
     return (
         <>
-            <DigitLayout.Column centerHorizontal flex={1}>
-                {loadSongError.isError && (
-                    <ErrorTextCard message={loadSongError.message}/>
-                )}
-                {hasLoadedSong && hasLoadedTag ? (
-                    <EditSongForm tags={tags} song={song}/>
-                ) : loadSongError ? (
-                    <div/>
-                ) : (
-                    <DigitLoading loading margin={{ left: "auto", right: "auto", top: "32px" }} />
-                )}
-            </DigitLayout.Column>
-
+            <DigitLoading loading={!hasLoadedSong} margin={{left: "auto", right: "auto", top: "32px"}}/>
+            {hasLoadedSong && (
+                <DigitLayout.Column centerHorizontal flex={1}>
+                    <EditSongForm song={songToEdit}/>
+                </DigitLayout.Column>)
+            }
         </>
 
     )
-        ;
-};
+}
+
 
 export default EditSong;

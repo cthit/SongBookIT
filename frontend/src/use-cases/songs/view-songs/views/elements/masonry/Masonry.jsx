@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 
 import {useEventListener} from "./hooks/useEventListener";
 import styled from "styled-components";
@@ -21,7 +21,7 @@ const fillCols = (children, cols) => {
     children.forEach((child, i) => cols[i % cols.length].push(child))
 }
 
-export default function Masonry({ children, gap, minWidth = 500, ...rest }) {
+export default function Masonry({children, gap, minWidth = 400, ...rest}) {
     const ref = useRef()
     const [numCols, setNumCols] = useState(3)
     const cols = [...Array(numCols)].map(() => [])

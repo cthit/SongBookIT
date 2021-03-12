@@ -62,7 +62,7 @@ const Header = ({ loading, signIn }) => {
                         ? ["addSong", "viewAccount", "customSignOut"]
                         : ["viewAccount", "customSignOut"]
                 }
-                // signOut={() => signoutFromSongbook()}
+                signOut={(a) => a} // not used but defined so that GammaActions doesn't complain
                 size={{ width: "min-content" }}
                 frontendUrl={
                     process.env.NODE_ENV === "development"

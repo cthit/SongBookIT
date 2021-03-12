@@ -1,6 +1,7 @@
 from typing import List
 from pony.orm import db_session
 
+from utils.ErrorCodes import TAG_ID_NOT_EXIST
 from utils.ResultWithData import ResultWithData, get_result_with_data, get_result_with_error
 from objects.dataobject.TagObject import TagObject
 from db import Tag
@@ -16,7 +17,7 @@ def get_tags() -> List[TagObject]:
 def get_tag_by_id(tag_id: str) -> ResultWithData[TagObject]:
     tag = Tag.get(tag_id=tag_id)
     if tag is None:
-        return get_result_with_error(f"The tag with id={tag_id} does not exist")
+        return get_result_with_error(TAG_ID_NOT_EXIST)
     else:
         return get_result_with_data(db_tag_to_tag_object(tag))
 

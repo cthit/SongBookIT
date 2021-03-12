@@ -1,11 +1,11 @@
 import React from "react";
 import {
     DigitButton,
-    DigitText,
-    DigitMarkdown,
     DigitChip,
+    DigitDesign,
     DigitLayout,
-    DigitDesign
+    DigitMarkdown,
+    DigitText
 } from "@cthit/react-digit-components";
 import {navEditSong, navHome} from "../../../../../../app/App.Routes";
 import styled from "styled-components";

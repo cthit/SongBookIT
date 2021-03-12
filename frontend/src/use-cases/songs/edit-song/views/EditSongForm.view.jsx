@@ -1,12 +1,11 @@
 import {useHistory} from "react-router-dom";
-import React, { useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ErrorTextCard} from "../../../../common/elements/Error";
 import {
-    DigitAutocompleteSelectMultiple,
-    DigitButton, DigitDesign,
-    DigitForm, DigitLayout, DigitText,
-    DigitTextArea,
-    DigitTextField, useDigitCustomDialog, useDigitFormField,
+    DigitButton,
+    DigitForm,
+    DigitText,
+    useDigitCustomDialog,
     useDigitToast,
     useDigitTranslations
 } from "@cthit/react-digit-components";
@@ -14,7 +13,15 @@ import {editSong} from "../../../../api/songs/put.songs.api";
 import * as yup from "yup";
 import {deleteSong} from "../../../../api/songs/delete.songs.api";
 import {navHome, navViewSong} from "../../../../app/App.Routes";
-import {useSongTag} from "../../contexts/Songs.context";
+import {useSongTag} from "../../Songs.context";
+import {
+    SongFormCard,
+    SongFormFields,
+    songInitialValues,
+    songValidationSchema,
+    tagsToTagsOptions
+} from "../../form-utils/SongForm.utils";
+import FiveZeroZero from "../../../../common/elements/FiveZeroZero";
 
 const defineDeleteDialog = (text, deleteFunction) => ({
     renderMain: () => (<DigitText.Text bold text={text.DeleteSongConfirm}/>),
@@ -34,34 +41,15 @@ const defineDeleteDialog = (text, deleteFunction) => ({
     onConfirm: () => deleteFunction()
 })
 
-const EditSongForm = ({tags, song}) => {
+const EditSongForm = ({song}) => {
     let history = useHistory();
     const [text] = useDigitTranslations();
     const [queueToast] = useDigitToast();
-    const {loadSongs} = useSongTag()
+    const {tags, loadSongs, loadTags} = useSongTag()
     const [error, setError] = useState({isError: false, message: ""});
+    const [somethingWrong, setSomethingWrong] = useState(false)
 
-    const TitleField = () => {
-        const fieldValues = useDigitFormField("title");
-        return <DigitTextField size={{width: "100%"}} {...fieldValues} upperLabel={text.Title}/>;
-    };
-    const AuthorField = () => {
-        const fieldValues = useDigitFormField("author");
-        return <DigitTextField size={{width: "100%"}} {...fieldValues} upperLabel={text.Author}/>;
-    };
-    const MelodyField = () => {
-        const fieldValues = useDigitFormField("melody");
-        return <DigitTextField size={{width: "100%"}} {...fieldValues} upperLabel={text.Melody}/>;
-    };
-    const TextField = () => {
-        const fieldValues = useDigitFormField("text");
-        return <DigitTextArea size={{width: "100%"}} rowsMax={40} {...fieldValues} upperLabel={text.Text} primary/>;
-    };
-    const TagsField = () => {
-        const fieldValues = useDigitFormField("tags");
-        return <DigitAutocompleteSelectMultiple size={{width: "100%"}}  {...fieldValues} upperLabel={text.Tags}
-                                                options={tags}/>;
-    };
+    useEffect(() => loadTags(), [])
 
     const performDelete = () => {
         deleteSong(song.song_id)
@@ -76,6 +64,11 @@ const EditSongForm = ({tags, song}) => {
                 queueToast({
                     text: text.DeleteSongFailed
                 });
+                const e = error.response.data.error
+                setError({isError: e.isError, message: text[e.message]})
+                if (text[e.message]) {
+                    setSomethingWrong(true)
+                }
             });
     }
 
@@ -86,51 +79,56 @@ const EditSongForm = ({tags, song}) => {
                     text: text.EditSongSuccessful
                 });
                 navViewSong(history, song.song_id);
+                loadSongs()
             })
 
             .catch(error => {
                 queueToast({
                     text: text.EditSongFailed
                 });
-                setError(error.response.data.error);
+                const e = error.response.data.error
+                setError({isError: e.isError, message: text[e.message]})
+                if (text[e.message]) {
+                    setSomethingWrong(true)
+                }
             });
     }
 
     const [openDeleteDialog] = useDigitCustomDialog();
 
-    return <DigitForm
-        initialValues={{
-            title: song.title,
-            author: song.author,
-            melody: song.melody,
-            text: song.text,
-            tags: song.tags
-        }} onSubmit={(values,) => performUpdate(values, song)}
-        render={() =>
-            <>
-                {error.isError && <ErrorTextCard message={error.message}/>}
-                <DigitDesign.Card size={{width: "min(80vw, 600px)"}}>
-                    <DigitDesign.CardBody>
-                        <DigitLayout.Column>
-                            <DigitText.Heading5 text={text.EditSong + ": Nr." + song.number + " " + song.title}/>
-                            <TitleField/>
-                            <AuthorField/>
-                            <MelodyField/>
-                            <TextField/>
-                            <TagsField/>
-                            <DigitButton raised submit text={text.Save} primary/>
-                            <DigitButton raised text={text.DeleteSong} secondary onClick={() => openDeleteDialog(defineDeleteDialog(text, performDelete))}/>
-                        </DigitLayout.Column>
-                    </DigitDesign.CardBody>
-                </DigitDesign.Card>
-            </>
-        } validationSchema={yup.object().shape({
-        title: yup.string().required(text.CantBeEmpty),
-        author: yup.string(),
-        melody: yup.string(),
-        text: yup.string().required(text.CantBeEmpty)
-    })}/>
-}
+    if (somethingWrong) {
+        return <FiveZeroZero/>
+    }
 
+    return <DigitForm
+        initialValues={songInitialValues(song)}
+        validationSchema={songValidationSchema(yup, text)}
+        onSubmit={(values,) => performUpdate(values, song)}
+        render={({errors}) => {
+            return <>
+                {error.isError && <ErrorTextCard message={error.message}/>}
+                <SongFormCard>
+                    <DigitText.Heading5
+                        text={text.EditSong + ": Nr." + song.number + " " + song.title}/>
+                    <SongFormFields
+                        text={text}
+                        tagOptions={tagsToTagsOptions(tags)}/>
+                    <DigitButton
+                        raised
+                        submit
+                        primary
+                        text={text.Save}
+                        disabled={Object.keys(errors).length !== 0}/>
+                    <DigitButton
+                        raised
+                        secondary
+                        text={text.DeleteSong}
+                        onClick={() => openDeleteDialog(defineDeleteDialog(text, performDelete))}/>
+                </SongFormCard>
+
+            </>
+        }
+        }/>
+}
 
 export default EditSongForm;

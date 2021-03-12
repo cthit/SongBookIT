@@ -1,9 +1,7 @@
 import React from "react";
-import {
-    useGammaStatus
-} from "@cthit/react-digit-components";
+import {useGammaStatus} from "@cthit/react-digit-components";
 import useAdmin from "../../../common/hooks/use-admin";
-import InsufficientAccess from "../../../common/views/InsufficientAccess";
+import InsufficientAccess from "../../../common/elements/InsufficientAccess";
 import CreateSongForm from "./views/CreateSongForm.view";
 import {FormatSongInstructions} from "./views/FormatSongInstructions.element";
 import styled from "styled-components";
@@ -25,7 +23,7 @@ const CreateSong = () => {
 
     return (
         <Container>
-            <div> </div>
+            <div/>
             <CreateSongForm/>
             <FormatSongInstructions/>
         </Container>

@@ -2,6 +2,7 @@ from typing import List
 
 from pony.orm import db_session, select
 
+from utils.ErrorCodes import SONG_TITLE_NOT_EXIST, SONG_ID_NOT_EXIST
 from utils.ResultWithData import ResultWithData, get_result_with_error, get_result_with_data
 from objects.dataobject.SongObject import SongObject
 from db import Song
@@ -17,7 +18,7 @@ def get_songs() -> List[SongObject]:
 def get_song_by_id(song_id: str) -> ResultWithData[SongObject]:
     song = Song.get(song_id=song_id)
     if song is None:
-        return get_result_with_error(f"The song with id={song_id} does not exist")
+        return get_result_with_error(SONG_ID_NOT_EXIST)
     else:
         return get_result_with_data(db_song_to_song_object(song))
 
@@ -26,7 +27,7 @@ def get_song_by_id(song_id: str) -> ResultWithData[SongObject]:
 def get_song_by_name(title: str) -> ResultWithData[SongObject]:
     song = Song.get(title=title)
     if song is None:
-        return get_result_with_error(f"The song with title={title} does not exist")
+        return get_result_with_error(SONG_TITLE_NOT_EXIST)
     else:
         return get_result_with_data(db_song_to_song_object(song))
 

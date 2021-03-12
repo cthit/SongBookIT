@@ -1,14 +1,13 @@
-import React, {useState} from "react";
+import React from "react";
 import {
+    DigitAutocompleteSelectMultiple,
     DigitDesign,
     DigitText,
-    DigitAutocompleteSelectMultiple,
     DigitTextField,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import { useSongTag} from "../../../../contexts/Songs.context";
+import {useSongTag} from "../../../../Songs.context";
 import styled from "styled-components";
-import {FilterSongsActions, useFilterSongs} from "../../../../contexts/FilterSongs.context";
 
 export const FilterBody = styled.div`
   display: flex;
@@ -16,9 +15,9 @@ export const FilterBody = styled.div`
   flex-wrap: wrap;
 `;
 
-const TagFilter = () => {
+const TagFilter = ({filterTagsState}) => {
+    const {filterTags, setFilterTags} = filterTagsState
     const {tags} = useSongTag();
-    const [, dispatch] = useFilterSongs()
     const [text] = useDigitTranslations();
 
     const options = tags
@@ -26,50 +25,38 @@ const TagFilter = () => {
             return {text: tag.name, value: tag.tag_id};
         })
         .sort((a, b) => (a.text > b.text ? 1 : -1));
-    const [value, setValue] = useState([]);
 
     return (
         <DigitAutocompleteSelectMultiple
             outlined
             upperLabel={text.FilterTag}
             options={options}
-            value={value}
+            value={filterTags}
             margin={"!important"} // Unclear why this is necessary for TagFilter and SearchField to align
             size={{width: "300px"}}
-            onChange={e => {
-                setValue(e.target.value);
-                dispatch({
-                    type: FilterSongsActions.SET_FILTER_TAGS,
-                    tags: e.target.value
-                });
-            }}
+            onChange={e => setFilterTags(e.target.value)}
         />
     );
 };
 
-const SearchField = () => {
-    const [searchText, setSearchText] = useState("");
-    const [, dispatch] = useFilterSongs();
+const SearchField = ({filterTextState}) => {
+    const {filterText, setFilterText} = filterTextState
     const [text] = useDigitTranslations();
 
     return (
         <DigitTextField
-            value={searchText}
+            value={filterText}
             upperLabel={text.FilterSearch}
             size={{width: "300px"}}
             outlined
-            onChange={e => {
-                setSearchText(e.target.value);
-                dispatch({
-                    type: FilterSongsActions.SET_FILTER_SEARCH,
-                    search: e.target.value
-                });
-            }}
+            onChange={e =>
+                setFilterText(e.target.value)
+            }
         />
-    );
-};
+    )
+}
 
-const SearchBar = () => {
+const SearchBar = ({filterTextState, filterTagsState}) => {
     const [text] = useDigitTranslations();
 
     return (
@@ -77,8 +64,8 @@ const SearchBar = () => {
             <DigitDesign.CardBody>
                 <DigitText.Title text={text.Browse}/>
                 <FilterBody>
-                    <SearchField/>
-                    <TagFilter/>
+                    <SearchField filterTextState={filterTextState}/>
+                    <TagFilter filterTagsState={filterTagsState}/>
                 </FilterBody>
             </DigitDesign.CardBody>
         </DigitDesign.Card>
