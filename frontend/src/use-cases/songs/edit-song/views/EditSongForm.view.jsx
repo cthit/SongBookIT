@@ -88,7 +88,7 @@ const EditSongForm = ({song}) => {
                 });
                 const e = error.response.data.error
                 setError({isError: e.isError, message: text[e.message]})
-                if (text[e.message]) {
+                if (!text[e.message]) {
                     setSomethingWrong(true)
                 }
             });
