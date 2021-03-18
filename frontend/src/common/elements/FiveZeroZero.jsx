@@ -9,7 +9,7 @@ const FiveZeroZero = () => {
             <DigitDesign.CardHeader>
                 <DigitDesign.CardTitle text={text.SomethingWentWrong} />
             </DigitDesign.CardHeader>
-            <DigitDesign.CardHeaderImage src="/500.gif" />
+            <DigitDesign.CardHeaderImage src="/images/500.gif" />
             <DigitDesign.CardBody>
                 <DigitText.Text text={text.Contact} />
             </DigitDesign.CardBody>

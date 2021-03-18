@@ -17,7 +17,7 @@ const FourZeroFour = () => {
             <DigitDesign.CardHeader>
                 <DigitDesign.CardTitle text={text.PageNotFound}/>
             </DigitDesign.CardHeader>
-            <DigitDesign.CardHeaderImage src="/404.jpg"/>
+            <DigitDesign.CardHeaderImage src="/images/404.jpg"/>
             <DigitDesign.CardBody>
                 <DigitText.Text
                     text={
