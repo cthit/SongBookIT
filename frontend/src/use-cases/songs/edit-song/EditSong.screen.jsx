@@ -47,7 +47,7 @@ const EditSong = () => {
         <>
             <DigitLoading loading={!hasLoadedSong} margin={{left: "auto", right: "auto", top: "32px"}}/>
             {hasLoadedSong && (
-                <DigitLayout.Column centerHorizontal flex={1}>
+                <DigitLayout.Column centerHorizontal flex={"1"}>
                     <EditSongForm song={songToEdit}/>
                 </DigitLayout.Column>)
             }
