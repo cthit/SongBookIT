@@ -4,11 +4,11 @@ import React, {useEffect, useState} from "react";
 import {useSongTag} from "../Songs.context";
 import {getSong} from "../../../api/songs/get.songs.api";
 import {DigitLoading, useDigitCustomDialog, useDigitTranslations} from "@cthit/react-digit-components";
-import SongDetails from "./views/elements/song-detail/SongDetail.view";
+import SongDetails from "./elements/song-detail/SongDetail.view";
 import {ScreenContainer} from "./Songs.styles";
-import SearchBar from "./views/elements/search-bar/Searchbar.view";
-import SongMasonry from "./views/SongMasonry.view";
+import SearchBar from "./elements/search-bar/Searchbar.view";
 import FourZeroFour from "../../../common/elements/FourZeroZero";
+import SongMasonry from "./elements/song-masonry";
 
 const ViewSongs = () => {
     const history = useHistory();
@@ -17,12 +17,14 @@ const ViewSongs = () => {
     const [filterText, setFilterText] = useState("")
     const [filterTags, setFilterTags] = useState([])
 
+
     const {songs, tags, loadingSongs, loadSongs} = useSongTag()
     useEffect(() => {
         if (songs.length === 0) {
             loadSongs()
         }
     }, [])
+
 
     const {song_id} = useParams();
     const [openDialog] = useDigitCustomDialog();
@@ -39,8 +41,11 @@ const ViewSongs = () => {
                 .catch(err => {
                     setFaultySongId(true);
                 });
+        } else {
+            setFaultySongId(false)
         }
     }, [song_id]);
+
 
     const admin = useAdmin();
     useEffect(() => {
@@ -50,23 +55,36 @@ const ViewSongs = () => {
     }, [admin, dialogData, text])
 
 
+    const [filteredSongs, setFilteredSongs] = useState(songs);
+    useEffect(() => {
+        const filterWorker = new Worker("/workers/filter.worker.js")
+
+        filterWorker.onmessage = (e) => {
+            setFilteredSongs(e.data)
+        }
+
+        filterWorker.postMessage({songs, filterText, filterTags})
+
+        return () => (filterWorker.terminate())
+    }, [filterTags, filterText, songs])
+
+
     if (faultySongId) {
         return <FourZeroFour/>
     }
+
 
     return (
         <ScreenContainer>
             <SearchBar
                 filterTextState={{filterText, setFilterText}}
                 filterTagsState={{filterTags, setFilterTags}}/>
-            <DigitLoading margin={{left: "auto", right: "auto", top: "32px"}} loading={loadingSongs}/>
-
-            {!loadingSongs &&
+            <DigitLoading
+                margin={{left: "auto", right: "auto", top: "32px"}}
+                loading={loadingSongs}/>
             <SongMasonry
-                filterText={filterText}
-                filterTags={filterTags}
-                songs={songs}
-                tags={tags}/>}
+                songs={filteredSongs}
+                tags={tags}/>
         </ScreenContainer>
     );
 }

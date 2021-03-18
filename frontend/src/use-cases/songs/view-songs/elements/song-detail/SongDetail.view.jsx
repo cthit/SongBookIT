@@ -7,7 +7,7 @@ import {
     DigitMarkdown,
     DigitText
 } from "@cthit/react-digit-components";
-import {navEditSong, navHome} from "../../../../../../app/App.Routes";
+import {navEditSong, navHome} from "../../../../../app/App.Routes";
 import styled from "styled-components";
 
 export const SongContainer = styled.div`

@@ -6,7 +6,7 @@ import {
     DigitTextField,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import {useSongTag} from "../../../../Songs.context";
+import {useSongTag} from "../../../Songs.context";
 import styled from "styled-components";
 
 export const FilterBody = styled.div`
