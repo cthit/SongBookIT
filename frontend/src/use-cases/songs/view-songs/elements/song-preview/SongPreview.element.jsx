@@ -20,7 +20,6 @@ const SongPreview = ({song, history, text, tags}) => {
 
     return (
         <DigitDesign.Card
-            key={song.song_id}
             style={{cursor: "pointer"}}
             onClick={() => navViewSong(history, song.song_id)}
         >

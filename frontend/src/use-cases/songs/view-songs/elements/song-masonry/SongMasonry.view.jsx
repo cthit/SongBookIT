@@ -12,7 +12,7 @@ export const SongMasonry = ({songs, tags}) => {
     return useMemo(
         () => (
             <Masonry>
-                {songs.map(s => <SongPreview song={s} history={history} text={text} tags={tags}/>)}
+                {songs.map(s => <SongPreview key={s.song_id} song={s} history={history} text={text} tags={tags}/>)}
             </Masonry>
         ),
         [JSON.stringify(songs), text]
