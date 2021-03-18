@@ -11,6 +11,10 @@ const getUserLanguage = user => {
     let language = user == null ? null : user.language;
 
     if (language == null) {
+        language = localStorage.getItem("language");
+    }
+
+    if (language == null) {
         language = "en";
     }
 
@@ -41,6 +45,10 @@ const App = () => {
     useEffect(() => {
         setCommonTranslations(translations);
     }, [setCommonTranslations]);
+
+    useEffect(() => (
+        localStorage.setItem("language", userLanguage)
+    ), [userLanguage])
 
     return (
         <DigitHeader
