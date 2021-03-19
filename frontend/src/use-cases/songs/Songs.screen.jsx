@@ -1,10 +1,18 @@
 import React from "react";
-import {Route, Switch} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import CreateSong from "./create-song";
 import EditSong from "./edit-song";
 import ViewSongs from "./view-songs";
-import {InitialSongTagState, SongTagProvider, SongTagReducer} from "./Songs.context";
-import {BASE_ROUTE, SONGS_CREATE_ROUTE, SONGS_EDIT_ROUTE} from "../../app/App.Routes";
+import {
+    InitialSongTagState,
+    SongTagProvider,
+    SongTagReducer
+} from "./Songs.context";
+import {
+    BASE_ROUTE,
+    SONGS_CREATE_ROUTE,
+    SONGS_EDIT_ROUTE
+} from "../../app/App.Routes";
 import FourZeroFour from "../../common/elements/FourZeroZero";
 
 const Songs = () => (
@@ -13,7 +21,7 @@ const Songs = () => (
         reducer={SongTagReducer}
     >
         <Switch>
-            <Route path={SONGS_CREATE_ROUTE} exact component={CreateSong}/>
+            <Route path={SONGS_CREATE_ROUTE} exact component={CreateSong} />
             <Route
                 path={SONGS_EDIT_ROUTE + ":song_id?"}
                 exact
@@ -24,10 +32,9 @@ const Songs = () => (
                 exact
                 component={ViewSongs}
             />
-            <Route component={FourZeroFour}/>
+            <Route component={FourZeroFour} />
         </Switch>
     </SongTagProvider>
-
 );
 
 export default Songs;

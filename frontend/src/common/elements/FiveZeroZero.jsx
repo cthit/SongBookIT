@@ -1,5 +1,10 @@
 import React from "react";
-import {DigitButton, DigitDesign, DigitText, useDigitTranslations} from "@cthit/react-digit-components";
+import {
+    DigitButton,
+    DigitDesign,
+    DigitText,
+    useDigitTranslations
+} from "@cthit/react-digit-components";
 
 const FiveZeroZero = () => {
     const [text] = useDigitTranslations();

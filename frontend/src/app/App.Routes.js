@@ -1,4 +1,4 @@
-import {removeLastSlash} from "../api/utils/api";
+import { removeLastSlash } from "../api/utils/api";
 
 export const BASE_ROUTE = "/";
 const SONGS_BASE_ROUTE = "/songs/";

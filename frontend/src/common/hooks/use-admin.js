@@ -1,5 +1,5 @@
 import some from "lodash/some";
-import {useGammaMe} from "@cthit/react-digit-components";
+import { useGammaMe } from "@cthit/react-digit-components";
 
 const authority = process.env.REACT_APP_GAMMA_ADMIN_AUTHORITY;
 
