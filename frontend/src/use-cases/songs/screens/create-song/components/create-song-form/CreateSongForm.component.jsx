@@ -2,6 +2,8 @@ import { useHistory } from "react-router-dom";
 import {
     DigitButton,
     DigitForm,
+    DigitIconButton,
+    DigitLayout,
     DigitText,
     useDigitToast,
     useDigitTranslations
@@ -19,6 +21,7 @@ import {
 } from "../../../../components/song-form/SongForm.utils";
 import FiveZeroZeroComponent from "../../../../../../common/components/five-zero-zero";
 import ErrorCard from "../../../../../../common/components/error-card";
+import { ArrowBack } from "@material-ui/icons";
 
 export const CreateSongForm = () => {
     const { tags, loadSongs, loadTags } = useSongTag();
@@ -66,7 +69,16 @@ export const CreateSongForm = () => {
                     <>
                         {error.isError && <ErrorCard message={error.message} />}
                         <SongFormCard>
-                            <DigitText.Heading5 text={text.AddSong} />
+                            <DigitLayout.Row alignItems={"center"}>
+                                <DigitIconButton
+                                    icon={ArrowBack}
+                                    onClick={() => history.goBack()}
+                                />
+                                <DigitText.Heading6
+                                    alignCenter
+                                    text={text.AddSong}
+                                />
+                            </DigitLayout.Row>
                             <SongFormFields text={text} tags={tags} />
                             <DigitButton
                                 raised

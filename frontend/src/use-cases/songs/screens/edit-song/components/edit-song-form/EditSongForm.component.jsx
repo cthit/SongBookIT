@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import {
     DigitButton,
     DigitForm,
+    DigitIconButton,
+    DigitLayout,
     DigitText,
     useDigitCustomDialog,
     useDigitToast,
@@ -21,6 +23,7 @@ import {
 } from "../../../../components/song-form/SongForm.utils";
 import ErrorCard from "../../../../../../common/components/error-card";
 import FiveZeroZeroComponent from "../../../../../../common/components/five-zero-zero";
+import { ArrowBack } from "@material-ui/icons";
 
 const defineDeleteDialog = (text, deleteFunction) => ({
     renderMain: () => <DigitText.Text bold text={text.DeleteSongConfirm} />,
@@ -110,34 +113,47 @@ export const EditSongForm = ({ song }) => {
                     <>
                         {error.isError && <ErrorCard message={error.message} />}
                         <SongFormCard>
-                            <DigitText.Heading5
-                                text={
-                                    text.EditSong +
-                                    ": Nr." +
-                                    song.number +
-                                    " " +
-                                    song.title
-                                }
-                            />
+                            <DigitLayout.Row alignItems={"center"}>
+                                <DigitIconButton
+                                    icon={ArrowBack}
+                                    onClick={() => history.goBack()}
+                                />
+                                <DigitText.Heading6
+                                    text={
+                                        text.EditSong +
+                                        ": Nr." +
+                                        song.number +
+                                        " " +
+                                        song.title
+                                    }
+                                />
+                            </DigitLayout.Row>
 
                             <SongFormFields text={text} tags={tags} />
-                            <DigitButton
-                                raised
-                                submit
-                                primary
-                                text={text.Save}
-                                disabled={Object.keys(errors).length !== 0}
-                            />
-                            <DigitButton
-                                raised
-                                secondary
-                                text={text.DeleteSong}
-                                onClick={() =>
-                                    openDeleteDialog(
-                                        defineDeleteDialog(text, performDelete)
-                                    )
-                                }
-                            />
+
+                            <DigitLayout.Row justifyContent={"space-between"}>
+                                <DigitButton
+                                    raised
+                                    secondary
+                                    text={text.DeleteSong}
+                                    onClick={() =>
+                                        openDeleteDialog(
+                                            defineDeleteDialog(
+                                                text,
+                                                performDelete
+                                            )
+                                        )
+                                    }
+                                />
+
+                                <DigitButton
+                                    raised
+                                    submit
+                                    primary
+                                    text={text.Save}
+                                    disabled={Object.keys(errors).length !== 0}
+                                />
+                            </DigitLayout.Row>
                         </SongFormCard>
                     </>
                 );

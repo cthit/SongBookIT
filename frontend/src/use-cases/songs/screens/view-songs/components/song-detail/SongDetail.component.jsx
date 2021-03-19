@@ -8,14 +8,7 @@ import {
     DigitText
 } from "@cthit/react-digit-components";
 import { navEditSong, navHome } from "../../../../../../app/App.routes";
-import styled from "styled-components";
-
-export const SongContainer = styled.div`
-    width: min(
-        100vw - (2 * 24px) - (2 * 32px),
-        600px - (2 * 24px)
-    ); // Digit dialog has a max width of 600 px and 28px padding inside
-`;
+import SongDetailContainer from "../../../../components/song-detail-container";
 
 const SongDetails = (admin, s, tags, history, text) => {
     const melody = s.melody ? s.melody : text.Unknown;
@@ -24,7 +17,7 @@ const SongDetails = (admin, s, tags, history, text) => {
     return {
         title: s.number + ". " + s.title,
         renderMain: () => (
-            <SongContainer>
+            <SongDetailContainer>
                 <DigitLayout.Row
                     flexWrap={"wrap"}
                     justifyContent={"space-between"}
@@ -51,7 +44,7 @@ const SongDetails = (admin, s, tags, history, text) => {
                 <DigitLayout.Center>
                     <DigitMarkdown markdownSource={s.text} />
                 </DigitLayout.Center>
-            </SongContainer>
+            </SongDetailContainer>
         ),
         renderButtons: (confirm, cancel) => (
             <>

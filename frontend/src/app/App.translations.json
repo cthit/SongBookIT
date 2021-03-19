@@ -43,6 +43,10 @@
     "Delete song",
     "Ta bort låt"
   ],
+  "PreviewText": [
+    "Preview text",
+    "Förhandsvisa låttext"
+  ],
   "DeleteSongConfirm": [
     "Are you sure you want to delete this song?",
     "Är du säker att du vill ta bort den här låten?"

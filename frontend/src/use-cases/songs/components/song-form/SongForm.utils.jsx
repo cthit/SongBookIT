@@ -1,14 +1,32 @@
 import React from "react";
 import {
     DigitAutocompleteSelectMultiple,
+    DigitButton,
     DigitDesign,
     DigitLayout,
+    DigitMarkdown,
     DigitTextArea,
     DigitTextField,
+    useDigitCustomDialog,
     useDigitFormField
 } from "@cthit/react-digit-components";
+import SongDetailContainer from "../song-detail-container";
+
+const definePreviewDialog = (songText, text) => ({
+    renderMain: () => (
+        <SongDetailContainer>
+            <DigitLayout.Column>
+                <DigitMarkdown markdownSource={songText} />
+            </DigitLayout.Column>
+        </SongDetailContainer>
+    ),
+    renderButtons: (confirm, cancel) => (
+        <DigitButton text={text.Close} raised onClick={confirm} />
+    )
+});
 
 export const SongFormFields = ({ text, tags }) => {
+    const [openDialog] = useDigitCustomDialog();
     const titleField = useDigitFormField("title");
     const authorField = useDigitFormField("author");
     const melodyField = useDigitFormField("melody");
@@ -38,6 +56,16 @@ export const SongFormFields = ({ text, tags }) => {
                 upperLabel={text.Text}
                 primary
             />
+
+            <DigitLayout.Row>
+                <DigitButton
+                    primary
+                    text={text.PreviewText}
+                    onClick={() =>
+                        openDialog(definePreviewDialog(textField.value, text))
+                    }
+                />
+            </DigitLayout.Row>
             <DigitAutocompleteSelectMultiple
                 size={{ width: "100%" }}
                 {...tagsField}
