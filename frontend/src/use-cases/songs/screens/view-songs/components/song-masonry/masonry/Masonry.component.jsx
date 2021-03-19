@@ -22,14 +22,15 @@ const fillCols = (children, cols) => {
 
 export function Masonry({ children, gap, minWidth = 400, ...rest }) {
     const ref = useRef();
-    const [numCols, setNumCols] = useState(3);
+    const [numCols, setNumCols] = useState(1);
     const cols = [...Array(numCols)].map(() => []);
-    fillCols(children, cols);
 
     const resizeHandler = () =>
         setNumCols(Math.ceil(ref.current.offsetWidth / minWidth));
     useEffect(resizeHandler, []);
     useEventListener(`resize`, resizeHandler);
+
+    fillCols(children, cols);
 
     return (
         <MasonryDiv ref={ref} gap={gap} {...rest}>
