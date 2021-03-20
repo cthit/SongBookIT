@@ -83,6 +83,15 @@ Songbook checks for the Authority specified in the following variables.
 - `REACT_APP_GAMMA_ADMIN_AUTHORITY`: Default is `songbook`.
 
 #### The rest of 'em
+These variables should all be applied to the frontend.
+- `REACT_APP_GAMMA_FRONTEND_URL`:
+  - Should be: https://gamma.chalmers.it
+  - Development: http://localhost:3000"
+- `REACT_APP_GAMMA_BACKEND_URL`:
+  - Should be: `https://gamma.chalmers.it/api`
+  - Development: `http://localhost:8081/api`
+
+
 These variables should all be applied to the backend.
 - `GAMMA_SECRET`: Default `secret`.
 - `GAMMA_CLIENT_ID`, `GAMMA_CLIENT_SECRET`: Id and secret of the client from Gamma. Default is `id`/`secret`.

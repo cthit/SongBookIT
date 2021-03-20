@@ -19,11 +19,6 @@ const Header = ({ loading, signIn }) => {
     const admin = useAdmin();
     const [text] = useDigitTranslations();
 
-    const backendUrl =
-        process.env.NODE_ENV === "development"
-            ? "http://localhost:8081/api"
-            : "https://gamma.chalmers.it/api";
-
     return (
         <DigitLayout.Row
             flex={"1"}
@@ -60,12 +55,8 @@ const Header = ({ loading, signIn }) => {
                 }
                 signOut={signoutFromSongbook} // not used but defined so that GammaActions doesn't complain
                 size={{ width: "min-content" }}
-                frontendUrl={
-                    process.env.NODE_ENV === "development"
-                        ? "http://localhost:3000"
-                        : "https://gamma.chalmers.it"
-                }
-                backendUrl={backendUrl}
+                frontendUrl={process.env.REACT_APP_GAMMA_FRONTEND_URL}
+                backendUrl={process.env.REACT_APP_GAMMA_BACKEND_URL}
             />
         </DigitLayout.Row>
     );
