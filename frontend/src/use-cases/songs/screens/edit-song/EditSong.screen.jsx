@@ -8,29 +8,22 @@ import EditSongForm from "./components/edit-song-form";
 import FourZeroFour from "../../../../common/components/four-zero-four";
 import SongFormContainer from "../../components/song-form-container";
 import FormatSongInstructions from "../../components/format-song-instruction";
+import FiveZeroZeroComponent from "../../../../common/components/five-zero-zero";
 
 const EditSong = () => {
     let { song_id } = useParams();
     const [faultySongId, setFaultySongId] = useState(false);
-    const [hasLoadedSong, setHasLoadedSong] = useState(false);
-    const [songToEdit, setSongToEdit] = useState({
-        song_id: "",
-        title: "",
-        melody: "",
-        text: "",
-        author: "",
-        tags: []
-    });
+    const [songToEdit, setSongToEdit] = useState(null);
+    const [somethingWrong, setSomethingWrong] = useState(false);
 
     useEffect(() => {
         getSong(song_id)
             .then(res => {
                 setSongToEdit(res.data.data.song);
-                setHasLoadedSong(true);
+                setFaultySongId(false);
             })
             .catch(err => {
                 setFaultySongId(true);
-                setHasLoadedSong(false);
             });
     }, [song_id]);
 
@@ -44,16 +37,23 @@ const EditSong = () => {
         return <FourZeroFour />;
     }
 
+    if (somethingWrong) {
+        return <FiveZeroZeroComponent />;
+    }
+
     return (
         <>
             <DigitLoading
-                loading={!hasLoadedSong}
+                loading={songToEdit === null}
                 margin={{ left: "auto", right: "auto", top: "32px" }}
             />
-            {hasLoadedSong && (
+            {songToEdit !== null && (
                 <SongFormContainer>
                     <div />
-                    <EditSongForm song={songToEdit} />
+                    <EditSongForm
+                        song={songToEdit}
+                        setSomethingWrong={setSomethingWrong}
+                    />
                     <FormatSongInstructions />
                 </SongFormContainer>
             )}

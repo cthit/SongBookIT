@@ -1,10 +1,11 @@
 import { useHistory } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     DigitButton,
     DigitForm,
     DigitIconButton,
     DigitLayout,
+    DigitLoading,
     DigitText,
     useDigitCustomDialog,
     useDigitToast,
@@ -14,7 +15,7 @@ import { editSong } from "../../../../../../api/songs/put.songs.api";
 import * as yup from "yup";
 import { deleteSong } from "../../../../../../api/songs/delete.songs.api";
 import { navHome, navViewSong } from "../../../../../../app/App.routes";
-import { useSongTag } from "../../../../Songs.context";
+import { useSongs } from "../../../../Songs.context";
 import {
     SongFormCard,
     SongFormFields,
@@ -22,7 +23,6 @@ import {
     songValidationSchema
 } from "../../../../components/song-form/SongForm.utils";
 import ErrorCard from "../../../../../../common/components/error-card";
-import FiveZeroZeroComponent from "../../../../../../common/components/five-zero-zero";
 import { ArrowBack } from "@material-ui/icons";
 
 const defineDeleteDialog = (text, deleteFunction) => ({
@@ -43,66 +43,77 @@ const defineDeleteDialog = (text, deleteFunction) => ({
     onConfirm: () => deleteFunction()
 });
 
-export const EditSongForm = ({ song }) => {
+export const EditSongForm = ({ song, setSomethingWrong }) => {
     let history = useHistory();
     const [text] = useDigitTranslations();
     const [queueToast] = useDigitToast();
-    const { tags, loadSongs, loadTags } = useSongTag();
+    const [loading, setLoading] = useState(true);
+    const [openDeleteDialog] = useDigitCustomDialog();
     const [error, setError] = useState({ isError: false, message: "" });
 
-    const [somethingWrong, setSomethingWrong] = useState(false);
+    const { tags, refetchSongsAndTags, refetchTags } = useSongs();
 
-    useEffect(() => loadTags(), []);
+    useEffect(() => {
+        refetchTags().then(() => setLoading(false));
+    }, []);
 
-    const performDelete = () => {
-        deleteSong(song.song_id)
-            .then(() => {
-                queueToast({
-                    text: text.DeleteSongSuccessful
-                });
-                navHome(history);
-                loadSongs();
-            })
-            .catch(() => {
-                queueToast({
-                    text: text.DeleteSongFailed
-                });
-                const e = error.response.data.error;
-                setError({ isError: e.isError, message: text[e.message] });
-                if (text[e.message]) {
-                    setSomethingWrong(true);
-                }
-            });
-    };
-
-    const performUpdate = values => {
-        editSong(song.song_id, values)
-            .then(() => {
+    const performUpdate = useCallback(
+        async values => {
+            try {
+                await editSong(song.song_id, values);
                 queueToast({
                     text: text.EditSongSuccessful
                 });
+                await refetchSongsAndTags();
                 navViewSong(history, song.song_id);
-                loadSongs();
-            })
-
-            .catch(error => {
+            } catch (error) {
                 queueToast({
                     text: text.EditSongFailed
                 });
-                const e = error.response.data.error;
-                setError({ isError: e.isError, message: text[e.message] });
-                if (!text[e.message]) {
+                if (error.response.status === 500) {
                     setSomethingWrong(true);
+                } else {
+                    setError({
+                        isError: error.response.data.error.isError,
+                        message: text[error.response.data.error.message]
+                    });
                 }
+            }
+        },
+        [song, text, refetchTags]
+    );
+
+    const performDelete = useCallback(async () => {
+        try {
+            await deleteSong(song.song_id);
+            queueToast({
+                text: text.DeleteSongSuccessful
             });
-    };
+            await refetchSongsAndTags();
+            navHome(history);
+        } catch (error) {
+            queueToast({
+                text: text.DeleteSongFailed
+            });
+            if (error.response.status === 500) {
+                setSomethingWrong(true);
+            } else {
+                setError({
+                    isError: error.response.data.error.isError,
+                    message: text[error.response.data.error.message]
+                });
+            }
+        }
+    }, [song]);
 
-    const [openDeleteDialog] = useDigitCustomDialog();
-
-    if (somethingWrong) {
-        return <FiveZeroZeroComponent />;
+    if (loading) {
+        return (
+            <DigitLoading
+                margin={{ left: "auto", right: "auto", top: "32px" }}
+                loading={loading}
+            />
+        );
     }
-
     return (
         <DigitForm
             initialValues={songInitialValues(song)}
@@ -118,7 +129,8 @@ export const EditSongForm = ({ song }) => {
                                     icon={ArrowBack}
                                     onClick={() => history.goBack()}
                                 />
-                                <DigitText.Heading6
+                                <DigitText.Text
+                                    bold
                                     text={
                                         text.EditSong +
                                         ": Nr." +
@@ -138,9 +150,8 @@ export const EditSongForm = ({ song }) => {
                                     text={text.DeleteSong}
                                     onClick={() =>
                                         openDeleteDialog(
-                                            defineDeleteDialog(
-                                                text,
-                                                performDelete
+                                            defineDeleteDialog(text, () =>
+                                                performDelete()
                                             )
                                         )
                                     }

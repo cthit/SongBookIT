@@ -1,90 +1,90 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useState
+} from "react";
 import { getSongs } from "../../api/songs/get.songs.api";
 import { getTags } from "../../api/tags/get.tags.api";
 
-export const SongTagContext = createContext({});
+const SongTagContext = createContext({});
 
-export const SongTagProvider = ({ reducer, initialState, children }) => (
-    <SongTagContext.Provider value={useReducer(reducer, initialState)}>
-        {children}
-    </SongTagContext.Provider>
-);
+export const SongTagProvider = ({ children }) => {
+    const [songs, setSongs] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [refetching, setRefetching] = useState(0);
 
-export const SongTagActions = {
-    LOAD_SONGS_TAGS: "LOAD_SONGS_TAGS",
-    LOAD_TAGS: "LOAD_TAGS",
-    LOADING: "LOADING"
-};
+    const refetchSongsAndTags = useCallback(async () => {
+        setRefetching(r => r + 1);
+        try {
+            const res = await getSongs();
+            const songs = Object.values(res.data.data.songs).sort(
+                (a, b) => a.number - b.number
+            );
+            const tags = Object.values(res.data.data.tags).sort((a, b) =>
+                a.name.localeCompare(b.name)
+            );
+            setSongs(songs);
+            setTags(tags);
+        } catch (e) {
+            setError(e);
+        }
+        setRefetching(r => r - 1);
+    }, []);
 
-export const InitialSongTagState = {
-    songs: [],
-    tags: [],
-    loadingSongs: false
-};
+    const refetchTags = useCallback(async () => {
+        setRefetching(r => r + 1);
+        try {
+            const res = await getTags();
+            const tags = Object.values(res.data.data.tags).sort((a, b) =>
+                a.name.localeCompare(b.name)
+            );
+            setTags(tags);
+        } catch (e) {
+            setError(e);
+        }
+        setRefetching(r => r - 1);
+    }, []);
 
-export const SongTagReducer = (state, action) => {
-    switch (action.type) {
-        case SongTagActions.LOADING:
-            return {
-                ...state,
-                loadingSongs: true
-            };
-
-        case SongTagActions.LOAD_TAGS:
-            return {
-                ...state,
-                tags: action.tags,
-                loadingSongs: false
-            };
-
-        case SongTagActions.LOAD_SONGS_TAGS:
-            return {
-                ...state,
-                songs: action.songs,
-                tags: action.tags,
-                loadingSongs: false
-            };
-    }
-
-    return state;
-};
-
-export const useSongTag = () => {
-    const [{ songs, tags, loadingSongs }, dispatch] = useContext(
-        SongTagContext
+    const getSong = useCallback(
+        id => {
+            const song = songs.find(song => song.song_id === id);
+            if (song) {
+                const t = tags.filter(tag => song.tags.includes(tag.tag_id));
+                return { ...song, tags: t };
+            }
+            return null;
+        },
+        [songs, tags]
     );
 
-    const loadSongs = () => {
-        if (!loadingSongs) {
-            dispatch({ type: SongTagActions.LOADING });
-            getSongs().then(res => {
-                const songs = Object.values(res.data.data.songs).sort((a, b) =>
-                    a.number > b.number ? 1 : -1
-                );
-                const tags = Object.values(res.data.data.tags).sort((a, b) =>
-                    a.name > b.name ? 1 : -1
-                );
-                dispatch({
-                    type: SongTagActions.LOAD_SONGS_TAGS,
-                    songs: songs,
-                    tags: tags
-                });
-            });
-        }
-    };
+    useEffect(() => {
+        const func = async () => {
+            await refetchSongsAndTags();
+            setLoading(false);
+        };
 
-    const loadTags = () => {
-        if (!loadingSongs) {
-            dispatch({ type: SongTagActions.LOADING });
-            getTags().then(res => {
-                const tags_res = Object.values(res.data.data.tags);
-                dispatch({
-                    type: SongTagActions.LOAD_TAGS,
-                    tags: tags_res
-                });
-            });
-        }
-    };
+        func();
+    }, []);
 
-    return { songs, tags, loadingSongs, loadSongs, loadTags };
+    return (
+        <SongTagContext.Provider
+            value={{
+                songs,
+                tags,
+                loading,
+                error,
+                refetching: refetching > 0,
+                refetchSongsAndTags,
+                refetchTags,
+                getSong
+            }}
+        >
+            {children}
+        </SongTagContext.Provider>
+    );
 };
+export const useSongs = () => useContext(SongTagContext);

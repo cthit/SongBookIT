@@ -3,11 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import CreateSong from "./screens/create-song";
 import EditSong from "./screens/edit-song";
 import ViewSongs from "./screens/view-songs";
-import {
-    InitialSongTagState,
-    SongTagProvider,
-    SongTagReducer
-} from "./Songs.context";
+import { SongTagProvider } from "./Songs.context";
 import {
     BASE_ROUTE,
     SONGS_CREATE_ROUTE,
@@ -16,10 +12,7 @@ import {
 import FourZeroFour from "../../common/components/four-zero-four";
 
 const Songs = () => (
-    <SongTagProvider
-        initialState={InitialSongTagState}
-        reducer={SongTagReducer}
-    >
+    <SongTagProvider>
         <Switch>
             <Route path={SONGS_CREATE_ROUTE} exact component={CreateSong} />
             <Route

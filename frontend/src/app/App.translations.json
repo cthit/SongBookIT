@@ -136,11 +136,11 @@
     "Misslyckades redigera sången"
   ],
   "FormatSong": [
-    "##### Formatting of lyrics\n\nThe lyrics uses Markdown to render. To ensure that the desired paragraph structure is achieved, make sure to understand the following syntax rules.\n\n* Double spaces at the end of a line gives a line break. Writing on a new line does not guarantee a line break.\n* A new paragraph is created by separating two lines by one or more empty lines.\n\n[Further reading on line breakes](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#line-breaks)·",
-    "##### Formattering av låttext\n\nLåttexten använder sig av enkel markdown. För att kunna formatera styckena som önskat rekommenderas dessa Markdownregler.\n\n* Dubbla mellanslag i slutet av en rad ger radbrytning i samma stycke. Bara en ny rad skapar då inte en radbrytning.\n* Nytt stycke skapas genom en eller flera tomma rader.\n\n[Vidare läsning om radbrytningar](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#line-breaks)·"
+    "**Formatting of lyrics**\n\nThe lyrics uses Markdown to render. To ensure that the desired paragraph structure is achieved, make sure to understand the following syntax rules.\n\n* Double spaces at the end of a line gives a line break. Writing on a new line does not guarantee a line break.\n* A new paragraph is created by separating two lines by one or more empty lines.\n\n[Further reading on line breakes](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#line-breaks)·",
+    "**Formattering av låttext**\n\nLåttexten använder sig av markdown. För att kunna formatera stycken som önskat rekommenderas att hålla koll på följande Markdownregler.\n\n* Dubbla mellanslag i slutet av en rad ger radbrytning i samma stycke. Bara en ny rad skapar då inte en radbrytning.\n* Nytt stycke skapas genom en eller flera tomma rader.\n\n[Vidare läsning om radbrytningar](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#line-breaks)·"
   ],
   "SONG_TITLE_ALREADY_EXIST": [
-    "There already exists a song with this title",
-    "Det finns redan en sång med det här titeln"
+    "There already exists a song with this title, try another one",
+    "Det finns redan en sång med det här titeln, testa en annan"
   ]
 }

@@ -4,59 +4,67 @@ import {
     DigitForm,
     DigitIconButton,
     DigitLayout,
+    DigitLoading,
     DigitText,
     useDigitToast,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { addSong } from "../../../../../../api/songs/post.songs.api";
 import { navViewSong } from "../../../../../../app/App.routes";
 import * as yup from "yup";
-import { useSongTag } from "../../../../Songs.context";
+import { useSongs } from "../../../../Songs.context";
 import {
     SongFormCard,
     SongFormFields,
     songInitialValues,
     songValidationSchema
 } from "../../../../components/song-form/SongForm.utils";
-import FiveZeroZeroComponent from "../../../../../../common/components/five-zero-zero";
 import ErrorCard from "../../../../../../common/components/error-card";
 import { ArrowBack } from "@material-ui/icons";
 
-export const CreateSongForm = () => {
-    const { tags, loadSongs, loadTags } = useSongTag();
-    let history = useHistory();
+export const CreateSongForm = ({ setSomethingWrong }) => {
+    const { tags, refetchSongsAndTags, refetchTags } = useSongs();
     const [queueToast] = useDigitToast();
-
+    const [loading, setLoading] = useState(true);
+    const history = useHistory();
     const [text] = useDigitTranslations();
     const [error, setError] = useState({ isError: false, message: "" });
-    const [somethingWrong, setSomethingWrong] = useState(false);
 
-    useEffect(() => loadTags(), []);
+    useEffect(() => {
+        refetchTags().then(() => setLoading(false));
+    }, []);
 
-    const performCreate = values => {
-        addSong(values)
-            .then(res => {
-                queueToast({
-                    text: text.AddSongSuccessful
-                });
-                navViewSong(history, res.data.data.song_id);
-                loadSongs();
-            })
-            .catch(error => {
-                queueToast({
-                    text: text.AddSongFailed
-                });
-                const e = error.response.data.error;
-                setError({ isError: e.isError, message: text[e.message] });
-                if (!text[e.message]) {
-                    setSomethingWrong(true);
-                }
+    const performCreate = useCallback(async values => {
+        try {
+            const res = await addSong(values);
+            queueToast({
+                text: text.AddSongSuccessful
             });
-    };
+            await refetchSongsAndTags();
+            navViewSong(history, res.data.data.song_id);
+        } catch (error) {
+            queueToast({
+                text: text.AddSongFailed
+            });
+            if (error.response.status === 500) {
+                setSomethingWrong(true);
+            } else {
+                setError({
+                    isError: error.response.data.error.isError,
+                    message: text[error.response.data.error.message]
+                });
+            }
+        }
+    });
 
-    if (somethingWrong) {
-        return <FiveZeroZeroComponent />;
+    if (loading) {
+        return (
+            <DigitLoading
+                margin={{ left: "auto", right: "auto", top: "32px" }}
+                loading={loading}
+            />
+        );
     }
 
     return (
@@ -74,7 +82,8 @@ export const CreateSongForm = () => {
                                     icon={ArrowBack}
                                     onClick={() => history.goBack()}
                                 />
-                                <DigitText.Heading6
+                                <DigitText.Text
+                                    bold
                                     alignCenter
                                     text={text.AddSong}
                                 />

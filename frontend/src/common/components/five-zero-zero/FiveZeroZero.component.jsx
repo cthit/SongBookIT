@@ -14,7 +14,7 @@ export const FiveZeroZero = () => {
             <DigitDesign.CardHeader>
                 <DigitDesign.CardTitle text={text.SomethingWentWrong} />
             </DigitDesign.CardHeader>
-            <DigitDesign.CardHeaderImage src="/images/500.gif" />
+            <DigitDesign.CardHeaderImage src="/images/500.jpg" />
             <DigitDesign.CardBody>
                 <DigitText.Text text={text.Contact} />
             </DigitDesign.CardBody>
