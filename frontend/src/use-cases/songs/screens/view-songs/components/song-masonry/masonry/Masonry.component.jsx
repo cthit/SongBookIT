@@ -12,7 +12,7 @@ export const MasonryDiv = styled.div`
 
 export const Col = styled.div`
     display: grid;
-    justify-content: center;
+    justify-content: flex-start;
     grid-gap: ${props => props.gap || `1em`};
 `;
 
