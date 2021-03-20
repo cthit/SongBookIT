@@ -3,7 +3,8 @@ import {
     DigitHeader,
     useDigitTranslations,
     useGamma,
-    useGammaMe
+    useGammaMe,
+    DigitLayout
 } from "@cthit/react-digit-components";
 import { Route, Switch } from "react-router-dom";
 import Songs from "../use-cases/songs";
@@ -11,6 +12,7 @@ import Header from "./components/header/Header.component";
 import translations from "./App.translations";
 import { BASE_ROUTE } from "./App.routes";
 import { GAMMA_AUTH_ENDPOINT, GAMMA_ME_ENDPOINT } from "../api/utils/endpoints";
+import { Footer } from "./components/footer/Footer.component";
 
 const getUserLanguage = user => {
     let language = user == null ? null : user.language;
@@ -66,9 +68,12 @@ const App = () => {
                 <Header loading={loading} signIn={signIn} />
             )}
             renderMain={() => (
-                <Switch>
-                    <Route from={BASE_ROUTE} component={Songs} />
-                </Switch>
+                <DigitLayout.Column size={{ width: "100vw" }}>
+                    <Switch>
+                        <Route from={BASE_ROUTE} component={Songs} />
+                    </Switch>
+                    <Footer />
+                </DigitLayout.Column>
             )}
         />
     );
