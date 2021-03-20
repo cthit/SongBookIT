@@ -1,35 +1,29 @@
+importScripts("https://rawgit.com/farzher/fuzzysort/master/fuzzysort.js");
 
-const filterTagsFunc = tags => {
-    return song => song.tags.some(tag => tags.includes(tag));
-};
-
-const filterSearchFunc = search => {
-    return song =>
-        (song.title + song.number).toLowerCase().includes(search.toLowerCase());
-};
-
-const applyFilters = (songsToCheck, filters) => {
-    if (filters.length) {
-        return songsToCheck.filter(song => {
-            return filters.map(func => func(song)).every(x => x);
-        });
-    } else {
-        return songsToCheck;
-    }
-};
-
-onmessage = function({data: {songs, filterText, filterTags}}) {
-
-    const filters = [];
+onmessage = function({ data: { songs, filterText, filterTags } }) {
+    let target = songs;
 
     if (filterTags.length) {
-        filters.push(filterTagsFunc(filterTags));
-    }
-    if (filterText !== "") {
-        filters.push(filterSearchFunc(filterText));
+        target = songs.filter(song =>
+            song.tags.some(tag => filterTags.includes(tag))
+        );
     }
 
-    const filteredSongs = applyFilters(songs, filters)
+    let filteredSongs = [];
+
+    if (filterText === "") {
+        filteredSongs = target;
+    } else {
+        target = target.map(s => ({ ...s, number: "" + s.number }));
+
+        const res = fuzzysort.go(filterText, target, {
+            keys: ["number", "title", "melody", "author", "text"],
+            allowTypo: false,
+            threshold: -500
+        });
+
+        filteredSongs = res.map(r => r.obj);
+    }
 
     postMessage(filteredSongs);
-}
+};

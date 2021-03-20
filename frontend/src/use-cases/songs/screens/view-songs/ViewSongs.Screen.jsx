@@ -1,8 +1,6 @@
 import useAdmin from "../../../../common/hooks/use-admin";
 import { useHistory, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-
-import { getSong } from "../../../../api/songs/get.songs.api";
 import {
     DigitLoading,
     useDigitCustomDialog,
@@ -15,6 +13,7 @@ import FourZeroFour from "../../../../common/components/four-zero-four";
 import SongMasonry from "./components/song-masonry";
 import FiveZeroZeroComponent from "../../../../common/components/five-zero-zero";
 import { useSongs } from "../../Songs.context";
+import { NoSongs } from "./components/no-songs/NoSongs.component";
 
 const ViewSongs = () => {
     const history = useHistory();
@@ -23,12 +22,13 @@ const ViewSongs = () => {
     const [filterText, setFilterText] = useState("");
     const [filterTags, setFilterTags] = useState([]);
 
-    const { songs, tags, getSong, loading, error } = useSongs();
+    const { songs, tags, getSong, loading, refetching, error } = useSongs();
 
     const { song_id } = useParams();
     const [openDialog] = useDigitCustomDialog();
     const [faultySongId, setFaultySongId] = useState(false);
     const [somethingWrong, setSomethingWrong] = useState(false);
+    const [isFiltering, setIsFiltering] = useState(false);
     const admin = useAdmin();
 
     useEffect(() => {
@@ -51,13 +51,25 @@ const ViewSongs = () => {
     }, [loading, song_id, text]);
 
     const [filteredSongs, setFilteredSongs] = useState(songs);
+    const [timeoutVal, setTimeoutVal] = useState(0);
     useEffect(() => {
+        setIsFiltering(true);
         const filterWorker = new Worker("/workers/filter.worker.js");
         filterWorker.onmessage = e => {
             setFilteredSongs(e.data);
+            setTimeoutVal(timeoutVal + 1);
+            const val = timeoutVal;
+            setTimeout(() => {
+                if (timeoutVal === val) {
+                    setTimeoutVal(0);
+                    setIsFiltering(false);
+                }
+            }, 300);
         };
         filterWorker.postMessage({ songs, filterText, filterTags });
-        return () => filterWorker.terminate();
+        return () => {
+            filterWorker.terminate();
+        };
     }, [filterTags, filterText, songs]);
 
     if (faultySongId) {
@@ -76,9 +88,17 @@ const ViewSongs = () => {
             />
             <DigitLoading
                 margin={{ left: "auto", right: "auto", top: "32px" }}
-                loading={loading}
+                loading={refetching || isFiltering}
             />
-            <SongMasonry songs={filteredSongs} tags={tags} />
+            {!isFiltering && filteredSongs.length === 0 && (
+                <NoSongs
+                    resetFilters={() => {
+                        setFilterTags([]);
+                        setFilterText("");
+                    }}
+                />
+            )}
+            <SongMasonry songs={isFiltering ? [] : filteredSongs} tags={tags} />
         </DigitLayout.Column>
     );
 };

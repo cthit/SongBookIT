@@ -142,5 +142,9 @@
   "SONG_TITLE_ALREADY_EXIST": [
     "There already exists a song with this title, try another one",
     "Det finns redan en sång med det här titeln, testa en annan"
-  ]
+  ],
+  "NoMatchingSongs": [
+    "There are no songs that matches your filter, do you wish to reset them?","Det finns inga sånger som matchar dina filter, vill du återställa dem?"
+  ],
+  "ResetFilters" : ["Reset filters", "Återställ filter"]
 }
