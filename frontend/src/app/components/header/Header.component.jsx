@@ -46,23 +46,19 @@ const Header = ({ loading, signIn }) => {
             )}
             <DigitGammaActions
                 customOptions={{
-                    addSong: text.AddSong,
-                    customSignOut: text.SignOut //This should be unnecessary but the prop SignOut didn't work when I tried
+                    addSong: text.AddSong
                 }}
                 customOptionsOnClick={item => {
                     if (item === "addSong") {
                         navCreateSong(history);
-                    } else if (item === "customSignOut") {
-                        signoutFromSongbook();
-                        window.location.href = backendUrl + "/logout";
                     }
                 }}
                 customOrder={
                     admin
-                        ? ["addSong", "viewAccount", "customSignOut"]
-                        : ["viewAccount", "customSignOut"]
+                        ? ["addSong", "viewAccount", "signOut"]
+                        : ["viewAccount", "signOut"]
                 }
-                signOut={a => a} // not used but defined so that GammaActions doesn't complain
+                signOut={signoutFromSongbook} // not used but defined so that GammaActions doesn't complain
                 size={{ width: "min-content" }}
                 frontendUrl={
                     process.env.NODE_ENV === "development"
