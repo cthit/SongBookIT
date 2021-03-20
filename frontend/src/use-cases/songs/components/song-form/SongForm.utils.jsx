@@ -51,7 +51,7 @@ export const SongFormFields = ({ text, tags }) => {
             />
             <DigitTextArea
                 size={{ width: "100%" }}
-                rowsMax={40}
+                rowsMax={17}
                 {...textField}
                 upperLabel={text.Text}
                 primary

@@ -6,7 +6,9 @@ import App from "./app";
 
 ReactDOM.render(
     <DigitProviders>
-        <App />
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
     </DigitProviders>,
     document.getElementById("root")
 );
