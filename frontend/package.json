@@ -17,6 +17,7 @@
     "react-app-rewired": "^2.1.8",
     "worker-loader": "^3.0.8"
   },
+  "proxy": "http://172.18.0.1:5000",
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
@@ -30,7 +31,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "http-proxy-middleware": "^1.0.5",
     "prettier": "^1.15.3",
     "react-scripts": "3.4.0"
   }
