@@ -68,7 +68,7 @@ const App = () => {
                 <Header loading={loading} signIn={signIn} />
             )}
             renderMain={() => (
-                <DigitLayout.Column>
+                <DigitLayout.Column flex={"1"}>
                     <Switch>
                         <Route from={BASE_ROUTE} component={Songs} />
                     </Switch>
