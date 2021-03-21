@@ -25,7 +25,7 @@ export const FormatSongInstructions = () => {
         <Desktop>
             <Sticky>
                 <DigitDesign.Card
-                    size={{ width: "100%", height: "auto", maxWidth: "450px" }}
+                    size={{ width: "100%", height: "auto" }}
                     margin={{ right: "auto" }}
                 >
                     <DigitDesign.CardBody>
