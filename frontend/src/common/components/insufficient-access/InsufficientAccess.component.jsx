@@ -5,12 +5,10 @@ import {
     DigitText,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import { useHistory } from "react-router-dom";
-import { navHome } from "../../../app/App.routes";
+import { BASE_ROUTE } from "../../../app/App.routes";
 
 export const InsufficientAccess = () => {
     const [text] = useDigitTranslations();
-    const history = useHistory();
 
     return (
         <DigitDesign.Card margin={"auto"} size={{ width: "300px" }}>
@@ -22,11 +20,9 @@ export const InsufficientAccess = () => {
                 <DigitText.Text text={text.YouDontHaveAccess} />
             </DigitDesign.CardBody>
             <DigitDesign.CardButtons>
-                <DigitButton
-                    onClick={() => navHome(history)}
-                    outlined
-                    text={text.Back}
-                />
+                <DigitDesign.Link to={BASE_ROUTE}>
+                    <DigitButton outlined text={text.Back} />
+                </DigitDesign.Link>
             </DigitDesign.CardButtons>
         </DigitDesign.Card>
     );

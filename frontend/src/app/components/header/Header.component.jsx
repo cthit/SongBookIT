@@ -3,6 +3,7 @@ import {
     DigitButton,
     DigitGammaActions,
     DigitLayout,
+    DigitDesign,
     DigitText,
     useDigitTranslations,
     useGammaMe
@@ -11,7 +12,7 @@ import useAdmin from "../../../common/hooks/use-admin";
 import { AccountCircle } from "@material-ui/icons";
 import { signoutFromSongbook } from "../../../api/gamma-signout/post.gamma-signout.api";
 import React from "react";
-import { navCreateSong, navHome } from "../../App.routes";
+import { BASE_ROUTE, navCreateSong } from "../../App.routes";
 
 const Header = ({ loading, signIn }) => {
     const history = useHistory();
@@ -25,11 +26,9 @@ const Header = ({ loading, signIn }) => {
             alignItems={"center"}
             justifyContent={"space-between"}
         >
-            <DigitText.Title
-                text={"Songbook"}
-                style={{ cursor: "pointer" }}
-                onClick={() => navHome(history)}
-            />
+            <DigitDesign.Link to={BASE_ROUTE}>
+                <DigitText.Title text={"Songbook"} />
+            </DigitDesign.Link>
 
             {!loading && user == null && (
                 <DigitButton

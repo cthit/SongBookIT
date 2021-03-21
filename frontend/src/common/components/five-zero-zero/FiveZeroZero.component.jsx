@@ -5,6 +5,7 @@ import {
     DigitText,
     useDigitTranslations
 } from "@cthit/react-digit-components";
+import { BASE_ROUTE } from "../../../app/App.routes";
 
 export const FiveZeroZero = () => {
     const [text] = useDigitTranslations();
@@ -19,13 +20,9 @@ export const FiveZeroZero = () => {
                 <DigitText.Text text={text.Contact} />
             </DigitDesign.CardBody>
             <DigitDesign.CardButtons>
-                <DigitButton
-                    outlined
-                    text={text.RefreshWebsite}
-                    onClick={() => {
-                        document.location.href = "/";
-                    }}
-                />
+                <DigitDesign.Link to={BASE_ROUTE}>
+                    <DigitButton outlined text={text.Back} />
+                </DigitDesign.Link>
             </DigitDesign.CardButtons>
         </DigitDesign.Card>
     );

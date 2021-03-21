@@ -5,7 +5,7 @@ import {
     DigitText,
     DigitLayout
 } from "@cthit/react-digit-components";
-import { navViewSong } from "../../../../../../../app/App.routes";
+import { BASE_ROUTE } from "../../../../../../../app/App.routes";
 import React from "react";
 import styled from "styled-components";
 
@@ -29,28 +29,40 @@ const SongPreview = ({ song, history, text, tags }) => {
     const author = song.author ? song.author : text.Unknown;
 
     return (
-        <DigitDesign.Card
-            style={{ cursor: "pointer" }}
-            onClick={() => navViewSong(history, song.song_id)}
+        <DigitDesign.Link
+            to={BASE_ROUTE + song.song_id}
+            style={{ textDecoration: "none" }}
         >
-            <DigitDesign.CardBody>
-                <DigitLayout.Column>
-                    <DigitText.Title text={song.number + ". " + song.title} />
-                    <DigitText.Text bold text={text.Author + ": " + author} />
-                    <DigitText.Text text={"Mel: " + melody} />
-                    <DigitMarkdown markdownSource={startOfText(song.text)} />
-                    <TagList>
-                        {findTags(song.tags, tags).map(tag => (
-                            <DigitChip
-                                primary
-                                key={tag.tag_id}
-                                label={tag.name}
-                            />
-                        ))}
-                    </TagList>
-                </DigitLayout.Column>
-            </DigitDesign.CardBody>
-        </DigitDesign.Card>
+            <DigitDesign.Card
+            // style={{ cursor: "pointer" }}
+            // onClick={() => navViewSong(history, song.song_id)}
+            >
+                <DigitDesign.CardBody>
+                    <DigitLayout.Column>
+                        <DigitText.Title
+                            text={song.number + ". " + song.title}
+                        />
+                        <DigitText.Text
+                            bold
+                            text={text.Author + ": " + author}
+                        />
+                        <DigitText.Text text={"Mel: " + melody} />
+                        <DigitMarkdown
+                            markdownSource={startOfText(song.text)}
+                        />
+                        <TagList>
+                            {findTags(song.tags, tags).map(tag => (
+                                <DigitChip
+                                    primary
+                                    key={tag.tag_id}
+                                    label={tag.name}
+                                />
+                            ))}
+                        </TagList>
+                    </DigitLayout.Column>
+                </DigitDesign.CardBody>
+            </DigitDesign.Card>
+        </DigitDesign.Link>
     );
 };
 
