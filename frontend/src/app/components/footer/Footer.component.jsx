@@ -9,19 +9,10 @@ const FooterText = styled.p`
     margin-left: auto;
 `;
 
-const FooterContainer = styled.footer`
-    margin-left: -16px;
-    margin-right: -16px;
-    margin-bottom: -16px;
-    padding-bottom: 8px;
-    left: 0;
-    right: 0;
-`;
-
 export const Footer = () => (
-    <FooterContainer>
+    <footer>
         <DigitLayout.Column justifyContent={"center"}>
-            <DigitDesign.Divider style={{ borderColor: "#f6f6f6" }} />
+            <DigitDesign.Divider style={{ borderColor: "#f8f8f8" }} />
             <FooterText>
                 {"made with ❤️ by "}
                 <a href={"https://github.com/ericlp/"}>{"LP"}</a>
@@ -33,5 +24,5 @@ export const Footer = () => (
                 </a>
             </FooterText>
         </DigitLayout.Column>
-    </FooterContainer>
+    </footer>
 );

@@ -68,7 +68,7 @@ const App = () => {
                 <Header loading={loading} signIn={signIn} />
             )}
             renderMain={() => (
-                <DigitLayout.Column size={{ width: "100vw" }}>
+                <DigitLayout.Column>
                     <Switch>
                         <Route from={BASE_ROUTE} component={Songs} />
                     </Switch>
