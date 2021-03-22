@@ -1,10 +1,10 @@
 from typing import Tuple
 
 from flask import Response
-
+from http import HTTPStatus
 
 class HttpResponse:
-    def __init__(self, code: int = 200, error: str = None, data=None, file=None, response: Response = None):
+    def __init__(self, code: int = HTTPStatus.OK, error: str = None, data=None, file=None, response: Response = None):
         self.code = code
         self.error = error
         self.data = data
@@ -12,7 +12,7 @@ class HttpResponse:
         self.response = response
 
     def get_response(self) -> Tuple[dict, int]:
-        if self.code != 200 or self.error is not None:
+        if self.code != HTTPStatus.OK or self.error is not None:
             return {
                        "data": {},
                        "error": {
@@ -31,10 +31,10 @@ class HttpResponse:
                        "isError": False,
                        "message": ""
                    }
-               }, 200
+               }, HTTPStatus.OK
 
     def is_error(self):
-        return self.code != 200
+        return self.code != HTTPStatus.OK
 
 
 def get_with_error(code: int, error: str):

@@ -1,4 +1,5 @@
 from uuid import UUID
+from http import HTTPStatus
 
 from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
 from command.TagCommands import remove_tag
@@ -21,11 +22,11 @@ def handle_get_tag_by_id(tag_id: str) -> HttpResponse:
 
     short_id_res = validate_short_id(tag_id)
     if short_id_res.is_error:
-        return get_with_error(400, short_id_res.message)
+        return get_with_error(HTTPStatus.BAD_REQUEST, short_id_res.message)
 
     tag_res = get_tag_by_id(short_id_res.data)
     if tag_res.is_error:
-        return get_with_error(404, tag_res.message)
+        return get_with_error(HTTPStatus.NOT_FOUND, tag_res.message)
     else:
 
         return get_with_data({
@@ -36,10 +37,10 @@ def handle_get_tag_by_id(tag_id: str) -> HttpResponse:
 def handle_delete_tag(tag_id: str) -> HttpResponse:
     short_id_res = validate_short_id(tag_id)
     if short_id_res.is_error:
-        return get_with_error(400, short_id_res.message)
+        return get_with_error(HTTPStatus.BAD_REQUEST, short_id_res.message)
 
     song_res = remove_tag(short_id_res.data)
     if song_res.is_error:
-        return get_with_error(404, song_res.message)
+        return get_with_error(HTTPStatus.NOT_FOUND, song_res.message)
     else:
         return get_with_data(song_res.data)

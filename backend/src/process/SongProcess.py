@@ -1,5 +1,5 @@
 from typing import Dict
-
+from http import HTTPStatus
 from utils.ErrorCodes import SONG_TITLE_ALREADY_EXIST
 from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
 from command.SongCommands import remove_song, create_song, update_song
@@ -32,7 +32,7 @@ def handle_get_songs_and_tags() -> HttpResponse:
 def handle_get_song_by_id(song_id: str) -> HttpResponse:
     short_id_res = validate_short_id(song_id)
     if short_id_res.is_error:
-        return get_with_error(400, short_id_res.message)
+        return get_with_error(HTTPStatus.BAD_REQUEST, short_id_res.message)
 
     song_res = get_song_by_id(short_id_res.data)
     if song_res.is_error:
@@ -53,17 +53,17 @@ def handle_get_song_by_id(song_id: str) -> HttpResponse:
 def handle_create_song(song_request: Dict) -> HttpResponse:
     valid_song_res = validate_song(song_request)
     if valid_song_res.is_error:
-        return get_with_error(400, valid_song_res.message)
+        return get_with_error(HTTPStatus.BAD_REQUEST, valid_song_res.message)
     song = valid_song_res.data
 
     song_res = get_song_by_name(song.title)
     if not song_res.is_error:
-        return get_with_error(400, SONG_TITLE_ALREADY_EXIST)
+        return get_with_error(HTTPStatus.BAD_REQUEST, SONG_TITLE_ALREADY_EXIST)
 
     for tag_id in song.tags:
         tag_res = get_tag_by_id(tag_id)
         if tag_res.is_error:
-            return get_with_error(400, tag_res.message)
+            return get_with_error(HTTPStatus.BAD_REQUEST, tag_res.message)
 
     song_id = create_song(valid_song_res.data).data
     for tag_id in song.tags:
@@ -74,12 +74,12 @@ def handle_create_song(song_request: Dict) -> HttpResponse:
 def handle_update_song(song_request: Dict, song_id: str) -> HttpResponse:
     valid_song_res = validate_song_update(song_request, song_id)
     if valid_song_res.is_error:
-        return get_with_error(400, valid_song_res.message)
+        return get_with_error(HTTPStatus.BAD_REQUEST, valid_song_res.message)
     song = valid_song_res.data
 
     song_res = get_song_by_name(song.title)
     if not song_res.is_error and song_res.data.song_id != song.song_id:
-        return get_with_error(400, SONG_TITLE_ALREADY_EXIST)
+        return get_with_error(HTTPStatus.BAD_REQUEST, SONG_TITLE_ALREADY_EXIST)
 
     songtotags_tag_ids = [stt.tag for stt in get_songtotag_by_song_id(song.song_id)]
     for tag_id in song.tags:
@@ -96,12 +96,12 @@ def handle_update_song(song_request: Dict, song_id: str) -> HttpResponse:
 def handle_delete_song(song_id: str) -> HttpResponse:
     valid_id_res = validate_short_id(song_id)
     if valid_id_res.is_error:
-        return get_with_error(400, valid_id_res.message)
+        return get_with_error(HTTPStatus.BAD_REQUEST, valid_id_res.message)
     valid_song_id = valid_id_res.data
 
     song_res = get_song_by_id(valid_song_id)
     if song_res.is_error:
-        return get_with_error(404, song_res.message)
+        return get_with_error(HTTPStatus.NOT_FOUND, song_res.message)
 
     remove_song(valid_song_id)
     return get_with_data({})

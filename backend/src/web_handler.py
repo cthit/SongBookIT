@@ -1,5 +1,5 @@
 from functools import wraps
-
+from http import HTTPStatus
 import jwt
 from flask import Flask, session, Response, request
 from flask_cors import CORS
@@ -30,7 +30,7 @@ def admin_required(f):
             authorities = jwt.decode(jwt=session['token'], options={'verify_signature': False})["authorities"]
 
             if config.GAMMA_ADMIN_AUTHORITY not in authorities:
-                return Response(status=403)
+                return Response(status=HTTPStatus.FORBIDDEN)
         return f(*args, **kwargs)
 
     return decorated_function

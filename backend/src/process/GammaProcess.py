@@ -2,6 +2,8 @@ import base64
 import urllib
 from typing import Dict
 
+from http import HTTPStatus
+
 import requests
 from flask import Response, session
 from logging import getLogger
@@ -18,7 +20,7 @@ def handle_gamma_me(session: Dict) -> HttpResponse:
         }
         res = requests.get(config.GAMMA_ME_URI, headers=headers)
         if res.ok:
-            return get_with_response(Response(response=res, status=200))
+            return get_with_response(Response(response=res, status=HTTPStatus.OK))
 
     response_type = "response_type=code"
     client_id = "client_id=" + config.GAMMA_CLIENT_ID
@@ -27,7 +29,7 @@ def handle_gamma_me(session: Dict) -> HttpResponse:
     headers = {
         "location": response
     }
-    return get_with_response(Response(response=response, headers=headers, status=401))
+    return get_with_response(Response(response=response, headers=headers, status=HTTPStatus.UNAUTHORIZED))
 
 
 def handle_gamma_auth(request: Dict, session: Dict) -> HttpResponse:
@@ -52,14 +54,14 @@ def handle_gamma_auth(request: Dict, session: Dict) -> HttpResponse:
     if res.ok:
         access_token = res.json()["access_token"]
         session["token"] = access_token
-        return get_with_response(Response(response=res, status=200))
+        return get_with_response(Response(response=res, status=HTTPStatus.OK))
     else:
         logger = getLogger(__name__)
         logger.error(f"An error occurred when communicating with Gamma:")
         logger.error(res)
-        return get_with_response(Response(status=500))
+        return get_with_response(Response(status=HTTPStatus.INTERNAL_SERVER_ERROR))
 
 
 def handle_gamma_signout():
     session.clear()
-    return get_with_response(Response(status=200))
+    return get_with_response(Response(status=HTTPStatus.OK))
