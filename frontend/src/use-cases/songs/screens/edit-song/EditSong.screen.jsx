@@ -11,7 +11,7 @@ import FormatSongInstructions from "../../components/format-song-instruction";
 import FiveZeroZeroComponent from "../../../../common/components/five-zero-zero";
 
 const EditSong = () => {
-    let { song_id } = useParams();
+    const { song_id } = useParams();
     const [faultySongId, setFaultySongId] = useState(false);
     const [songToEdit, setSongToEdit] = useState(null);
     const [somethingWrong, setSomethingWrong] = useState(false);

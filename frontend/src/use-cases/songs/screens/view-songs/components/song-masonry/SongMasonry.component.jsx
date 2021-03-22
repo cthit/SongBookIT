@@ -6,7 +6,7 @@ import SongPreview from "./song-preview";
 
 export const SongMasonry = ({ songs, tags }) => {
     const [text] = useDigitTranslations();
-    let history = useHistory();
+    const history = useHistory();
 
     return useMemo(
         () => (

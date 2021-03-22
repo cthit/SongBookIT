@@ -44,7 +44,7 @@ const defineDeleteDialog = (text, deleteFunction) => ({
 });
 
 export const EditSongForm = ({ song, setSomethingWrong }) => {
-    let history = useHistory();
+    const history = useHistory();
     const [text] = useDigitTranslations();
     const [queueToast] = useDigitToast();
     const [loading, setLoading] = useState(true);
