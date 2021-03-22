@@ -37,18 +37,15 @@ def admin_required(f):
 
 
 class SongRes(Resource):
-    @db_session
     def get(self, song_id):
         resp = handle_get_song_by_id(song_id).get_response()
         return resp
 
     @admin_required
-    @db_session
     def delete(self, song_id):
         return handle_delete_song(song_id).get_response()
 
     @admin_required
-    @db_session
     def put(self, song_id):
         data = request.get_json()
         return handle_update_song(data, song_id).get_response()
@@ -59,14 +56,12 @@ class SongsRes(Resource):
         return handle_get_songs_and_tags().get_response()
 
     @admin_required
-    @db_session
     def post(self):
         data = request.get_json()
         return handle_create_song(data).get_response()
 
 
 class TagsRes(Resource):
-    @db_session
     def get(self):
         return handle_get_tags().get_response()
 
@@ -79,12 +74,10 @@ class TagsRes(Resource):
 
 
 class TagRes(Resource):
-    @db_session
     def get(self, tag_id):
         return handle_get_tag_by_id(tag_id).get_response()
 
     @admin_required
-    @db_session
     def delete(self, tag_id):
         return handle_delete_tag(tag_id).get_response()
 
