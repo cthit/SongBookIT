@@ -5,6 +5,7 @@ import styled from "styled-components";
 const FooterText = styled.p`
     font-family: Roboto Thin, sans-serif;
     font-size: 0.875em;
+    margin-top: 0;
     margin-right: auto;
     margin-left: auto;
 `;
