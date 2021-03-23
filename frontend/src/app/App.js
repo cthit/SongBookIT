@@ -13,6 +13,12 @@ import translations from "./App.translations";
 import { BASE_ROUTE } from "./App.routes";
 import { GAMMA_AUTH_ENDPOINT, GAMMA_ME_ENDPOINT } from "../api/utils/endpoints";
 import { Footer } from "./components/footer/Footer.component";
+import styled from "styled-components";
+
+const ScreenContainer = styled.div`
+    flex: 1;
+    justify-content: space-between;
+`;
 
 const getUserLanguage = user => {
     let language = user == null ? null : user.language;
@@ -59,21 +65,16 @@ const App = () => {
 
     return (
         <DigitHeader
-            title="SongBook"
-            headerRowProps={{
-                flex: "1",
-                justifyContent: "space-between"
-            }}
             renderCustomHeader={() => (
                 <Header loading={loading} signIn={signIn} />
             )}
             renderMain={() => (
-                <DigitLayout.Column flex={"1"}>
+                <ScreenContainer>
                     <Switch>
                         <Route from={BASE_ROUTE} component={Songs} />
                     </Switch>
                     <Footer />
-                </DigitLayout.Column>
+                </ScreenContainer>
             )}
         />
     );
