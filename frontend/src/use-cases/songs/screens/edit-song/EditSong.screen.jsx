@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { DigitLoading, useGammaStatus } from "@cthit/react-digit-components";
+import {
+    DigitLoading,
+    useGammaStatus,
+    DigitLayout
+} from "@cthit/react-digit-components";
 import { useParams } from "react-router-dom";
 import { getSong } from "../../../../api/songs/get.songs.api";
 import useAdmin from "../../../../common/hooks/use-admin";
 import InsufficientAccess from "../../../../common/components/insufficient-access";
 import EditSongForm from "./components/edit-song-form";
 import FourZeroFour from "../../../../common/components/four-zero-four";
-import SongFormContainer from "../../components/song-form-container";
-import FormatSongInstructions from "../../components/format-song-instruction";
 import FiveZeroZeroComponent from "../../../../common/components/five-zero-zero";
 
 const EditSong = () => {
@@ -48,14 +50,12 @@ const EditSong = () => {
                 margin={{ left: "auto", right: "auto", top: "32px" }}
             />
             {songToEdit !== null && (
-                <SongFormContainer>
-                    <div />
+                <DigitLayout.Column centerHorizontal>
                     <EditSongForm
                         song={songToEdit}
                         setSomethingWrong={setSomethingWrong}
                     />
-                    <FormatSongInstructions />
-                </SongFormContainer>
+                </DigitLayout.Column>
             )}
         </>
     );

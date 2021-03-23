@@ -16,6 +16,8 @@ const definePreviewDialog = (songText, text) => ({
     renderMain: () => (
         <SongDetailContainer>
             <DigitLayout.Column>
+                <DigitMarkdown markdownSource={text.FormatSong} />
+                <DigitDesign.Divider />
                 <DigitMarkdown markdownSource={songText} />
             </DigitLayout.Column>
         </SongDetailContainer>
@@ -51,13 +53,14 @@ export const SongFormFields = ({ text, tags }) => {
             />
             <DigitTextArea
                 size={{ width: "100%" }}
-                rowsMax={17}
+                rowsMax={15}
                 {...textField}
                 upperLabel={text.Text}
                 primary
             />
 
-            <DigitLayout.Row>
+            <DigitLayout.Column alignItems={"flex-start"}>
+                <DigitMarkdown markdownSource={text.MarkdownFormatSong} />
                 <DigitButton
                     primary
                     text={text.PreviewText}
@@ -65,7 +68,7 @@ export const SongFormFields = ({ text, tags }) => {
                         openDialog(definePreviewDialog(textField.value, text))
                     }
                 />
-            </DigitLayout.Row>
+            </DigitLayout.Column>
             <DigitAutocompleteSelectMultiple
                 size={{ width: "100%" }}
                 {...tagsField}

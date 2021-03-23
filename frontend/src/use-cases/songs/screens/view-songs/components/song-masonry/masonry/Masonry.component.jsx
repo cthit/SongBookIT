@@ -25,8 +25,11 @@ export function Masonry({ children, gap, minWidth = 400, ...rest }) {
     const [numCols, setNumCols] = useState(1);
     const cols = [...Array(numCols)].map(() => []);
 
-    const resizeHandler = () =>
-        setNumCols(Math.ceil(ref.current.offsetWidth / minWidth));
+    const resizeHandler = () => {
+        if (ref && ref.current) {
+            setNumCols(Math.ceil(ref.current.offsetWidth / minWidth));
+        }
+    };
     useEffect(resizeHandler, []);
     useEventListener(`resize`, resizeHandler);
 
