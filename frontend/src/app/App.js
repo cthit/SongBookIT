@@ -3,8 +3,7 @@ import {
     DigitHeader,
     useDigitTranslations,
     useGamma,
-    useGammaMe,
-    DigitLayout
+    useGammaMe
 } from "@cthit/react-digit-components";
 import { Route, Switch } from "react-router-dom";
 import Songs from "../use-cases/songs";
@@ -16,8 +15,10 @@ import { Footer } from "./components/footer/Footer.component";
 import styled from "styled-components";
 
 const ScreenContainer = styled.div`
+    display: flex;
     flex: 1;
     justify-content: space-between;
+    flex-direction: column;
 `;
 
 const getUserLanguage = user => {

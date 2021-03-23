@@ -3,8 +3,7 @@ import {
     useDigitTranslations,
     DigitDesign,
     DigitText,
-    DigitButton,
-    DigitLoading
+    DigitButton
 } from "@cthit/react-digit-components";
 
 export const NoSongs = ({ resetFilters }) => {
