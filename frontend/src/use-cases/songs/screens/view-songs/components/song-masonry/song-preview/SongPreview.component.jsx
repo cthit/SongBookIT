@@ -33,10 +33,7 @@ const SongPreview = ({ song, history, text, tags }) => {
             to={BASE_ROUTE + song.song_id}
             style={{ textDecoration: "none" }}
         >
-            <DigitDesign.Card
-            // style={{ cursor: "pointer" }}
-            // onClick={() => navViewSong(history, song.song_id)}
-            >
+            <DigitDesign.Card>
                 <DigitDesign.CardBody>
                     <DigitLayout.Column>
                         <DigitText.Title

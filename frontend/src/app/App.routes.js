@@ -10,8 +10,5 @@ export const navHome = history => history.push(removeLastSlash(BASE_ROUTE));
 export const navViewSong = (history, song_id) =>
     history.push(removeLastSlash(BASE_ROUTE + song_id));
 
-export const navEditSong = (history, song_id) =>
-    history.push(removeLastSlash(SONGS_EDIT_ROUTE + song_id));
-
 export const navCreateSong = history =>
     history.push(removeLastSlash(SONGS_CREATE_ROUTE));

@@ -7,7 +7,7 @@ import {
     DigitMarkdown,
     DigitText
 } from "@cthit/react-digit-components";
-import { navEditSong, navHome } from "../../../../../../app/App.routes";
+import { BASE_ROUTE, SONGS_EDIT_ROUTE } from "../../../../../../app/App.routes";
 import SongDetailContainer from "../../../../components/song-detail-container";
 
 const SongDetails = (admin, s, history, text) => {
@@ -49,19 +49,21 @@ const SongDetails = (admin, s, history, text) => {
         renderButtons: (confirm, cancel) => (
             <>
                 {admin && (
-                    <DigitButton
-                        text={text.EditSong}
-                        primary
-                        raised
-                        submit
-                        onClick={confirm}
-                    />
+                    <DigitDesign.Link to={SONGS_EDIT_ROUTE + s.song_id}>
+                        <DigitButton
+                            text={text.EditSong}
+                            primary
+                            raised
+                            submit
+                            onClick={confirm}
+                        />
+                    </DigitDesign.Link>
                 )}
-                <DigitButton text={text.Close} raised onClick={cancel} />
+                <DigitDesign.Link to={BASE_ROUTE}>
+                    <DigitButton text={text.Close} raised onClick={cancel} />
+                </DigitDesign.Link>
             </>
-        ),
-        onCancel: () => navHome(history),
-        onConfirm: () => navEditSong(history, s.song_id)
+        )
     };
 };
 
