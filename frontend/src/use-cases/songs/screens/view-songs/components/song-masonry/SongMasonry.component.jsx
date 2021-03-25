@@ -6,7 +6,6 @@ import SongPreview from "./song-preview";
 
 export const SongMasonry = ({ songs, tags }) => {
     const [text] = useDigitTranslations();
-    const history = useHistory();
 
     return useMemo(
         () => (
@@ -15,7 +14,6 @@ export const SongMasonry = ({ songs, tags }) => {
                     <SongPreview
                         key={s.song_id}
                         song={s}
-                        history={history}
                         text={text}
                         tags={tags}
                     />
