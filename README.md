@@ -51,20 +51,22 @@ What's needed to run songbook in production is:
 - PostgreSQL database
 - Reverse proxy (to run the frontend and backend from the same port)
 
-### Database migration
+### **Database migration**
 Right now there's no migration script installed on songbook.chalmers.it.
 You'll have to do it manually. Just don't forget to make a backup before starting.
 In the future, there should be SQL files for migration in `/database/migration`.
 
-### Environment variables
+### **Environment variables**
 
-The frontend has as of right now the gamma URL hardcoded to https://gamma.chalmers.it.
+All variables are set by providing them to the docker containers, either directly or through docker-compose. 
 
-The path in the backend differ between the IDE and docker so the following variable is necessary if a reset has to be done.  
+#### **Path to mock data**
+The sourceroot in the backend differ between the IDE and docker so the following variable is necessary if a reset has to be done.  
 - `INIT_DATA_PATH`:
   - Production should use: `src/setup/md/`
   - Default, since the module `src` should be marked as Source in your IDE: `setup/md/`
 
+#### **Database properties**
 Environment variables for the backend to connect to a PostgreSQL database.
 - `SONGBOOK_POSTGRES_HOST`
 - `SONGBOOK_POSTGRES_PORT`
@@ -72,17 +74,17 @@ Environment variables for the backend to connect to a PostgreSQL database.
 - `SONGBOOK_POSTGRES_DB`
 - `SONGBOOK_POSTGRES_PASSWORD`: 
 
-### Gamma properties
+#### **Gamma properties**
 songbook.chalmers.it is designed with usage with Gamma.
 Note that the defaults are matched with the values in `docker-compose.yml` for ease to start developing locally.
 
-#### Authority
+##### ***Authority***
 Songbook checks for the Authority specified in the following variables.
 `GAMMA_ADMIN_AUTHORITY` is passed to the backend, and the other is passed to the frontend as you might have guessed.
 - `GAMMA_ADMIN_AUTHORITY`: Default is `songbook`.
 - `REACT_APP_GAMMA_ADMIN_AUTHORITY`: Default is `songbook`.
 
-#### The rest of 'em
+##### ***The rest of 'em***
 These variables should all be applied to the frontend.
 - `REACT_APP_GAMMA_FRONTEND_URL`:
   - Should be: https://gamma.chalmers.it

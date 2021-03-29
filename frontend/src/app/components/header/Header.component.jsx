@@ -1,3 +1,4 @@
+import React from "react";
 import { useHistory } from "react-router-dom";
 import {
     DigitButton,
@@ -11,7 +12,6 @@ import {
 import useAdmin from "../../../common/hooks/use-admin";
 import { AccountCircle } from "@material-ui/icons";
 import { signoutFromSongbook } from "../../../api/gamma-signout/post.gamma-signout.api";
-import React from "react";
 import { BASE_ROUTE, navCreateSong } from "../../App.routes";
 
 const Header = ({ loading, signIn }) => {
@@ -52,10 +52,9 @@ const Header = ({ loading, signIn }) => {
                         ? ["addSong", "viewAccount", "signOut"]
                         : ["viewAccount", "signOut"]
                 }
-                signOut={signoutFromSongbook} // not used but defined so that GammaActions doesn't complain
-                size={{ width: "min-content" }}
-                frontendUrl={process.env.REACT_APP_GAMMA_FRONTEND_URL}
-                backendUrl={process.env.REACT_APP_GAMMA_BACKEND_URL}
+                signOut={signoutFromSongbook}
+                frontendUrl={window.ENV.REACT_APP_GAMMA_FRONTEND_URL}
+                backendUrl={window.ENV.REACT_APP_GAMMA_BACKEND_URL}
             />
         </DigitLayout.Row>
     );
