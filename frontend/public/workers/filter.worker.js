@@ -15,7 +15,7 @@ onmessage = function({ data: { songs, filterText, filterTags } }) {
             number: "" + s.number
         }));
 
-        const res = fuzzysort.go(filterText, target, {
+        const res = fuzzysort.go(filterText, filteredSongs, {
             keys: ["number", "title", "melody", "author", "text"],
             allowTypo: false,
             threshold: -500
