@@ -17,15 +17,15 @@ The easiest way to get started is via docker with the backend running in an IDE.
 
 ### Set up backend
 For the backend to connect to the other dependencies, a proxy has to be set up. 
-This value, `HTTP_PROXY` is specified in `frontend/.env.development` and should have the value of the Gateway address for the frontend's docker container.
+This value, `proxy` is specified in `frontend/package.json` and should have the value of the Gateway address for the frontend's docker container.
 It can be found by following the steps below.
 
-* Run `docker-compose up`
+* Run `docker-compose up`.
 * When all the containers are active, execute `docker ps`.
 * Copy a Container ID for a container in the Songbook application. 
   There should be a several containers listed in table, any of which can be used. 
-* Execute `docker inspect <Contianer ID> | grep "Gateway":`
-* The address/es found is the value of your `HTTP_PROXY`.
+* Execute `docker inspect <Contianer ID> | grep "Gateway":`.
+* The address/es found is the value of your `proxy`.
 
 ### Adding mocking data
 
