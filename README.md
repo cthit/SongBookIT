@@ -61,10 +61,13 @@ In the future, there should be SQL files for migration in `/database/migration`.
 All variables are set by providing them to the docker containers, either directly or through docker-compose. 
 
 #### **Path to mock data**
-The sourceroot in the backend differ between the IDE and docker so the following variable is necessary if a reset has to be done.  
-- `INIT_DATA_PATH`:
+The sourceroot in the backend differ between the IDE and docker.  
+- `INIT_DATA_PATH`: This is where mock data is placed
   - Production should use: `src/setup/md/`
   - Default, since the module `src` should be marked as Source in your IDE: `setup/md/`
+- `RESOURCE_DATA_PATH`: This is where various resources like `songbook.md` which can be downloaded.
+  - Production should use: `src/resource/` 
+  - Default, since the module `src` should be marked as Source in your IDE: `resource/`
 
 #### **Database properties**
 Environment variables for the backend to connect to a PostgreSQL database.

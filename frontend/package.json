@@ -6,16 +6,16 @@
     "@babel/runtime": "7.5.4",
     "@cthit/react-digit-components": "^1.0.3-rc.1",
     "@material-ui/icons": "4.9.1",
+    "axios": "0.21.1",
     "lodash": "4.17.15",
     "prop-types": "15.7.2",
-    "yup": "0.27.0",
-    "react-app-rewired": "^2.1.8",
-    "worker-loader": "^3.0.8",
-    "axios": "0.21.1",
     "react": "17.0.1",
+    "react-app-rewired": "^2.1.8",
     "react-dom": "17.0.1",
     "react-router-dom": "5.2.0",
-    "styled-components": "5.2.1"
+    "styled-components": "5.2.1",
+    "worker-loader": "^3.0.8",
+    "yup": "0.27.0"
   },
   "proxy": "http://172.18.0.1:5000",
   "scripts": {

@@ -1,12 +1,15 @@
 from typing import Dict
 from http import HTTPStatus
+
+from mdutils import MdUtils
+
 from utils.ErrorCodes import SONG_TITLE_ALREADY_EXIST
 from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
 from command.SongCommands import remove_song, create_song, update_song
 from command.SongsToTagsCommands import create_songtotag, remove_songtotag
 from objects.dataobject.SongToTagObject import SongToTagObject
 from query.SongQueries import get_song_by_id, get_songs, get_song_by_name
-from query.SongToTagQueries import get_songtotag_by_song_id
+from query.SongToTagQueries import get_songtotag_by_song_id, get_songs_by_tag_id
 from query.TagQueries import get_tags, get_tag_by_id
 from validation.SongValidation import validate_song, validate_song_update
 from validation.Validation import validate_short_id
@@ -105,3 +108,25 @@ def handle_delete_song(song_id: str) -> HttpResponse:
 
     remove_song(valid_song_id)
     return get_with_data({})
+
+
+def handle_songbook_file(path: str) -> None:
+    md_file = MdUtils(file_name=path, author="Genererad från Songbookit.chalmers.it")
+    tags = get_tags()
+    songs_per_tag = [(tag, sorted(get_songs_by_tag_id(tag.tag_id), key=lambda s: s.number))for tag in tags]
+    songs_per_tag = sorted(songs_per_tag, key=lambda spt: spt[1][0].number)
+    for tag, songs in songs_per_tag:
+        md_file.new_header(1, tag.name)
+        for song in songs:
+            dashes = "".join('-' for _ in range(len(song.title)))
+            tag_names = ", ".join(get_tag_by_id(tag).data.name for tag in song.tags)
+            md_file.new_header(2, f"Nr.{song.number} {song.title}")
+            md_file.write(dashes)
+            md_file.new_line(f"Text: {song.author}", bold_italics_code="b")
+            md_file.new_line(f"Melodi: {song.melody}", bold_italics_code="i")
+            md_file.new_line(f"Kategorier: {tag_names}", bold_italics_code="i")
+            md_file.new_paragraph(song.text)
+            md_file.new_paragraph()
+
+    md_file.new_table_of_contents(table_title='IT\'s sångbok', depth=3)
+    md_file.create_md_file()

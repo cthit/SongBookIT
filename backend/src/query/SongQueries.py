@@ -1,6 +1,6 @@
 from typing import List
 
-from pony.orm import db_session, select
+from pony.orm import db_session
 
 from utils.ErrorCodes import SONG_TITLE_NOT_EXIST, SONG_ID_NOT_EXIST
 from utils.ResultWithData import ResultWithData, get_result_with_error, get_result_with_data

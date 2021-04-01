@@ -35,6 +35,7 @@ services:
 #      SONGBOOK_POSTGRES_DB: postgres
 #      SONGBOOK_SECRET_KEY: secret
 #      INIT_DATA_PATH: setup/md/
+#      RESOURCE_DATA_PATH: resource/
 #      GAMMA_SECRET: secret
 #      GAMMA_CLIENT_ID: id
 #      GAMMA_REDIRECT_URI: http://localhost:3001/auth/account/callback
