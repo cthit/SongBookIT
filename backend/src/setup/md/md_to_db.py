@@ -57,6 +57,7 @@ def add_category(cat, data):
             song_id=None,
             title=song['title'],
             melody="",
+            melody_link="",
             author=song['author'],
             text=song['text'],
             tags=[]

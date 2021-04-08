@@ -1,4 +1,4 @@
-from pony.orm import Database, Required, PrimaryKey, Set, Optional
+from pony.orm import Database, Required, PrimaryKey, Set, Optional, db_session
 from config import db_config as config
 
 db = Database()
@@ -10,6 +10,7 @@ class Song(db.Entity):
     title = Required(str, unique=True)
     author = Optional(str)
     melody = Optional(str)
+    melody_link = Optional(str)
     text = Required(str)
     song_tags = Set("SongToTag")
 
@@ -38,9 +39,14 @@ db.bind(
 )
 
 
+@db_session
+def reset_db():
+    print("!!!Resetting db!!!")
+    db.execute("DROP SCHEMA public CASCADE;")
+    db.execute("CREATE SCHEMA public;")
+
+
 def create_db():
     print(" ========== Creating Database ========== ")
-    db.create_tables()
+    db.generate_mapping(create_tables=True)
 
-
-db.generate_mapping(create_tables=True)

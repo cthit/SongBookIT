@@ -2,8 +2,7 @@ from typing import Dict
 
 from utils.ResultWithData import get_result_with_error, get_result_with_data, ResultWithData
 from objects.requestobjects.RequestSongObject import RequestSongObject
-from validation.Validation import validate_str, validate_list, validate_short_id, validate_short_id_key, validate_int, \
-    validate_required_str
+from validation.Validation import validate_str, validate_list, validate_short_id, validate_required_str
 
 
 def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
@@ -14,6 +13,10 @@ def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
     melody_res = validate_str(song, 'melody')
     if melody_res.is_error:
         return get_result_with_error(melody_res.message)
+
+    melody_link_res = validate_str(song, 'melody_link')
+    if melody_link_res.is_error:
+        return get_result_with_error(melody_link_res.message)
 
     author_res = validate_str(song, 'author')
     if author_res.is_error:
@@ -37,6 +40,7 @@ def validate_song(song: Dict) -> ResultWithData[RequestSongObject]:
         song_id=None,
         title=title_res.data,
         melody=melody_res.data,
+        melody_link=melody_link_res.data,
         author=author_res.data,
         text=text_res.data,
         tags=tag_ids
@@ -57,6 +61,7 @@ def validate_song_update(song: Dict, song_id: str) -> ResultWithData[RequestSong
         song_id=id_res.data,
         title=valid_song.title,
         melody=valid_song.melody,
+        melody_link=valid_song.melody_link,
         author=valid_song.author,
         text=valid_song.text,
         tags=valid_song.tags

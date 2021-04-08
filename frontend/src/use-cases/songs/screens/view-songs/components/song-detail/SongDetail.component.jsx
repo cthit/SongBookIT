@@ -10,6 +10,15 @@ import {
 import { BASE_ROUTE, SONGS_EDIT_ROUTE } from "../../../../../../app/App.routes";
 import SongDetailContainer from "../../../../components/song-detail-container";
 
+const Melody = ({ melody, melody_link }) => {
+    const MelodyText = <DigitText.Text text={melody} />;
+    if (melody_link) {
+        return <a href={melody_link}>{MelodyText}</a>;
+    } else {
+        return MelodyText;
+    }
+};
+
 const SongDetails = (admin, s, history, text) => {
     const melody = s.melody ? s.melody : text.Unknown;
     const author = s.author ? s.author : text.Unknown;
@@ -27,7 +36,10 @@ const SongDetails = (admin, s, history, text) => {
                             bold
                             text={text.Author + ": " + author}
                         />
-                        <DigitText.Text text={text.Melody + ": " + melody} />
+                        <Melody
+                            melody_link={s.melody_link}
+                            melody={text.Melody + ": " + melody}
+                        />
                     </DigitLayout.Column>
                     <DigitLayout.Row>
                         {s.tags.map(tag => (

@@ -38,6 +38,7 @@ def db_song_to_song_object(song: Song) -> SongObject:
         number=song.number,
         title=song.title,
         melody=song.melody,
+        melody_link=song.melody_link,
         author=song.author,
         text=song.text,
         tags=[song_to_tag.tag.tag_id for song_to_tag in song.song_tags]

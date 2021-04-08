@@ -19,6 +19,7 @@ def create_song(song: RequestSongObject) -> ResultWithData[str]:
         number=highest_song_nbr,
         title=song.title,
         melody=song.melody,
+        melody_link=song.melody_link,
         author=song.author,
         text=song.text
     )
@@ -28,7 +29,7 @@ def create_song(song: RequestSongObject) -> ResultWithData[str]:
 @db_session
 def update_song(song: RequestSongObject) -> ResultWithData:
     db_song = Song[song.song_id]
-    db_song.set(title=song.title, melody=song.melody, author=song.author, text=song.text)
+    db_song.set(title=song.title, melody=song.melody, melody_link=song.melody_link, author=song.author, text=song.text)
     return get_result_with_data({})
 
 
