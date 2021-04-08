@@ -12,7 +12,7 @@ COPY ./public ./public
 COPY package.json .
 COPY config-overrides.js .
 
-RUN yarn install 
+RUN yarn --production --frozer-lockfile --network-timeout 10000000
 RUN yarn global add react-scripts
 RUN yarn build
 
