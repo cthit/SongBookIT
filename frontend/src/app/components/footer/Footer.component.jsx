@@ -1,6 +1,6 @@
 import React from "react";
-import { DigitDesign } from "@cthit/react-digit-components";
 import styled from "styled-components";
+import ThinDivider from "../../../common/components/thin-divider";
 
 const FooterText = styled.p`
     font-family: Roboto Thin, sans-serif;
@@ -18,7 +18,7 @@ const FooterContainer = styled.footer`
 
 export const Footer = () => (
     <FooterContainer>
-        <DigitDesign.Divider style={{ borderColor: "#f8f8f8" }} />
+        <ThinDivider />
         <FooterText>
             {"made with ❤️ by "}
             <a href={"https://github.com/ericlp/"}>{"LP"}</a>
