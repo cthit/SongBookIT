@@ -28,10 +28,13 @@ const SearchBar = ({ filterTextState, filterTagsState }) => {
 const TagFilter = ({ filterTagsState }) => {
     const { filterTags, setFilterTags } = filterTagsState;
     const { tags } = useSongs();
-    const [text] = useDigitTranslations();
+    const [text, lang] = useDigitTranslations();
 
     const options = tags
-        .map(tag => ({ text: tag.name, value: tag.tag_id }))
+        .map(tag => ({
+            text: lang === "en" ? tag.pretty_name_en : tag.pretty_name_sv,
+            value: tag.tag_id
+        }))
         .sort((a, b) => (a.text > b.text ? 1 : -1));
 
     return (

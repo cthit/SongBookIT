@@ -19,7 +19,7 @@ const Melody = ({ melody, melody_link }) => {
     }
 };
 
-const SongDetails = (admin, s, history, text) => {
+const SongDetails = (admin, s, history, text, lang) => {
     const melody = s.melody ? s.melody : text.Unknown;
     const author = s.author ? s.author : text.Unknown;
 
@@ -46,7 +46,11 @@ const SongDetails = (admin, s, history, text) => {
                             <DigitChip
                                 primary
                                 key={tag.tag_id}
-                                label={tag.name}
+                                label={
+                                    lang === "en"
+                                        ? tag.pretty_name_en
+                                        : tag.pretty_name_sv
+                                }
                             />
                         ))}
                     </DigitLayout.Row>

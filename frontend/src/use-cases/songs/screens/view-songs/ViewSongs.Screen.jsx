@@ -17,7 +17,7 @@ import { NoSongs } from "./components/no-songs/NoSongs.component";
 
 const ViewSongs = () => {
     const history = useHistory();
-    const [text] = useDigitTranslations();
+    const [text, lang] = useDigitTranslations();
 
     const [filterText, setFilterText] = useState("");
     const [filterTags, setFilterTags] = useState([]);
@@ -36,7 +36,7 @@ const ViewSongs = () => {
             if (song_id) {
                 const song = getSong(song_id);
                 if (song) {
-                    openDialog(SongDetails(admin, song, history, text));
+                    openDialog(SongDetails(admin, song, history, text, lang));
                 } else {
                     if (error) {
                         setSomethingWrong(true);

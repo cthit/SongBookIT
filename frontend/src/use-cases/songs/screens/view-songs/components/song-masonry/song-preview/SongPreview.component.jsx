@@ -24,7 +24,7 @@ const startOfText = text => {
     return start.concat(restOfLine, "\n\n...");
 };
 
-const SongPreview = ({ song, history, text, tags }) => {
+const SongPreview = ({ song, text, lang, tags }) => {
     const melody = song.melody ? song.melody : text.Unknown;
     const author = song.author ? song.author : text.Unknown;
 
@@ -52,7 +52,11 @@ const SongPreview = ({ song, history, text, tags }) => {
                                 <DigitChip
                                     primary
                                     key={tag.tag_id}
-                                    label={tag.name}
+                                    label={
+                                        lang === "en"
+                                            ? tag.pretty_name_en
+                                            : tag.pretty_name_sv
+                                    }
                                 />
                             ))}
                         </TagList>
