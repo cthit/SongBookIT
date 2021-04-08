@@ -1,18 +1,22 @@
 import React, { useEffect } from "react";
+import styled from "styled-components";
+import { Route, Switch } from "react-router-dom";
 import {
-    DigitHeader,
+    DigitHeaderDrawer,
     useDigitTranslations,
     useGamma,
     useGammaMe
 } from "@cthit/react-digit-components";
-import { Route, Switch } from "react-router-dom";
-import Songs from "../use-cases/songs";
-import Header from "./components/header/Header.component";
-import translations from "./App.translations";
-import { BASE_ROUTE } from "./App.routes";
+import { ADMIN_SONGS_ROUTE, ADMIN_TAGS_ROUTE, BASE_ROUTE } from "./App.routes";
 import { GAMMA_AUTH_ENDPOINT, GAMMA_ME_ENDPOINT } from "../api/utils/endpoints";
-import { Footer } from "./components/footer/Footer.component";
-import styled from "styled-components";
+import translations from "./App.translations";
+import Songs from "../use-cases/songs";
+import Header from "./components/header";
+import Footer from "./components/footer";
+import Drawer from "./components/drawer";
+import { SongTagProvider } from "../use-cases/songs/Songs.context";
+import AdminSongs from "../use-cases/admin-songs/AdminSongs";
+import AdminTags from "../use-cases/admin-tags/AdminTags";
 
 const ScreenContainer = styled.div`
     display: flex;
@@ -65,19 +69,36 @@ const App = () => {
     }, [setCommonTranslations]);
 
     return (
-        <DigitHeader
-            renderCustomHeader={() => (
-                <Header loading={loading} signIn={signIn} />
-            )}
-            renderMain={() => (
-                <ScreenContainer>
-                    <Switch>
-                        <Route from={BASE_ROUTE} component={Songs} />
-                    </Switch>
-                    <Footer />
-                </ScreenContainer>
-            )}
-        />
+        <SongTagProvider>
+            <DigitHeaderDrawer
+                renderCustomHeader={() => <Header />}
+                disableResponsive
+                renderDrawer={closeDrawer => (
+                    <Drawer
+                        closeDrawer={closeDrawer}
+                        loading={loading}
+                        signIn={signIn}
+                    />
+                )}
+                renderMain={() => (
+                    <ScreenContainer>
+                        <Switch>
+                            <Route
+                                from={ADMIN_SONGS_ROUTE}
+                                component={AdminSongs}
+                            />
+
+                            <Route
+                                from={ADMIN_TAGS_ROUTE}
+                                component={AdminTags}
+                            />
+                            <Route from={BASE_ROUTE} component={Songs} />
+                        </Switch>
+                        <Footer />
+                    </ScreenContainer>
+                )}
+            />
+        </SongTagProvider>
     );
 };
 

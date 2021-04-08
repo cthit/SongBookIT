@@ -1,4 +1,16 @@
 {
+  "Pages": [
+    "Pages",
+    "Sidor"
+  ],
+  "AdminPages": [
+    "Admin pages",
+    "Adminsidor"
+  ],
+  "HandleTags": [
+    "Handle tags",
+    "Hantera taggar"
+  ],
   "SignInWithGamma": [
     "Sign in",
     "Logga in"
@@ -31,13 +43,29 @@
     "500 - Something went wrong",
     "500 - Någonting gick fel"
   ],
+  "Songs": [
+    "Songs",
+    "Sånger"
+  ],
+  "DownloadSongbook": [
+    "Download songs",
+    "Ladda ner sånger"
+  ],
+  "DownloadSongbookMD": [
+    "As Markdown",
+    "Som Markdown"
+  ],
+  "DownloadSongbookPDF": [
+    "As PDF",
+    "Som PDF"
+  ],
+  "Admin": [
+    "Admin",
+    "Admin"
+  ],
   "AddSong": [
     "Add a song",
     "Lägg till en sång"
-  ],
-  "DownloadSongbook":[
-    "Download songs",
-    "Ladda ner sånger"
   ],
   "EditSong": [
     "Edit song",
@@ -75,11 +103,11 @@
     "Unknown",
     "Okänd"
   ],
-  "FilterTag": [
+  "FilterByTags": [
     "Filter by tags",
     "Filtrera med taggar"
   ],
-  "FilterSearch": [
+  "FilterSongs": [
     "Search songs",
     "Sök bland sångerna"
   ],
@@ -98,6 +126,10 @@
   "Melody": [
     "Melody",
     "Melodi"
+  ],
+  "MelodyLink": [
+    "Link to melody",
+    "Länk till melodi"
   ],
   "Text": [
     "Lyrics",
@@ -150,6 +182,63 @@
   "SONG_TITLE_ALREADY_EXIST": [
     "There already exists a song with this title, try another one",
     "Det finns redan en sång med det här titeln, testa en annan"
+  ],
+  "TagName": [
+    "Name of tag",
+    "Namn för tagg"
+  ],
+  "TagNameEN": [
+    "English name",
+    "Engelskt namn"
+  ],
+  "TagNameSV": [
+    "Swedish name",
+    " Svenskt namn"
+  ],
+
+  "AddTag": [
+    "Add tag",
+    "Lägg till tagg"
+  ],
+  "EditTag": [
+    "Edit tag",
+    "Redigera taggen"
+  ],
+  "DeleteTag": [
+    "Delete tag",
+    "Ta bort tagg"
+  ],
+  "DeleteTagConfirm": [
+    "Are you sure you want to delete this tag?",
+    "Är du säker att du vill ta bort den här taggen?"
+  ],
+  "AddTagSuccessful": [
+    "Successfully added tag",
+    "Lyckades lägga till tagg"
+  ],
+  "AddTagFailed": [
+    "Failed to add tag",
+    "Misslyckades lägga till tagg"
+  ],
+  "DeleteTagSuccessful": [
+    "Successfully deleted tag",
+    "Lyckades ta bort taggen"
+  ],
+  "DeleteTagFailed": [
+    "Failed to delete tag",
+    "Misslyckades ta bort taggen"
+  ],
+  "EditTagSuccessful": [
+    "Successfully edited tag",
+    "Lyckades redigera taggen"
+  ],
+  "EditTagFailed": [
+    "Failed to edit tag",
+    "Misslyckades redigera taggen"
+  ],
+  "SearchTags": [
+    "Search for a tag",
+    "Sök efter en tagg"
   ],
   "NoMatchingSongs": [
     "There are no songs that matches your filter, do you wish to reset them?",

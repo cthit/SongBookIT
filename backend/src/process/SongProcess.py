@@ -8,7 +8,7 @@ from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
 from command.SongCommands import remove_song, create_song, update_song
 from command.SongsToTagsCommands import create_songtotag, remove_songtotag
 from objects.dataobject.SongToTagObject import SongToTagObject
-from query.SongQueries import get_song_by_id, get_all_songs, get_song_by_title
+from query.SongQueries import get_song_by_id, get_songs, get_song_by_title
 from query.SongToTagQueries import get_songtotag_by_song_id, get_songs_by_tag_id
 from query.TagQueries import get_tags, get_tag_by_id
 from validation.SongValidation import validate_song, validate_song_update

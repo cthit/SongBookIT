@@ -1,5 +1,5 @@
 import os
-import subprocess
+
 from functools import wraps
 from http import HTTPStatus
 import jwt
@@ -7,12 +7,9 @@ from flask import Flask, session, Response, request, send_file
 from flask_cors import CORS
 from flask_restful import Api, Resource
 from md2pdf import md2pdf
-from pony.orm import db_session
-from pony.orm.serialization import to_dict
 
 from config import gamma_config as config
 from config.config import RESOURCE_DATA_PATH
-from db import Tag
 from process.GammaProcess import handle_gamma_me, handle_gamma_auth, handle_gamma_signout
 from process.SongProcess import handle_get_songs_and_tags, handle_get_song_by_id, handle_delete_song, \
     handle_create_song, handle_update_song, handle_songbook_file
@@ -24,6 +21,7 @@ api = Api(app)
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
+app.config.update(SESSION_COOKIE_SAMESITE='Strict')
 
 app.secret_key = config.SECRET_KEY
 

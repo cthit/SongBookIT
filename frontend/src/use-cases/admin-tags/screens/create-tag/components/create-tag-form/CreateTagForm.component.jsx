@@ -9,22 +9,22 @@ import {
     useDigitTranslations
 } from "@cthit/react-digit-components";
 import React, { useCallback, useEffect, useState } from "react";
-import { addSong } from "../../../../../../api/songs/post.songs.api";
-import { navViewSong } from "../../../../../../app/App.routes";
 import * as yup from "yup";
-import { useSongs } from "../../../../../songs/Songs.context";
-import {
-    SongFormFields,
-    songInitialValues,
-    songValidationSchema
-} from "../../../../components/song-form/SongForm.utils";
-import ErrorCard from "../../../../../../common/components/error-card";
 import { ArrowBack } from "@material-ui/icons";
+import { useSongs } from "../../../../../songs/Songs.context";
+import { addTag } from "../../../../../../api/tags/post.tags.api";
+import { navHandleTags } from "../../../../../../app/App.routes";
+import {
+    TagFormFields,
+    tagInitialValues,
+    tagValidationSchema
+} from "../../../../components/tag-form/TagForm.utils";
 import CenterLoading from "../../../../../../common/components/center-loading";
+import ErrorCard from "../../../../../../common/components/error-card";
 import MainFormCard from "../../../../../../common/components/main-form-card";
 
-export const CreateSongForm = ({ setSomethingWrong }) => {
-    const { tags, refetchSongsAndTags, refetchTags } = useSongs();
+export const CreateTagForm = ({ setSomethingWrong }) => {
+    const { tags, refetchTags } = useSongs();
     const [queueToast] = useDigitToast();
     const [loading, setLoading] = useState(true);
     const history = useHistory();
@@ -38,15 +38,15 @@ export const CreateSongForm = ({ setSomethingWrong }) => {
     const performCreate = useCallback(
         async values => {
             try {
-                const res = await addSong(values);
+                const res = await addTag(values);
                 queueToast({
-                    text: text.AddSongSuccessful
+                    text: text.AddTagSuccessful
                 });
-                await refetchSongsAndTags();
-                navViewSong(history, res.data.data.song_id);
+                await refetchTags();
+                navHandleTags(history);
             } catch (error) {
                 queueToast({
-                    text: text.AddSongFailed
+                    text: text.AddTagFailed
                 });
                 if (error.response.status === 500) {
                     setSomethingWrong(true);
@@ -58,7 +58,7 @@ export const CreateSongForm = ({ setSomethingWrong }) => {
                 }
             }
         },
-        [history, queueToast, setSomethingWrong, refetchSongsAndTags, text]
+        [history, queueToast, setSomethingWrong, text]
     );
 
     if (loading) {
@@ -67,8 +67,8 @@ export const CreateSongForm = ({ setSomethingWrong }) => {
 
     return (
         <DigitForm
-            initialValues={songInitialValues()}
-            validationSchema={songValidationSchema(yup, text)}
+            initialValues={tagInitialValues()}
+            validationSchema={tagValidationSchema(yup, text)}
             onSubmit={values => performCreate(values)}
             render={({ errors }) => {
                 return (
@@ -83,10 +83,10 @@ export const CreateSongForm = ({ setSomethingWrong }) => {
                                 <DigitText.Text
                                     bold
                                     alignCenter
-                                    text={text.AddSong}
+                                    text={text.AddTag}
                                 />
                             </DigitLayout.Row>
-                            <SongFormFields tags={tags} />
+                            <TagFormFields />
                             <DigitButton
                                 raised
                                 submit

@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-    DigitLoading,
-    useGammaStatus,
-    DigitLayout
-} from "@cthit/react-digit-components";
+import { DigitLayout } from "@cthit/react-digit-components";
 import { useParams } from "react-router-dom";
 import { getSong } from "../../../../api/songs/get.songs.api";
-import useAdmin from "../../../../common/hooks/use-admin";
-import InsufficientAccess from "../../../../common/components/insufficient-access";
 import EditSongForm from "./components/edit-song-form";
 import FourZeroFour from "../../../../common/components/four-zero-four";
-import FiveZeroZeroComponent from "../../../../common/components/five-zero-zero";
+import CenterLoading from "../../../../common/components/center-loading";
+import FiveZeroZero from "../../../../common/components/five-zero-zero";
 
 const EditSong = () => {
     const { song_id } = useParams();
@@ -29,26 +24,17 @@ const EditSong = () => {
             });
     }, [song_id]);
 
-    const admin = useAdmin();
-    const [loading] = useGammaStatus();
-    if (!loading && !admin) {
-        return <InsufficientAccess />;
-    }
-
     if (faultySongId) {
         return <FourZeroFour />;
     }
 
     if (somethingWrong) {
-        return <FiveZeroZeroComponent />;
+        return <FiveZeroZero />;
     }
 
     return (
         <>
-            <DigitLoading
-                loading={songToEdit === null}
-                margin={{ left: "auto", right: "auto", top: "32px" }}
-            />
+            <CenterLoading loading={songToEdit === null} />
             {songToEdit !== null && (
                 <DigitLayout.Column centerHorizontal>
                     <EditSongForm

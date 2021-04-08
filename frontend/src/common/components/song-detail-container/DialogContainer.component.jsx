@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SongDetailContainer = styled.div`
+export const DialogContainer = styled.div`
     width: min(
         100vw - (2 * 24px) - (2 * 32px),
         600px - (2 * 24px)

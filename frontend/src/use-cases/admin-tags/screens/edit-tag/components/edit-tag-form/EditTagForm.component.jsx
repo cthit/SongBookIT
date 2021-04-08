@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
     DigitButton,
     DigitForm,
@@ -10,27 +10,26 @@ import {
     useDigitToast,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import { editSong } from "../../../../../../api/songs/put.songs.api";
 import * as yup from "yup";
-import { deleteSong } from "../../../../../../api/songs/delete.songs.api";
-import { navHome, navViewSong } from "../../../../../../app/App.routes";
 import { useSongs } from "../../../../../songs/Songs.context";
-import {
-    SongFormFields,
-    songInitialValues,
-    songValidationSchema
-} from "../../../../components/song-form/SongForm.utils";
+import { navHandleTags } from "../../../../../../app/App.routes";
+import { editTag } from "../../../../../../api/tags/put.tags.api";
 import ErrorCard from "../../../../../../common/components/error-card";
-import { ArrowBack } from "@material-ui/icons";
-import CenterLoading from "../../../../../../common/components/center-loading";
 import MainFormCard from "../../../../../../common/components/main-form-card";
+import { ArrowBack } from "@material-ui/icons";
+import {
+    TagFormFields,
+    tagInitialValues,
+    tagValidationSchema
+} from "../../../../components/tag-form/TagForm.utils";
+import { deleteTag } from "../../../../../../api/tags/delete.tags.api";
 
 const defineDeleteDialog = (text, deleteFunction) => ({
-    renderMain: () => <DigitText.Text bold text={text.DeleteSongConfirm} />,
+    renderMain: () => <DigitText.Text bold text={text.DeleteTagConfirm} />,
     renderButtons: (confirm, cancel) => (
         <>
             <DigitButton
-                text={text.DeleteSong}
+                text={text.DeleteTag}
                 secondary
                 raised
                 submit
@@ -43,32 +42,28 @@ const defineDeleteDialog = (text, deleteFunction) => ({
     onConfirm: () => deleteFunction()
 });
 
-export const EditSongForm = ({ song, setSomethingWrong }) => {
+export const EditTagForm = ({ tag, setSomethingWrong }) => {
+    console.log(tag);
     const history = useHistory();
     const [text] = useDigitTranslations();
     const [queueToast] = useDigitToast();
-    const [loading, setLoading] = useState(true);
     const [openDeleteDialog] = useDigitCustomDialog();
     const [error, setError] = useState({ isError: false, message: "" });
 
-    const { tags, refetchSongsAndTags, refetchTags } = useSongs();
-
-    useEffect(() => {
-        refetchTags().then(() => setLoading(false));
-    }, [refetchTags]);
+    const { refetchTags } = useSongs();
 
     const performUpdate = useCallback(
         async values => {
             try {
-                await editSong(song.song_id, values);
+                await editTag(tag.tag_id, values);
                 queueToast({
-                    text: text.EditSongSuccessful
+                    text: text.EditTagSuccessful
                 });
-                await refetchSongsAndTags();
-                navViewSong(history, song.song_id);
+                await refetchTags();
+                navHandleTags(history);
             } catch (error) {
                 queueToast({
-                    text: text.EditSongFailed
+                    text: text.EditTagFailed
                 });
                 if (error.response.status === 500) {
                     setSomethingWrong(true);
@@ -80,27 +75,20 @@ export const EditSongForm = ({ song, setSomethingWrong }) => {
                 }
             }
         },
-        [
-            song,
-            text,
-            queueToast,
-            refetchSongsAndTags,
-            history,
-            setSomethingWrong
-        ]
+        [tag, text, queueToast, refetchTags, history, setSomethingWrong]
     );
 
     const performDelete = useCallback(async () => {
         try {
-            await deleteSong(song.song_id);
+            await deleteTag(tag.tag_id);
             queueToast({
-                text: text.DeleteSongSuccessful
+                text: text.DeleteTagSuccessful
             });
-            await refetchSongsAndTags();
-            navHome(history);
+            await refetchTags();
+            navHandleTags(history);
         } catch (error) {
             queueToast({
-                text: text.DeleteSongFailed
+                text: text.DeleteTagFailed
             });
             if (error.response.status === 500) {
                 setSomethingWrong(true);
@@ -111,22 +99,12 @@ export const EditSongForm = ({ song, setSomethingWrong }) => {
                 });
             }
         }
-    }, [
-        song,
-        history,
-        text,
-        queueToast,
-        setSomethingWrong,
-        refetchSongsAndTags
-    ]);
+    }, [tag, history, text, queueToast, setSomethingWrong, refetchTags]);
 
-    if (loading) {
-        return <CenterLoading loading={loading} />;
-    }
     return (
         <DigitForm
-            initialValues={songInitialValues(song)}
-            validationSchema={songValidationSchema(yup, text)}
+            initialValues={tagInitialValues(tag)}
+            validationSchema={tagValidationSchema(yup, text)}
             onSubmit={values => performUpdate(values)}
             render={({ errors }) => {
                 return (
@@ -140,23 +118,17 @@ export const EditSongForm = ({ song, setSomethingWrong }) => {
                                 />
                                 <DigitText.Text
                                     bold
-                                    text={
-                                        text.EditSong +
-                                        ": Nr." +
-                                        song.number +
-                                        " " +
-                                        song.title
-                                    }
+                                    text={text.EditTag + ": " + tag.name}
                                 />
                             </DigitLayout.Row>
 
-                            <SongFormFields tags={tags} />
+                            <TagFormFields />
 
                             <DigitLayout.Row justifyContent={"space-between"}>
                                 <DigitButton
                                     raised
                                     secondary
-                                    text={text.DeleteSong}
+                                    text={text.DeleteTag}
                                     onClick={() =>
                                         openDeleteDialog(
                                             defineDeleteDialog(text, () =>

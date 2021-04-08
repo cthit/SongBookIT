@@ -40,7 +40,7 @@ const TagFilter = ({ filterTagsState }) => {
     return (
         <DigitAutocompleteSelectMultiple
             outlined
-            upperLabel={text.FilterTag}
+            upperLabel={text.FilterByTags}
             options={options}
             value={filterTags}
             margin={"!important"} // Unclear why this is necessary for TagFilter and SearchField to align
@@ -57,7 +57,7 @@ const SearchField = ({ filterTextState }) => {
     return (
         <DigitTextField
             value={filterText}
-            upperLabel={text.FilterSearch}
+            upperLabel={text.FilterSongs}
             size={{ width: "300px" }}
             outlined
             onChange={e => setFilterText(e.target.value)}

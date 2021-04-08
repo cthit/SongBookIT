@@ -1,3 +1,3 @@
-import SongDetails from "./SongDetail.component";
+import SongDetails from "./SongDetail.dialog";
 
 export default SongDetails;

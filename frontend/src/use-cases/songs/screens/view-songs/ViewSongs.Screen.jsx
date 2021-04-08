@@ -6,7 +6,7 @@ import {
     useDigitTranslations,
     DigitLayout
 } from "@cthit/react-digit-components";
-import SongDetails from "./components/song-detail/SongDetail.component";
+import SongDetails from "./components/song-detail/SongDetail.dialog";
 import SearchBar from "./components/search-bar/Searchbar.component";
 import FourZeroFour from "../../../../common/components/four-zero-four";
 import SongMasonry from "./components/song-masonry";

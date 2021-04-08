@@ -7,8 +7,11 @@ import {
     DigitMarkdown,
     DigitText
 } from "@cthit/react-digit-components";
-import { BASE_ROUTE, SONGS_EDIT_ROUTE } from "../../../../../../app/App.routes";
-import SongDetailContainer from "../../../../components/song-detail-container";
+import {
+    BASE_ROUTE,
+    ADMIN_SONGS_EDIT_ROUTE
+} from "../../../../../../app/App.routes";
+import { DialogContainer } from "../../../../../../common/components/song-detail-container/DialogContainer.component";
 
 const Melody = ({ melody, melody_link }) => {
     const MelodyText = <DigitText.Text text={melody} />;
@@ -26,7 +29,7 @@ const SongDetails = (admin, s, history, text, lang) => {
     return {
         title: s.number + ". " + s.title,
         renderMain: () => (
-            <SongDetailContainer>
+            <DialogContainer>
                 <DigitLayout.Row
                     flexWrap={"wrap"}
                     justifyContent={"space-between"}
@@ -60,12 +63,14 @@ const SongDetails = (admin, s, history, text, lang) => {
                 <DigitLayout.Center>
                     <DigitMarkdown markdownSource={s.text} />
                 </DigitLayout.Center>
-            </SongDetailContainer>
+            </DialogContainer>
         ),
         renderButtons: (confirm, cancel) => (
             <>
                 {admin && (
-                    <DigitDesign.Link to={SONGS_EDIT_ROUTE + s.song_id}>
+                    <DigitDesign.Link
+                        to={ADMIN_SONGS_EDIT_ROUTE + "/" + s.song_id}
+                    >
                         <DigitButton
                             text={text.EditSong}
                             primary
