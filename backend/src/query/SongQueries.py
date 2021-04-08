@@ -24,7 +24,7 @@ def get_song_by_id(song_id: str) -> ResultWithData[SongObject]:
 
 
 @db_session
-def get_song_by_name(title: str) -> ResultWithData[SongObject]:
+def get_song_by_title(title: str) -> ResultWithData[SongObject]:
     song = Song.get(title=title)
     if song is None:
         return get_result_with_error(SONG_TITLE_NOT_EXIST)
