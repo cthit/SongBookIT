@@ -9,7 +9,8 @@ import {
 } from "@cthit/react-digit-components";
 import {
     BASE_ROUTE,
-    ADMIN_SONGS_EDIT_ROUTE
+    ADMIN_SONGS_EDIT_ROUTE,
+    navHome
 } from "../../../../../../app/App.routes";
 import { DialogContainer } from "../../../../../../common/components/song-detail-container/DialogContainer.component";
 
@@ -84,7 +85,8 @@ const SongDetails = (admin, s, history, text, lang) => {
                     <DigitButton text={text.Close} raised onClick={cancel} />
                 </DigitDesign.Link>
             </>
-        )
+        ),
+        onCancel: () => navHome(history)
     };
 };
 

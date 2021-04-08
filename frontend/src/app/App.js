@@ -14,7 +14,7 @@ import Songs from "../use-cases/songs";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Drawer from "./components/drawer";
-import { SongTagProvider } from "../use-cases/songs/Songs.context";
+import { SongTagProvider } from "./Songs.context";
 import AdminSongs from "../use-cases/admin-songs/AdminSongs";
 import AdminTags from "../use-cases/admin-tags/AdminTags";
 

@@ -5,8 +5,8 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { getSongs } from "../../api/songs/get.songs.api";
-import { getTags } from "../../api/tags/get.tags.api";
+import { getSongs } from "../api/songs/get.songs.api";
+import { getTags } from "../api/tags/get.tags.api";
 
 const SongTagContext = createContext({});
 

@@ -11,7 +11,7 @@ import SearchBar from "./components/search-bar/Searchbar.component";
 import FourZeroFour from "../../../../common/components/four-zero-four";
 import SongMasonry from "./components/song-masonry";
 import FiveZeroZeroComponent from "../../../../common/components/five-zero-zero";
-import { useSongs } from "../../Songs.context";
+import { useSongs } from "../../../../app/Songs.context";
 import { NoSongs } from "./components/no-songs/NoSongs.component";
 import CenterLoading from "../../../../common/components/center-loading";
 

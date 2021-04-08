@@ -7,7 +7,7 @@ import {
     DigitTextField,
     useDigitTranslations
 } from "@cthit/react-digit-components";
-import { useSongs } from "../../../../Songs.context";
+import { useSongs } from "../../../../../../app/Songs.context";
 
 const SearchBar = ({ filterTextState, filterTagsState }) => {
     const [text] = useDigitTranslations();

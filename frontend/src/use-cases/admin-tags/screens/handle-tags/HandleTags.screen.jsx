@@ -4,7 +4,7 @@ import {
     DigitLayout,
     DigitDesign
 } from "@cthit/react-digit-components";
-import { useSongs } from "../../../songs/Songs.context";
+import { useSongs } from "../../../../app/Songs.context";
 import CenterLoading from "../../../../common/components/center-loading/";
 import TagSearchBar from "./components/tag-search-bar";
 import * as fuzzysort from "fuzzysort";
