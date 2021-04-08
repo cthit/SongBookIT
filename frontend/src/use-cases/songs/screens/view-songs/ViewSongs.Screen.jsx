@@ -2,7 +2,6 @@ import useAdmin from "../../../../common/hooks/use-admin";
 import { useHistory, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import {
-    DigitLoading,
     useDigitCustomDialog,
     useDigitTranslations,
     DigitLayout
@@ -14,6 +13,7 @@ import SongMasonry from "./components/song-masonry";
 import FiveZeroZeroComponent from "../../../../common/components/five-zero-zero";
 import { useSongs } from "../../Songs.context";
 import { NoSongs } from "./components/no-songs/NoSongs.component";
+import CenterLoading from "../../../../common/components/center-loading";
 
 const ViewSongs = () => {
     const history = useHistory();
@@ -86,10 +86,7 @@ const ViewSongs = () => {
                 filterTextState={{ filterText, setFilterText }}
                 filterTagsState={{ filterTags, setFilterTags }}
             />
-            <DigitLoading
-                margin={{ left: "auto", right: "auto", top: "32px" }}
-                loading={refetching || isFiltering}
-            />
+            <CenterLoading loading={refetching || loading} />
             {!isFiltering && filteredSongs.length === 0 && (
                 <NoSongs
                     resetFilters={() => {
