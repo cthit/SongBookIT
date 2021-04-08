@@ -20,6 +20,13 @@ def create_tag(tag: RequestTagObject) -> ResultWithData[str]:
 
 
 @db_session
+def update_tag(tag: RequestTagObject) -> ResultWithData:
+    db_tag = Tag[tag.tag_id]
+    db_tag.set(name=tag.name, pretty_name_sv=tag.pretty_name_sv, pretty_name_en=tag.pretty_name_en )
+    return get_result_with_data({})
+
+
+@db_session
 def remove_tag(tag_id: str) -> ResultWithData:
     tag = Tag.get(tag_id=tag_id)
     if tag is None:

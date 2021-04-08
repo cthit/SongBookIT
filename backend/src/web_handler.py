@@ -1,10 +1,12 @@
 import os
+import subprocess
 from functools import wraps
 from http import HTTPStatus
 import jwt
 from flask import Flask, session, Response, request, send_file
 from flask_cors import CORS
 from flask_restful import Api, Resource
+from md2pdf import md2pdf
 from pony.orm import db_session
 from pony.orm.serialization import to_dict
 
@@ -14,7 +16,8 @@ from db import Tag
 from process.GammaProcess import handle_gamma_me, handle_gamma_auth, handle_gamma_signout
 from process.SongProcess import handle_get_songs_and_tags, handle_get_song_by_id, handle_delete_song, \
     handle_create_song, handle_update_song, handle_songbook_file
-from process.TagProcess import handle_get_tags, handle_delete_tag, handle_get_tag_by_id
+from process.TagProcess import handle_get_tags, handle_delete_tag, handle_get_tag_by_id, handle_update_tag, \
+    handle_create_tag
 
 app = Flask(__name__)
 api = Api(app)
@@ -68,11 +71,9 @@ class TagsRes(Resource):
         return handle_get_tags().get_response()
 
     @admin_required
-    @db_session
     def post(self):
-        data = request.get_json(force=True)
-        tag = Tag(**data)
-        print(to_dict(tag))
+        data = request.get_json()
+        return handle_create_tag(data).get_response()
 
 
 class TagRes(Resource):
@@ -82,6 +83,11 @@ class TagRes(Resource):
     @admin_required
     def delete(self, tag_id):
         return handle_delete_tag(tag_id).get_response()
+
+    @admin_required
+    def put(self, tag_id):
+        data = request.get_json()
+        return handle_update_tag(data, tag_id).get_response()
 
 
 class GammaMe(Resource):
@@ -102,14 +108,25 @@ class GammaSignout(Resource):
 
 # timestamp is passed along to ensure that the browser doesn't cache the request
 class DownloadSongbook(Resource):
-    def get(self, time_stamp):
-        file_name = "songbook.md"
-        path = f"{RESOURCE_DATA_PATH}{file_name}"
-        handle_songbook_file(path)
-        return send_file(
-            filename_or_fp=path,
-            as_attachment=True,
-            attachment_filename=file_name)
+    def get(self,type,  time_stamp):
+        print(type)
+        file_name = "songbook"
+        path_md = f"{RESOURCE_DATA_PATH}{file_name}.md"
+        handle_songbook_file(path_md)
+        if type == "md":
+            return send_file(
+                filename_or_fp=path_md,
+                as_attachment=True,
+                attachment_filename=f"{file_name}.md")
+        elif type == "pdf":
+            path_pdf = f"{RESOURCE_DATA_PATH}{file_name}.pdf"
+            os.remove(path_pdf) if os.path.exists(path_pdf) else None
+            # subprocess.run(f"md2pdf {path_md} {path_pdf}", shell=True)
+            md2pdf(path_pdf, md_file_path=path_md)
+            return send_file(
+                filename_or_fp=path_pdf,
+                as_attachment=True,
+                attachment_filename=f"{file_name}.pdf")
 
 
 api.add_resource(SongsRes, '/api/songs')
@@ -123,7 +140,7 @@ api.add_resource(GammaMe, '/api/me')
 api.add_resource(GammaSignout, '/api/signout')
 
 # Timestamp is used to avoid problems with cache
-api.add_resource(DownloadSongbook, '/api/download_songbook/<string:time_stamp>')
+api.add_resource(DownloadSongbook, '/api/download_songbook/<string:type>/<string:time_stamp>')
 
 
 def host():

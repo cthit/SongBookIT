@@ -1,7 +1,7 @@
 from typing import List
 from pony.orm import db_session
 
-from utils.ErrorCodes import TAG_ID_NOT_EXIST
+from utils.ErrorCodes import TAG_ID_NOT_EXIST, TAG_TITLE_NOT_EXIST
 from utils.ResultWithData import ResultWithData, get_result_with_data, get_result_with_error
 from objects.dataobject.TagObject import TagObject
 from db import Tag
@@ -20,6 +20,16 @@ def get_tag_by_id(tag_id: str) -> ResultWithData[TagObject]:
         return get_result_with_error(TAG_ID_NOT_EXIST)
     else:
         return get_result_with_data(db_tag_to_tag_object(tag))
+
+
+@db_session
+def get_tag_by_name(name: str) -> ResultWithData[TagObject]:
+    song = Tag.get(name=name)
+    if song is None:
+        return get_result_with_error(TAG_TITLE_NOT_EXIST)
+    else:
+        return get_result_with_data(db_tag_to_tag_object(song))
+
 
 
 def db_tag_to_tag_object(tag: Tag) -> TagObject:

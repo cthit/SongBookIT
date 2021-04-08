@@ -3,7 +3,7 @@ from typing import List
 from pony.orm import db_session
 
 from db import SongToTag
-from objects.dataobject import SongObject
+from objects.dataobject.SongObject import SongObject
 from objects.dataobject.SongToTagObject import SongToTagObject
 from query.SongQueries import db_song_to_song_object
 
