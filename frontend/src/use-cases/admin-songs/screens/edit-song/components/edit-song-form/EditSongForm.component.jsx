@@ -15,7 +15,7 @@ import { editSong } from "../../../../../../api/songs/put.songs.api";
 import * as yup from "yup";
 import { deleteSong } from "../../../../../../api/songs/delete.songs.api";
 import { navHome, navViewSong } from "../../../../../../app/App.routes";
-import { useSongs } from "../../../../Songs.context";
+import { useSongs } from "../../../../../songs/Songs.context";
 import {
     SongFormCard,
     SongFormFields,
@@ -55,7 +55,7 @@ export const EditSongForm = ({ song, setSomethingWrong }) => {
 
     useEffect(() => {
         refetchTags().then(() => setLoading(false));
-    }, []);
+    }, [refetchTags]);
 
     const performUpdate = useCallback(
         async values => {
@@ -80,7 +80,14 @@ export const EditSongForm = ({ song, setSomethingWrong }) => {
                 }
             }
         },
-        [song, text, refetchTags]
+        [
+            song,
+            text,
+            queueToast,
+            refetchSongsAndTags,
+            history,
+            setSomethingWrong
+        ]
     );
 
     const performDelete = useCallback(async () => {
@@ -104,7 +111,14 @@ export const EditSongForm = ({ song, setSomethingWrong }) => {
                 });
             }
         }
-    }, [song]);
+    }, [
+        song,
+        history,
+        text,
+        queueToast,
+        setSomethingWrong,
+        refetchSongsAndTags
+    ]);
 
     if (loading) {
         return (

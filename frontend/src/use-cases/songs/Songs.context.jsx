@@ -68,7 +68,7 @@ export const SongTagProvider = ({ children }) => {
         };
 
         func();
-    }, []);
+    }, [refetchSongsAndTags]);
 
     return (
         <SongTagContext.Provider

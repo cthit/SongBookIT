@@ -48,7 +48,7 @@ const ViewSongs = () => {
                 setFaultySongId(false);
             }
         }
-    }, [loading, song_id, text]);
+    }, [loading, song_id, text, admin, getSong, openDialog, history, error]);
 
     const [filteredSongs, setFilteredSongs] = useState(songs);
     const [timeoutVal, setTimeoutVal] = useState(0);

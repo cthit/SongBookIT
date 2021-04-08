@@ -13,7 +13,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { addSong } from "../../../../../../api/songs/post.songs.api";
 import { navViewSong } from "../../../../../../app/App.routes";
 import * as yup from "yup";
-import { useSongs } from "../../../../Songs.context";
+import { useSongs } from "../../../../../songs/Songs.context";
 import {
     SongFormCard,
     SongFormFields,
@@ -33,30 +33,33 @@ export const CreateSongForm = ({ setSomethingWrong }) => {
 
     useEffect(() => {
         refetchTags().then(() => setLoading(false));
-    }, []);
+    }, [refetchTags]);
 
-    const performCreate = useCallback(async values => {
-        try {
-            const res = await addSong(values);
-            queueToast({
-                text: text.AddSongSuccessful
-            });
-            await refetchSongsAndTags();
-            navViewSong(history, res.data.data.song_id);
-        } catch (error) {
-            queueToast({
-                text: text.AddSongFailed
-            });
-            if (error.response.status === 500) {
-                setSomethingWrong(true);
-            } else {
-                setError({
-                    isError: error.response.data.error.isError,
-                    message: text[error.response.data.error.message]
+    const performCreate = useCallback(
+        async values => {
+            try {
+                const res = await addSong(values);
+                queueToast({
+                    text: text.AddSongSuccessful
                 });
+                await refetchSongsAndTags();
+                navViewSong(history, res.data.data.song_id);
+            } catch (error) {
+                queueToast({
+                    text: text.AddSongFailed
+                });
+                if (error.response.status === 500) {
+                    setSomethingWrong(true);
+                } else {
+                    setError({
+                        isError: error.response.data.error.isError,
+                        message: text[error.response.data.error.message]
+                    });
+                }
             }
-        }
-    });
+        },
+        [history, queueToast, setSomethingWrong, refetchSongsAndTags, text]
+    );
 
     if (loading) {
         return (
