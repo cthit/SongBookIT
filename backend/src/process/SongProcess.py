@@ -3,7 +3,10 @@ from http import HTTPStatus
 
 from mdutils import MdUtils
 
+from process.TagProcess import get_tags_json
+from query.FavouriteSongQueries import get_favourite_song_ids, get_favourite_song
 from utils.ErrorCodes import SONG_TITLE_ALREADY_EXIST
+from utils.HandleGammaToken import get_user_name_from_session
 from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
 from command.SongCommands import remove_song, create_song, update_song
 from command.SongsToTagsCommands import create_songtotag, remove_songtotag
@@ -15,8 +18,16 @@ from validation.SongValidation import validate_song, validate_song_update
 from validation.Validation import validate_short_id
 
 
-def handle_get_songs_and_tags() -> HttpResponse:
+def handle_get_songs_and_tags(session: Dict) -> HttpResponse:
+
     songs = get_songs()
+
+    user_name_res = get_user_name_from_session(session)
+    if not user_name_res.is_error:
+        fav_song_ids = get_favourite_song_ids(user_name_res.data)
+        for song in songs:
+            song.favourite = song.song_id in fav_song_ids
+
     songs_json = {}
     for song in songs:
         songs_json[str(song.song_id)] = song.to_json()
@@ -32,23 +43,25 @@ def handle_get_songs_and_tags() -> HttpResponse:
     })
 
 
-def handle_get_song_by_id(song_id: str) -> HttpResponse:
+def handle_get_song_by_id(session, song_id: str) -> HttpResponse:
     short_id_res = validate_short_id(song_id)
     if short_id_res.is_error:
         return get_with_error(HTTPStatus.BAD_REQUEST, short_id_res.message)
 
     song_res = get_song_by_id(short_id_res.data)
     if song_res.is_error:
-        return get_with_error(404, song_res.message)
+        return get_with_error(HTTPStatus.NOT_FOUND, song_res.message)
+
     else:
-        song = song_res.data
-        tags_json = {}
-        for tag_id in song.tags:
-            tag_res = get_tag_by_id(tag_id)
-            if not tag_res.is_error:
-                tags_json[str(tag_id)] = tag_res.data.to_json()
+        user_name_res = get_user_name_from_session(session)
+        if not user_name_res.is_error:
+            fav_song = get_favourite_song(user_name=user_name_res.data, song_id=song_id)
+            song_res.data.favourite = not fav_song.is_error
+
+        tags_json = get_tags_json()
+
         return get_with_data({
-            'song': song.to_json(),
+            'song': song_res.data.to_json(),
             'tags': tags_json
         })
 

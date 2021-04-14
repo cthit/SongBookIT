@@ -10,14 +10,20 @@ from validation.Validation import validate_short_id
 
 
 def handle_get_tags() -> HttpResponse:
-    tags = get_tags()
-    tags_json = {}
-    for tag in tags:
-        tags_json[str(tag.tag_id)] = tag.to_json()
+    tags_json = get_tags_json()
 
     return get_with_data({
         'tags': tags_json
     })
+
+
+def get_tags_json() -> [Dict]:
+    tags = get_tags()
+    tags_json = {}
+    for tag in tags:
+        tags_json[str(tag.tag_id)] = tag.to_json()
+    return tags_json
+
 
 
 def handle_get_tag_by_id(tag_id: str) -> HttpResponse:

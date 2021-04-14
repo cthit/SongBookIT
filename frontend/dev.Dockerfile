@@ -5,6 +5,5 @@ RUN yarn install --network-timeout 10000000
 
 COPY src src
 COPY public public
-COPY config-overrides.js ./
 
 CMD yarn start

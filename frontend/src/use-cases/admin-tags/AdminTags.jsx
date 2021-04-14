@@ -1,8 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import {
-    ADMIN_SONGS_CREATE_ROUTE,
-    ADMIN_SONGS_EDIT_ROUTE,
     ADMIN_TAGS_CREATE_ROUTE,
     ADMIN_TAGS_EDIT_ROUTE,
     ADMIN_TAGS_ROUTE
@@ -15,7 +13,7 @@ import HandleTagsScreen from "./screens/handle-tags/HandleTags.screen";
 import CreateTag from "./screens/create-tag";
 import EditTag from "./screens/edit-tag";
 
-const AdminTags = () => {
+export const AdminTags = () => {
     const [loading] = useGammaStatus();
     const admin = useAdmin();
 
@@ -36,5 +34,3 @@ const AdminTags = () => {
         </Switch>
     );
 };
-
-export default AdminTags;

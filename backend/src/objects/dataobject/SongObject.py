@@ -1,10 +1,11 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 
 @dataclass
 class SongObject:
     song_id: str
+    favourite: Optional[bool]
     title: str
     number: int
     melody: str
@@ -16,6 +17,7 @@ class SongObject:
     def to_json(self):
         return {
             'song_id': str(self.song_id),
+            'favourite':  False if self.favourite is None else self.favourite,
             'title': self.title,
             'number': self.number,
             'melody': self.melody,

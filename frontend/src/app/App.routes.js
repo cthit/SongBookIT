@@ -10,6 +10,8 @@ const CREATE = "/create";
 
 export const BASE_ROUTE = "/";
 
+export const SONGS_ROUTE = "/songs";
+
 export const ADMIN_SONGS_ROUTE = ADMIN_ROUTE + SONGS;
 export const ADMIN_SONGS_EDIT_ROUTE = ADMIN_SONGS_ROUTE + EDIT;
 export const ADMIN_SONGS_CREATE_ROUTE = ADMIN_SONGS_ROUTE + CREATE;
@@ -17,6 +19,8 @@ export const ADMIN_SONGS_CREATE_ROUTE = ADMIN_SONGS_ROUTE + CREATE;
 export const ADMIN_TAGS_ROUTE = ADMIN_ROUTE + TAGS;
 export const ADMIN_TAGS_EDIT_ROUTE = ADMIN_TAGS_ROUTE + EDIT;
 export const ADMIN_TAGS_CREATE_ROUTE = ADMIN_TAGS_ROUTE + CREATE;
+
+export const MY_PAGES_ROUTE = "/me";
 
 export const navHome = history => history.push(removeLastSlash(BASE_ROUTE));
 

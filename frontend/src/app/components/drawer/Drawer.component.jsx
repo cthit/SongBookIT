@@ -8,14 +8,12 @@ import {
     useGammaMe,
     DigitText
 } from "@cthit/react-digit-components";
-import {
-    downloadSongbookMD,
-    downloadSongbookPDF
-} from "../../../api/download-songbook/get.download-songbook.api";
+import { downloadSongbookMD } from "../../../api/download-songbook/get.download-songbook.api";
 import {
     BASE_ROUTE,
     ADMIN_SONGS_CREATE_ROUTE,
-    ADMIN_TAGS_ROUTE
+    ADMIN_TAGS_ROUTE,
+    MY_PAGES_ROUTE
 } from "../../App.routes";
 import { AccountCircle } from "@material-ui/icons";
 import { signoutFromSongbook } from "../../../api/gamma-signout/post.gamma-signout.api";
@@ -29,6 +27,7 @@ const DrawerTitle = styled.div`
     place-items: center;
     border-bottom: 1px solid gray;
     height: 63px;
+    cursor: pointer;
 `;
 
 const DrawerHeadingDiv = styled.div`
@@ -46,9 +45,13 @@ export const Drawer = ({ closeDrawer, loading, signIn }) => {
     const admin = useAdmin();
     const [text] = useDigitTranslations();
 
+    if (Object.keys(text).length === 0) {
+        return null;
+    }
+
     return (
         <>
-            <DrawerTitle>
+            <DrawerTitle onClick={closeDrawer}>
                 <DigitText.Title text={"Songbook"} white />
             </DrawerTitle>
             <DigitLayout.Column flex={"1"} justifyContent={"space-between"}>
@@ -56,9 +59,16 @@ export const Drawer = ({ closeDrawer, loading, signIn }) => {
                     <DrawerHeading t={text.Pages} />
                     <DigitNavLink
                         text={text.Songs}
-                        to={BASE_ROUTE}
+                        link={BASE_ROUTE}
                         onClick={closeDrawer}
                     />
+                    {user && (
+                        <DigitNavLink
+                            text={text.MyPages}
+                            link={MY_PAGES_ROUTE}
+                            onClick={closeDrawer}
+                        />
+                    )}
                     {admin && (
                         <>
                             <DrawerHeading t={text.AdminPages} />
@@ -81,11 +91,6 @@ export const Drawer = ({ closeDrawer, loading, signIn }) => {
                         outlined
                         text={text.DownloadSongbookMD}
                         onClick={downloadSongbookMD}
-                    />
-                    <DigitButton
-                        outlined
-                        text={text.DownloadSongbookPDF}
-                        onClick={downloadSongbookPDF}
                     />
 
                     <ThinDivider />

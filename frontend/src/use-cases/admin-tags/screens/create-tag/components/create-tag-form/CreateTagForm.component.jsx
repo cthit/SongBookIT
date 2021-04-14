@@ -24,7 +24,7 @@ import ErrorCard from "../../../../../../common/components/error-card";
 import MainFormCard from "../../../../../../common/components/main-form-card";
 
 export const CreateTagForm = ({ setSomethingWrong }) => {
-    const { tags, refetchTags } = useSongs();
+    const { refetchTags } = useSongs();
     const [queueToast] = useDigitToast();
     const [loading, setLoading] = useState(true);
     const history = useHistory();
@@ -38,7 +38,7 @@ export const CreateTagForm = ({ setSomethingWrong }) => {
     const performCreate = useCallback(
         async values => {
             try {
-                const res = await addTag(values);
+                await addTag(values);
                 queueToast({
                     text: text.AddTagSuccessful
                 });
@@ -58,7 +58,7 @@ export const CreateTagForm = ({ setSomethingWrong }) => {
                 }
             }
         },
-        [history, queueToast, setSomethingWrong, text]
+        [history, queueToast, setSomethingWrong, text, refetchTags]
     );
 
     if (loading) {

@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pony.orm import Database, Required, PrimaryKey, Set, Optional, db_session
 from config import db_config as config
 
@@ -13,6 +15,7 @@ class Song(db.Entity):
     melody_link = Optional(str)
     text = Required(str)
     song_tags = Set("SongToTag")
+    favourites = Set("FavouriteSong")
 
 
 class Tag(db.Entity):
@@ -27,6 +30,12 @@ class SongToTag(db.Entity):
     song = Required(Song)
     tag = Required(Tag)
     PrimaryKey(song, tag)
+
+
+class FavouriteSong(db.Entity):
+    user_name = Required(str)
+    song = Required(Song)
+    PrimaryKey(user_name, song)
 
 
 db.bind(

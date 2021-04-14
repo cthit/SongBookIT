@@ -7,6 +7,10 @@
     "Admin pages",
     "Adminsidor"
   ],
+  "MyPages": [
+    "My pages",
+    "Mina sidor"
+  ],
   "HandleTags": [
     "Handle tags",
     "Hantera taggar"
@@ -195,7 +199,6 @@
     "Swedish name",
     " Svenskt namn"
   ],
-
   "AddTag": [
     "Add tag",
     "Lägg till tagg"
@@ -247,5 +250,13 @@
   "ResetFilters": [
     "Reset filters",
     "Återställ filter"
+  ],
+  "MyFavorites": [
+    "My favorite songs",
+    "Mina favoritsånger"
+  ],
+  "NoFavorites": [
+    "There doesn't seem to be any favorite songs",
+    "Det verkar inte finnas några favoritiserade sånger"
   ]
 }

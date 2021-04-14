@@ -95,7 +95,7 @@ export const songValidationSchema = (yup, text) =>
         melody_link: yup
             .string()
             .url()
-            .matches(/https:\/\/.*/i, {
+            .matches(/(https:\/\/.?)*/i, {
                 message: "Must be a valid URL starting with https://"
             }),
         text: yup.string().required(text.CantBeEmpty)

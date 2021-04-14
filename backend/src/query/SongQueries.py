@@ -15,6 +15,12 @@ def get_songs() -> List[SongObject]:
 
 
 @db_session
+def get_songs_by_ids(ids: List[str]) -> List[SongObject]:
+    songs = Song.select(lambda s: s.song_id in ids)
+    return [db_song_to_song_object(song) for song in songs]
+
+
+@db_session
 def get_song_by_id(song_id: str) -> ResultWithData[SongObject]:
     song = Song.get(song_id=song_id)
     if song is None:
@@ -32,9 +38,10 @@ def get_song_by_title(title: str) -> ResultWithData[SongObject]:
         return get_result_with_data(db_song_to_song_object(song))
 
 @db_session
-def db_song_to_song_object(song: Song) -> SongObject:
+def db_song_to_song_object(song: Song, favourite=False) -> SongObject:
     return SongObject(
         song_id=song.song_id,
+        favourite=favourite,
         number=song.number,
         title=song.title,
         melody=song.melody,

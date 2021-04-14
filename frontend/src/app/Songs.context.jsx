@@ -5,7 +5,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { getSongs } from "../api/songs/get.songs.api";
+import { getSong, getSongs } from "../api/songs/get.songs.api";
 import { getTags } from "../api/tags/get.tags.api";
 
 const SongTagContext = createContext({});
@@ -35,6 +35,20 @@ export const SongTagProvider = ({ children }) => {
         setRefetching(r => r - 1);
     }, []);
 
+    const refetchSong = useCallback(async song_id => {
+        setRefetching(r => r + 1);
+        try {
+            const res = await getSong(song_id);
+            const song = res.data.data.song;
+            setSongs(songs =>
+                songs.map(s => (s.song_id === song.song_id ? song : s))
+            );
+        } catch (e) {
+            setError(e);
+        }
+        setRefetching(r => r - 1);
+    }, []);
+
     const refetchTags = useCallback(async () => {
         setRefetching(r => r + 1);
         try {
@@ -49,7 +63,7 @@ export const SongTagProvider = ({ children }) => {
         setRefetching(r => r - 1);
     }, []);
 
-    const getSong = useCallback(
+    const getSongFromContext = useCallback(
         id => {
             const song = songs.find(song => song.song_id === id);
             if (song) {
@@ -60,6 +74,14 @@ export const SongTagProvider = ({ children }) => {
         },
         [songs, tags]
     );
+
+    const getFavouriteSongsFromContext = useCallback(() => {
+        const fav_songs = songs.filter(song => song.favourite);
+        if (fav_songs) {
+            return fav_songs;
+        }
+        return [];
+    }, [songs, tags]);
 
     useEffect(() => {
         const func = async () => {
@@ -80,7 +102,9 @@ export const SongTagProvider = ({ children }) => {
                 refetching: refetching > 0,
                 refetchSongsAndTags,
                 refetchTags,
-                getSong
+                refetchSong,
+                getSongFromContext,
+                getFavouriteSongsFromContext
             }}
         >
             {children}

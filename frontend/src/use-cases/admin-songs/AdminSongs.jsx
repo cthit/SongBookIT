@@ -11,7 +11,7 @@ import InsufficientAccess from "../../common/components/insufficient-access/";
 import { useGammaStatus } from "@cthit/react-digit-components";
 import useAdmin from "../../common/hooks/use-admin";
 
-const AdminSongs = () => {
+export const AdminSongs = () => {
     const [loading] = useGammaStatus();
     const admin = useAdmin();
 
@@ -35,5 +35,3 @@ const AdminSongs = () => {
         </Switch>
     );
 };
-
-export default AdminSongs;

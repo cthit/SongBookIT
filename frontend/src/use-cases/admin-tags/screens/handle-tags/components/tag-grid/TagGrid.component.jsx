@@ -1,8 +1,5 @@
 import React, { useMemo } from "react";
-import {
-    useDigitTranslations,
-    DigitLayout
-} from "@cthit/react-digit-components";
+import { useDigitTranslations } from "@cthit/react-digit-components";
 import TagCard from "../../../../../admin-tags/screens/handle-tags/components/tag-grid/tag-card";
 import styled from "styled-components";
 

@@ -1,3 +1,3 @@
-import { MainFormCard } from "./MainFormCard.component";
+import { MainCard } from "./MainCard.component";
 
-export default MainFormCard;
+export default MainCard;

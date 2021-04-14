@@ -10,7 +10,6 @@ WORKDIR /usr/src/songbook/frontend
 COPY ./src ./src
 COPY ./public ./public
 COPY package.json .
-COPY config-overrides.js .
 
 RUN yarn --production --frozer-lockfile --network-timeout 10000000
 RUN yarn global add react-scripts
@@ -25,4 +24,5 @@ RUN apk add --no-cache jq
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
 CMD ["nginx", "-g", "daemon off;"]

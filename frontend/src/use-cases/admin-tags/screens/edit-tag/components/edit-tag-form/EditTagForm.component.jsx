@@ -43,14 +43,13 @@ const defineDeleteDialog = (text, deleteFunction) => ({
 });
 
 export const EditTagForm = ({ tag, setSomethingWrong }) => {
-    console.log(tag);
     const history = useHistory();
     const [text] = useDigitTranslations();
     const [queueToast] = useDigitToast();
     const [openDeleteDialog] = useDigitCustomDialog();
     const [error, setError] = useState({ isError: false, message: "" });
 
-    const { refetchTags } = useSongs();
+    const { refetchSongsAndTags } = useSongs();
 
     const performUpdate = useCallback(
         async values => {
@@ -59,7 +58,7 @@ export const EditTagForm = ({ tag, setSomethingWrong }) => {
                 queueToast({
                     text: text.EditTagSuccessful
                 });
-                await refetchTags();
+                await refetchSongsAndTags();
                 navHandleTags(history);
             } catch (error) {
                 queueToast({
@@ -75,7 +74,7 @@ export const EditTagForm = ({ tag, setSomethingWrong }) => {
                 }
             }
         },
-        [tag, text, queueToast, refetchTags, history, setSomethingWrong]
+        [tag, text, queueToast, refetchSongsAndTags, history, setSomethingWrong]
     );
 
     const performDelete = useCallback(async () => {
@@ -84,7 +83,7 @@ export const EditTagForm = ({ tag, setSomethingWrong }) => {
             queueToast({
                 text: text.DeleteTagSuccessful
             });
-            await refetchTags();
+            await refetchSongsAndTags();
             navHandleTags(history);
         } catch (error) {
             queueToast({
@@ -99,7 +98,14 @@ export const EditTagForm = ({ tag, setSomethingWrong }) => {
                 });
             }
         }
-    }, [tag, history, text, queueToast, setSomethingWrong, refetchTags]);
+    }, [
+        tag,
+        history,
+        text,
+        queueToast,
+        setSomethingWrong,
+        refetchSongsAndTags
+    ]);
 
     return (
         <DigitForm

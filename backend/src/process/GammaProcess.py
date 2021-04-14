@@ -5,7 +5,7 @@ from typing import Dict
 from http import HTTPStatus
 
 import requests
-from flask import Response, session
+from flask import Response
 from logging import getLogger
 from config import gamma_config as config
 from config.gamma_config import GAMMA_AUTHORIZATION_URI
@@ -62,6 +62,6 @@ def handle_gamma_auth(request: Dict, session: Dict) -> HttpResponse:
         return get_with_response(Response(status=HTTPStatus.INTERNAL_SERVER_ERROR))
 
 
-def handle_gamma_signout():
+def handle_gamma_signout(session: Dict):
     session.clear()
     return get_with_response(Response(status=HTTPStatus.OK))
