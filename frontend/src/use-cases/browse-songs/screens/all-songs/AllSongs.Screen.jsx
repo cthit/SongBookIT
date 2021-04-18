@@ -1,19 +1,19 @@
 import useAdmin from "../../../../common/hooks/use-admin";
 import { useHistory, useParams } from "react-router-dom";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-    DigitLayout,
     useDigitCustomDialog,
     useDigitTranslations,
     useGammaMe
 } from "@cthit/react-digit-components";
 import SongDetails from "./components/song-detail/SongDetail.dialog";
 import SearchBar from "./components/search-bar/Searchbar.component";
-import SongMasonry from "../../../../common/components/song-masonry";
+import SongMasonry from "./components/song-masonry";
 import { useSongs } from "../../../../app/Songs.context";
 import FourZeroFour from "../../../../common/components/four-zero-four";
 import FiveZeroZero from "../../../../common/components/five-zero-zero";
 import useDebounce from "../../../../common/hooks/use-debounce";
+import ScrollToTop from "../../../../common/components/scroll-to-top";
 
 export const AllSongs = () => {
     const history = useHistory();
@@ -93,7 +93,7 @@ export const AllSongs = () => {
     }
 
     return (
-        <DigitLayout.Column>
+        <>
             <SearchBar
                 filterTextState={{ filterText, setFilterText }}
                 filterTagsState={{ filterTags, setFilterTags }}
@@ -103,6 +103,8 @@ export const AllSongs = () => {
                 filterTags={filterTags}
                 filterText={deBouncedFilterText}
             />
-        </DigitLayout.Column>
+
+            <ScrollToTop />
+        </>
     );
 };

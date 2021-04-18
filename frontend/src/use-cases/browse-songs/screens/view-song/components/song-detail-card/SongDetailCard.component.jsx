@@ -10,7 +10,7 @@ import {
     useGammaMe
 } from "@cthit/react-digit-components";
 import { ArrowBack } from "@material-ui/icons";
-import FavouriteStarButton from "../../../../components/favourite-star-button";
+import FavoriteStarButton from "../../../../components/favorite-star-button";
 import { ADMIN_SONGS_EDIT_ROUTE } from "../../../../../../app/App.routes";
 import MainFormCard from "../../../../../../common/components/main-form-card";
 import React from "react";
@@ -43,8 +43,8 @@ export const SongDetailCard = ({ song, refetchSong }) => {
                     />
                 </DigitLayout.Row>
                 {user && (
-                    <FavouriteStarButton
-                        favourite={song.favourite}
+                    <FavoriteStarButton
+                        favorite={song.favorite}
                         song_id={song.song_id}
                         refetch={refetchSong}
                     />

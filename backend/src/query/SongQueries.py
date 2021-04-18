@@ -38,10 +38,10 @@ def get_song_by_title(title: str) -> ResultWithData[SongObject]:
         return get_result_with_data(db_song_to_song_object(song))
 
 @db_session
-def db_song_to_song_object(song: Song, favourite=False) -> SongObject:
+def db_song_to_song_object(song: Song, favorite=False) -> SongObject:
     return SongObject(
         song_id=song.song_id,
-        favourite=favourite,
+        favorite=favorite,
         number=song.number,
         title=song.title,
         melody=song.melody,

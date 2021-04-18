@@ -75,13 +75,13 @@ export const SongTagProvider = ({ children }) => {
         [songs, tags]
     );
 
-    const getFavouriteSongsFromContext = useCallback(() => {
-        const fav_songs = songs.filter(song => song.favourite);
+    const getFavoriteSongsFromContext = useCallback(() => {
+        const fav_songs = songs.filter(song => song.favorite);
         if (fav_songs) {
             return fav_songs;
         }
         return [];
-    }, [songs, tags]);
+    }, [songs]);
 
     useEffect(() => {
         const func = async () => {
@@ -104,7 +104,7 @@ export const SongTagProvider = ({ children }) => {
                 refetchTags,
                 refetchSong,
                 getSongFromContext,
-                getFavouriteSongsFromContext
+                getFavoriteSongsFromContext
             }}
         >
             {children}

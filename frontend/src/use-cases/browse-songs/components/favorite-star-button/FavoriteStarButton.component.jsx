@@ -2,17 +2,17 @@ import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import React from "react";
 import { DigitIconButton } from "@cthit/react-digit-components";
-import { deleteFavouriteSong } from "../../../../api/favourite-song/delete.favourite-song.api";
-import { addFavouriteSong } from "../../../../api/favourite-song/put.favourite-song.api";
+import { deleteFavoriteSong } from "../../../../api/favourite-song/delete.favorite-song.api";
+import { addFavoriteSong } from "../../../../api/favourite-song/put.favorite-song.api";
 
-export const FavouriteStarButton = ({ favourite, song_id, refetch }) => {
-    if (favourite) {
+export const FavoriteStarButton = ({ favorite, song_id, refetch }) => {
+    if (favorite) {
         return (
             <DigitIconButton
                 primary
                 icon={StarIcon}
                 onClick={() => {
-                    deleteFavouriteSong(song_id).then(() => {
+                    deleteFavoriteSong(song_id).then(() => {
                         refetch(song_id);
                     });
                 }}
@@ -24,7 +24,7 @@ export const FavouriteStarButton = ({ favourite, song_id, refetch }) => {
                 primary
                 icon={StarBorderIcon}
                 onClick={() => {
-                    addFavouriteSong(song_id).then(() => {
+                    addFavoriteSong(song_id).then(() => {
                         refetch(song_id);
                     });
                 }}

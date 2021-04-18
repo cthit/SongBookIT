@@ -251,7 +251,11 @@
     "Reset filters",
     "Återställ filter"
   ],
-  "MyFavorites": [
+  "FavoriteSongs": [
+    "Favorite songs",
+    "Favoritsånger"
+  ],
+  "MyFavoriteSongs": [
     "My favorite songs",
     "Mina favoritsånger"
   ],

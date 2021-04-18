@@ -8,6 +8,8 @@ const TAGS = "/tags";
 const EDIT = "/edit";
 const CREATE = "/create";
 
+const FAVORITES = "/favorites";
+
 export const BASE_ROUTE = "/";
 
 export const SONGS_ROUTE = "/songs";
@@ -21,6 +23,7 @@ export const ADMIN_TAGS_EDIT_ROUTE = ADMIN_TAGS_ROUTE + EDIT;
 export const ADMIN_TAGS_CREATE_ROUTE = ADMIN_TAGS_ROUTE + CREATE;
 
 export const MY_PAGES_ROUTE = "/me";
+export const MY_PAGES_FAVORITES_ROUTE = MY_PAGES_ROUTE + FAVORITES;
 
 export const navHome = history => history.push(removeLastSlash(BASE_ROUTE));
 

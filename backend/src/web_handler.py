@@ -9,7 +9,7 @@ from md2pdf import md2pdf
 
 from config import gamma_config as config
 from config.config import RESOURCE_DATA_PATH
-from process.FavouriteSongProcess import handle_remove_favourite, handle_add_favourite
+from process.FavoriteSongProcess import handle_remove_favorite, handle_add_favorite
 from process.GammaProcess import handle_gamma_me, handle_gamma_auth, handle_gamma_signout
 from process.SongProcess import handle_get_songs_and_tags, handle_get_song_by_id, handle_delete_song, \
     handle_create_song, handle_update_song, handle_songbook_file
@@ -50,14 +50,14 @@ def login_required(f):
     return decorated_function
 
 
-class FavouriteRes(Resource):
+class FavoriteRes(Resource):
     @login_required
     def delete(self, song_id):
-        return handle_remove_favourite(session, song_id).get_response()
+        return handle_remove_favorite(session, song_id).get_response()
 
     @login_required
     def put(self, song_id):
-        return handle_add_favourite(session, song_id).get_response()
+        return handle_add_favorite(session, song_id).get_response()
 
 
 class SongRes(Resource):
@@ -148,7 +148,7 @@ class DownloadSongbook(Resource):
                 attachment_filename=f"{file_name}.pdf")
 
 
-api.add_resource(FavouriteRes, '/api/favourite/<string:song_id>')
+api.add_resource(FavoriteRes, '/api/favorite/<string:song_id>')
 
 api.add_resource(SongsRes, '/api/songs')
 api.add_resource(SongRes, '/api/songs/<string:song_id>')

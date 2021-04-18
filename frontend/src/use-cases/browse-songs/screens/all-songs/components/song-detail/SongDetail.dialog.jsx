@@ -9,7 +9,7 @@ import {
 } from "@cthit/react-digit-components";
 import { ADMIN_SONGS_EDIT_ROUTE } from "../../../../../../app/App.routes";
 import { DialogContainer } from "../../../../../../common/components/song-detail-container/DialogContainer.component";
-import FavouriteStarButton from "../../../../components/favourite-star-button";
+import FavoriteStarButton from "../../../../components/favorite-star-button";
 
 const Melody = ({ melody, melody_link }) => {
     const MelodyText = <DigitText.Text text={melody} />;
@@ -40,8 +40,8 @@ const SongDetails = (admin, s, history, text, lang, user, refetchSong) => {
                         />
                     </DigitLayout.Column>
                     {user && (
-                        <FavouriteStarButton
-                            favourite={s.favourite}
+                        <FavoriteStarButton
+                            favorite={s.favorite}
                             song_id={s.song_id}
                             refetch={refetchSong}
                         />

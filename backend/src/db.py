@@ -15,7 +15,7 @@ class Song(db.Entity):
     melody_link = Optional(str)
     text = Required(str)
     song_tags = Set("SongToTag")
-    favourites = Set("FavouriteSong")
+    favorites = Set("FavoriteSong")
 
 
 class Tag(db.Entity):
@@ -32,7 +32,7 @@ class SongToTag(db.Entity):
     PrimaryKey(song, tag)
 
 
-class FavouriteSong(db.Entity):
+class FavoriteSong(db.Entity):
     user_name = Required(str)
     song = Required(Song)
     PrimaryKey(user_name, song)

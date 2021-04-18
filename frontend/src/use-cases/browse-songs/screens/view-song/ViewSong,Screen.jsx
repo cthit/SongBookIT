@@ -10,13 +10,7 @@ import SongDetailCard from "./components/song-detail-card";
 export const ViewSong = () => {
     const [song, setSong] = useState(null);
 
-    const {
-        getSongFromContext,
-        loading,
-        refetching,
-        error,
-        refetchSong
-    } = useSongs();
+    const { getSongFromContext, loading, error, refetchSong } = useSongs();
     const { song_id } = useParams();
     const [faultySongId, setFaultySongId] = useState(false);
     const [somethingWrong, setSomethingWrong] = useState(false);
@@ -50,7 +44,7 @@ export const ViewSong = () => {
 
     return (
         <DigitLayout.Column centerHorizontal>
-            <CenterLoading loading={refetching || loading} />
+            <CenterLoading loading={loading} />
             {song !== null && (
                 <SongDetailCard song={song} refetchSong={refetchSong} />
             )}

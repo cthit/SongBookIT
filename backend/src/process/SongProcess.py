@@ -4,7 +4,7 @@ from http import HTTPStatus
 from mdutils import MdUtils
 
 from process.TagProcess import get_tags_json
-from query.FavouriteSongQueries import get_favourite_song_ids, get_favourite_song
+from query.FavoriteSongQueries import get_favorite_song_ids, get_favorite_song
 from utils.ErrorCodes import SONG_TITLE_ALREADY_EXIST
 from utils.HandleGammaToken import get_user_name_from_session
 from utils.HttpResponse import HttpResponse, get_with_data, get_with_error
@@ -24,9 +24,9 @@ def handle_get_songs_and_tags(session: Dict) -> HttpResponse:
 
     user_name_res = get_user_name_from_session(session)
     if not user_name_res.is_error:
-        fav_song_ids = get_favourite_song_ids(user_name_res.data)
+        fav_song_ids = get_favorite_song_ids(user_name_res.data)
         for song in songs:
-            song.favourite = song.song_id in fav_song_ids
+            song.favorite = song.song_id in fav_song_ids
 
     songs_json = {}
     for song in songs:
@@ -55,8 +55,8 @@ def handle_get_song_by_id(session, song_id: str) -> HttpResponse:
     else:
         user_name_res = get_user_name_from_session(session)
         if not user_name_res.is_error:
-            fav_song = get_favourite_song(user_name=user_name_res.data, song_id=song_id)
-            song_res.data.favourite = not fav_song.is_error
+            fav_song = get_favorite_song(user_name=user_name_res.data, song_id=song_id)
+            song_res.data.favorite = not fav_song.is_error
 
         tags_json = get_tags_json()
 
