@@ -77,14 +77,12 @@ const App = () => {
     return (
         <SongTagProvider>
             <DigitHeaderDrawer
-                renderCustomHeader={() => <Header />}
+                renderCustomHeader={() => (
+                    <Header loading={loading} signIn={signIn} />
+                )}
                 disableResponsive
                 renderDrawer={closeDrawer => (
-                    <Drawer
-                        closeDrawer={closeDrawer}
-                        loading={loading}
-                        signIn={signIn}
-                    />
+                    <Drawer closeDrawer={closeDrawer} />
                 )}
                 renderMain={() => (
                     <ScreenContainer>

@@ -16,8 +16,6 @@ const copyToClipboard = async (text, queueToast, niceMessage, badMessage) => {
 };
 
 const handleCopySongToClipboard = (song, queueToast, text, lang) => {
-    console.log("copy", song);
-
     const tagNames = song.tags
         .map(tag => (lang === "en" ? tag.pretty_name_en : tag.pretty_name_sv))
         .join(", ");
@@ -42,7 +40,7 @@ ${song.text}`;
 
 const handlePermalinkToClipboard = (song, queueToast, text) => {
     const link = `${window.ENV.REACT_APP_FRONTEND_URL}${SONGS_ROUTE}/${song.song_id}`;
-    console.log("perma", song);
+
     copyToClipboard(
         link,
         queueToast,
@@ -68,7 +66,7 @@ export const SongOptionsMenu = ({ song }) => {
 
     return (
         <DigitMenu
-            margin={{ left: "-15px" }}
+            margin={{ left: "-15px", right: "-10px" }}
             valueToTextMap={{
                 copy: text.CopySong,
                 permalink: text.PermalinkSong

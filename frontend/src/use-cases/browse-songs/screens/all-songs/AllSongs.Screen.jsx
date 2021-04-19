@@ -48,7 +48,7 @@ export const AllSongs = () => {
                 const song = getSongFromContext(song_id);
                 if (song) {
                     openDialog(
-                        SongDetails(
+                        SongDetails({
                             admin,
                             song,
                             history,
@@ -56,7 +56,7 @@ export const AllSongs = () => {
                             lang,
                             user,
                             refetchSong
-                        )
+                        })
                     );
                 } else {
                     if (error) {

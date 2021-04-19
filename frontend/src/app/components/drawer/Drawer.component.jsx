@@ -40,10 +40,10 @@ const DrawerHeading = ({ t }) => (
     </DrawerHeadingDiv>
 );
 
-export const Drawer = ({ closeDrawer, loading, signIn }) => {
+export const Drawer = ({ closeDrawer }) => {
+    const [text] = useDigitTranslations();
     const user = useGammaMe();
     const admin = useAdmin();
-    const [text] = useDigitTranslations();
 
     if (Object.keys(text).length === 0) {
         return null;
@@ -54,71 +54,51 @@ export const Drawer = ({ closeDrawer, loading, signIn }) => {
             <DrawerTitle onClick={closeDrawer}>
                 <DigitText.Title text={"Songbook"} white />
             </DrawerTitle>
-            <DigitLayout.Column flex={"1"} justifyContent={"space-between"}>
-                <DigitLayout.Column>
-                    <DrawerHeading t={text.Pages} />
+            <div
+                style={{
+                    overflowY: "auto",
+                    display: "flex",
+                    flex: 1,
+                    flexDirection: "column"
+                }}
+            >
+                <DrawerHeading t={text.Pages} />
+                <DigitNavLink
+                    text={text.Songs}
+                    link={BASE_ROUTE}
+                    onClick={closeDrawer}
+                />
+                {user && (
                     <DigitNavLink
-                        text={text.Songs}
-                        link={BASE_ROUTE}
+                        text={text.MyPages}
+                        link={MY_PAGES_ROUTE}
                         onClick={closeDrawer}
                     />
-                    {user && (
+                )}
+                {admin && (
+                    <>
+                        <DrawerHeading t={text.AdminPages} />
                         <DigitNavLink
-                            text={text.MyPages}
-                            link={MY_PAGES_ROUTE}
+                            text={text.AddSong}
+                            link={ADMIN_SONGS_CREATE_ROUTE}
                             onClick={closeDrawer}
                         />
-                    )}
-                    {admin && (
-                        <>
-                            <DrawerHeading t={text.AdminPages} />
-                            <DigitNavLink
-                                text={text.AddSong}
-                                link={ADMIN_SONGS_CREATE_ROUTE}
-                                onClick={closeDrawer}
-                            />
-                            <DigitNavLink
-                                text={text.HandleTags}
-                                link={ADMIN_TAGS_ROUTE}
-                                onClick={closeDrawer}
-                            />
-                        </>
-                    )}
-                </DigitLayout.Column>
-                <DigitLayout.Column>
-                    <DrawerHeading t={text.DownloadSongbook} />
-                    <DigitButton
-                        outlined
-                        text={text.DownloadSongbookMD}
-                        onClick={downloadSongbookMD}
-                    />
-
-                    <ThinDivider />
-
-                    <>
-                        {!loading && user == null && (
-                            <DigitButton
-                                outlined
-                                text={text.SignInWithGamma}
-                                startIcon={<AccountCircle />}
-                                onClick={signIn}
-                            />
-                        )}
-                        <div style={{ overflowX: "auto" }}>
-                            <DigitGammaActions
-                                margin={{ bottom: "5px" }}
-                                signOut={signoutFromSongbook}
-                                frontendUrl={
-                                    window.ENV.REACT_APP_GAMMA_FRONTEND_URL
-                                }
-                                backendUrl={
-                                    window.ENV.REACT_APP_GAMMA_BACKEND_URL
-                                }
-                            />
-                        </div>
+                        <DigitNavLink
+                            text={text.HandleTags}
+                            link={ADMIN_TAGS_ROUTE}
+                            onClick={closeDrawer}
+                        />
                     </>
-                </DigitLayout.Column>
-            </DigitLayout.Column>
+                )}
+
+                <DrawerHeading t={text.DownloadSongbook} />
+                <DigitButton
+                    outlined
+                    size={{ minHeight: 40 }}
+                    text={text.DownloadSongbookMD}
+                    onClick={downloadSongbookMD}
+                />
+            </div>
         </>
     );
 };

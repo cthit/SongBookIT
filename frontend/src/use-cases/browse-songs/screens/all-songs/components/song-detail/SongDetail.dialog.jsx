@@ -12,61 +12,60 @@ import DialogContainer from "../../../../../../common/components/song-detail-con
 import FavoriteStarButton from "../../../../components/favorite-star-button";
 import SongOptionsMenu from "../../../../components/song-options-menu";
 import Melody from "../../../../components/melody";
-import styled from "styled-components";
 
-const MenuRow = styled.div`
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-`;
-
-const SongDetails = (admin, s, history, text, lang, user, refetchSong) => {
-    const melody = s.melody ? s.melody : text.Unknown;
-    const author = s.author ? s.author : text.Unknown;
+const SongDetails = ({
+    admin,
+    song,
+    history,
+    text,
+    lang,
+    user,
+    refetchSong
+}) => {
+    const melody = song.melody ? song.melody : text.Unknown;
+    const author = song.author ? song.author : text.Unknown;
 
     return {
-        title: s.number + ". " + s.title,
+        title: song.number + ". " + song.title,
         renderMain: () => (
             <DialogContainer>
-                <MenuRow>
+                <DigitLayout.Row flexWrap={"wrap"}>
                     <DigitLayout.Column>
                         <DigitText.Text
                             bold
                             text={text.Author + ": " + author}
                         />
                         <Melody
-                            melody_link={s.melody_link}
+                            melody_link={song.melody_link}
                             melody={text.Melody + ": " + melody}
                         />
                     </DigitLayout.Column>
                     <DigitLayout.Row
-                        flex={1}
+                        flex={"auto"}
                         alignItems={"center"}
                         justifyContent={"flex-end"}
                     >
                         {user && (
                             <FavoriteStarButton
-                                favorite={s.favorite}
-                                song_id={s.song_id}
+                                favorite={song.favorite}
+                                song_id={song.song_id}
                                 refetch={refetchSong}
                             />
                         )}
-                        <SongOptionsMenu song={s} />
+                        <SongOptionsMenu song={song} />
                     </DigitLayout.Row>
-                </MenuRow>
+                </DigitLayout.Row>
                 <div style={{ marginTop: "20px" }} />
                 <DigitDesign.Divider />
                 <DigitLayout.Center>
-                    <DigitMarkdown markdownSource={s.text} />
+                    <DigitMarkdown markdownSource={song.text} />
                 </DigitLayout.Center>
             </DialogContainer>
         ),
         renderButtons: (confirm, cancel) => (
             <DigitLayout.Row flex={"1"} justifyContent={"space-between"}>
                 <DigitLayout.Row>
-                    {s.tags.map(tag => (
+                    {song.tags.map(tag => (
                         <DigitChip
                             primary
                             key={tag.tag_id}
@@ -80,7 +79,7 @@ const SongDetails = (admin, s, history, text, lang, user, refetchSong) => {
                 </DigitLayout.Row>
                 {admin && (
                     <DigitDesign.Link
-                        to={ADMIN_SONGS_EDIT_ROUTE + "/" + s.song_id}
+                        to={ADMIN_SONGS_EDIT_ROUTE + "/" + song.song_id}
                     >
                         <DigitButton
                             text={text.EditSong}
