@@ -18,6 +18,7 @@ import useAdmin from "../../../../../../common/hooks/use-admin";
 import Melody from "../../../../components/melody";
 import { useHistory } from "react-router-dom";
 import ThinDivider from "../../../../../../common/components/thin-divider";
+import SongOptionsMenu from "../../../../components/song-options-menu";
 
 export const SongDetailCard = ({ song, refetchSong }) => {
     const [text, lang] = useDigitTranslations();
@@ -42,13 +43,16 @@ export const SongDetailCard = ({ song, refetchSong }) => {
                         text={song.number + ". " + song.title}
                     />
                 </DigitLayout.Row>
-                {user && (
-                    <FavoriteStarButton
-                        favorite={song.favorite}
-                        song_id={song.song_id}
-                        refetch={refetchSong}
-                    />
-                )}
+                <DigitLayout.Row alignItems={"center"}>
+                    {user && (
+                        <FavoriteStarButton
+                            favorite={song.favorite}
+                            song_id={song.song_id}
+                            refetch={refetchSong}
+                        />
+                    )}
+                    <SongOptionsMenu song={song} />
+                </DigitLayout.Row>
             </DigitLayout.Row>
             <DigitText.Text bold text={text.Author + ": " + author} />
             <Melody

@@ -119,6 +119,30 @@
     "Welcome to ITs songbook",
     "Välkommen till ITs sångbok"
   ],
+  "PermalinkSong" : [
+    "Get permalink to song",
+    "Hämta permalänk"
+  ],
+  "PermalinkSongSuccessful" : [
+    "Copied permalink to clipboard",
+    "Kopierade permalänken till urklipp"
+  ],
+  "PermalinkSongFailed" : [
+    "Failed to copy permalink",
+    "Misslyckades kopiera permalänk"
+  ],
+  "CopySong" : [
+    "Copy song to clipboard",
+    "Kopiera sång"
+  ],
+  "CopySongSuccessful" : [
+    "Copied song to clipboard",
+    "Kopierade sången till urklipp"
+  ],
+  "CopySongFailed" : [
+    "Failed to copy song",
+    "Misslyckades att kopiera sång"
+  ],
   "Title": [
     "Title",
     "Titel"

@@ -23,11 +23,11 @@ export const InformationCard = ({
                 </DigitDesign.CardHeader>
             )}
             {imageSrc !== null && (
-                <DigitDesign.CardHeaderImage src="/images/500.jpg" />
+                <DigitDesign.CardHeaderImage src={imageSrc} />
             )}
             {info !== null && (
                 <DigitDesign.CardBody>
-                    <DigitText.Text text={text.Contact} />
+                    <DigitText.Text text={info} />
                 </DigitDesign.CardBody>
             )}
             {backButton && (

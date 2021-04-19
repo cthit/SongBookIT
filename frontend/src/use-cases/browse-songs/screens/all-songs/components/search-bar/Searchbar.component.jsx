@@ -44,7 +44,6 @@ const TagFilter = ({ filterTagsState }) => {
             options={options}
             value={filterTags}
             margin={"!important"} // Unclear why this is necessary for TagFilter and SearchField to align
-            size={{ width: "300px" }}
             onChange={e => setFilterTags(e.target.value)}
         />
     );
@@ -58,7 +57,6 @@ const SearchField = ({ filterTextState }) => {
         <DigitTextField
             value={filterText}
             upperLabel={text.FilterSongs}
-            size={{ width: "300px" }}
             outlined
             onChange={e => setFilterText(e.target.value)}
         />

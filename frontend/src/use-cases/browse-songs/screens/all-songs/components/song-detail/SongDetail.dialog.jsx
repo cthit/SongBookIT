@@ -8,17 +8,19 @@ import {
     DigitText
 } from "@cthit/react-digit-components";
 import { ADMIN_SONGS_EDIT_ROUTE } from "../../../../../../app/App.routes";
-import { DialogContainer } from "../../../../../../common/components/song-detail-container/DialogContainer.component";
+import DialogContainer from "../../../../../../common/components/song-detail-container";
 import FavoriteStarButton from "../../../../components/favorite-star-button";
+import SongOptionsMenu from "../../../../components/song-options-menu";
+import Melody from "../../../../components/melody";
+import styled from "styled-components";
 
-const Melody = ({ melody, melody_link }) => {
-    const MelodyText = <DigitText.Text text={melody} />;
-    if (melody_link) {
-        return <a href={melody_link}>{MelodyText}</a>;
-    } else {
-        return MelodyText;
-    }
-};
+const MenuRow = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+`;
 
 const SongDetails = (admin, s, history, text, lang, user, refetchSong) => {
     const melody = s.melody ? s.melody : text.Unknown;
@@ -28,7 +30,7 @@ const SongDetails = (admin, s, history, text, lang, user, refetchSong) => {
         title: s.number + ". " + s.title,
         renderMain: () => (
             <DialogContainer>
-                <DigitLayout.Row flex={"1"} justifyContent={"space-between"}>
+                <MenuRow>
                     <DigitLayout.Column>
                         <DigitText.Text
                             bold
@@ -39,14 +41,21 @@ const SongDetails = (admin, s, history, text, lang, user, refetchSong) => {
                             melody={text.Melody + ": " + melody}
                         />
                     </DigitLayout.Column>
-                    {user && (
-                        <FavoriteStarButton
-                            favorite={s.favorite}
-                            song_id={s.song_id}
-                            refetch={refetchSong}
-                        />
-                    )}
-                </DigitLayout.Row>
+                    <DigitLayout.Row
+                        flex={1}
+                        alignItems={"center"}
+                        justifyContent={"flex-end"}
+                    >
+                        {user && (
+                            <FavoriteStarButton
+                                favorite={s.favorite}
+                                song_id={s.song_id}
+                                refetch={refetchSong}
+                            />
+                        )}
+                        <SongOptionsMenu song={s} />
+                    </DigitLayout.Row>
+                </MenuRow>
                 <div style={{ marginTop: "20px" }} />
                 <DigitDesign.Divider />
                 <DigitLayout.Center>

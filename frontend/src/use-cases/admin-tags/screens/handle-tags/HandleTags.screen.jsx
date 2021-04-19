@@ -13,7 +13,7 @@ import TagGrid from "./components/tag-grid";
 import { ADMIN_TAGS_CREATE_ROUTE } from "../../../../app/App.routes";
 
 const HandleTagsScreen = () => {
-    const { tags, refetching, loading } = useSongs();
+    const { tags, loading } = useSongs();
 
     const [filterText, setFilterText] = useState("");
     const [filteredTags, setFilteredTags] = useState(tags);
@@ -33,16 +33,17 @@ const HandleTagsScreen = () => {
 
     return (
         <>
+            <DigitLayout.Column flex={"1"}>
+                <TagSearchBar filterTextState={{ filterText, setFilterText }} />
+                <CenterLoading loading={loading} />
+                <TagGrid tags={filteredTags} />
+            </DigitLayout.Column>
+
             <DigitLayout.DownRightPosition>
                 <DigitDesign.Link to={ADMIN_TAGS_CREATE_ROUTE}>
                     <DigitFAB secondary icon={AddIcon} />
                 </DigitDesign.Link>
             </DigitLayout.DownRightPosition>
-            <DigitLayout.Column flex={"1"}>
-                <TagSearchBar filterTextState={{ filterText, setFilterText }} />
-                <CenterLoading loading={refetching || loading} />
-                <TagGrid tags={filteredTags} />
-            </DigitLayout.Column>
         </>
     );
 };

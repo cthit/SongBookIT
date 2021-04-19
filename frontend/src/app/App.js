@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, Suspense } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
 import {
@@ -19,7 +19,10 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import Drawer from "./components/drawer";
 import { SongTagProvider } from "./Songs.context";
-import CenterLoading from "../common/components/center-loading";
+import AdminSongs from "../use-cases/admin-songs";
+import AdminTags from "../use-cases/admin-tags";
+import MyPages from "../use-cases/my-pages";
+import BrowseSongs from "../use-cases/browse-songs";
 
 const ScreenContainer = styled.div`
     display: flex;
@@ -71,11 +74,6 @@ const App = () => {
         setCommonTranslations(translations);
     }, [setCommonTranslations]);
 
-    const AdminSongs = lazy(() => import("../use-cases/admin-songs/"));
-    const AdminTags = lazy(() => import("../use-cases/admin-tags/"));
-    const BrowseSongs = lazy(() => import("../use-cases/browse-songs"));
-    const MyPages = lazy(() => import("../use-cases/my-pages"));
-
     return (
         <SongTagProvider>
             <DigitHeaderDrawer
@@ -90,26 +88,18 @@ const App = () => {
                 )}
                 renderMain={() => (
                     <ScreenContainer>
-                        <Suspense fallback={<CenterLoading />}>
-                            <Switch>
-                                <Route
-                                    from={ADMIN_SONGS_ROUTE}
-                                    component={AdminSongs}
-                                />
-                                <Route
-                                    from={ADMIN_TAGS_ROUTE}
-                                    component={AdminTags}
-                                />
-                                <Route
-                                    from={MY_PAGES_ROUTE}
-                                    component={MyPages}
-                                />
-                                <Route
-                                    from={BASE_ROUTE}
-                                    component={BrowseSongs}
-                                />
-                            </Switch>
-                        </Suspense>
+                        <Switch>
+                            <Route
+                                from={ADMIN_SONGS_ROUTE}
+                                component={AdminSongs}
+                            />
+                            <Route
+                                from={ADMIN_TAGS_ROUTE}
+                                component={AdminTags}
+                            />
+                            <Route from={MY_PAGES_ROUTE} component={MyPages} />
+                            <Route from={BASE_ROUTE} component={BrowseSongs} />
+                        </Switch>
                         <Footer />
                     </ScreenContainer>
                 )}

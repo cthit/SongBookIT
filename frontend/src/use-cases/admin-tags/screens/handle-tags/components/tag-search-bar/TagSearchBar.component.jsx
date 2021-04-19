@@ -30,7 +30,6 @@ const SearchField = ({ filterTextState }) => {
         <DigitTextField
             value={filterText}
             upperLabel={text.SearchTags}
-            size={{ width: "300px" }}
             outlined
             onChange={e => setFilterText(e.target.value)}
         />

@@ -89,7 +89,10 @@ Songbook checks for the Authority specified in the following variables.
 
 ##### ***The rest of 'em***
 These variables should all be applied to the frontend.
-- `REACT_APP_GAMMA_FRONTEND_URL`:
+- `REACT_APP_FRONTEND_URL`:
+  - Should be: https://songbook.chalmers.it
+  - Development: http://localhost:3001"
+-`REACT_APP_GAMMA_FRONTEND_URL`:
   - Should be: https://gamma.chalmers.it
   - Development: http://localhost:3000"
 - `REACT_APP_GAMMA_BACKEND_URL`:
